@@ -23,7 +23,6 @@ class PessimisticLockingTest extends IntegrationTest {
     @Test
     @Transactional
     void testPessimisticLocking() throws InterruptedException {
-        // Initialize user account with 100 points
         PessimisticUserAccount user = new PessimisticUserAccount("testuser", 100);
         pessimisticUserAccountRepository.save(user);
 

@@ -21,7 +21,6 @@ class TransactionIsolationTest extends IntegrationTest {
     @Test
     @Transactional(isolation = Isolation.SERIALIZABLE)
     void testTransactionIsolation() throws InterruptedException {
-        // Initialize user account with 100 points
         IsolationUserAccount user = new IsolationUserAccount("testuser", 100);
         isolationUserAccountRepository.save(user);
 
@@ -35,10 +34,8 @@ class TransactionIsolationTest extends IntegrationTest {
         service.shutdown();
         service.awaitTermination(1, TimeUnit.MINUTES);
 
-        // Reload the user and check points balance
         IsolationUserAccount result = isolationUserAccountRepository.findByIdLocked(user.getId());
         assertEquals(60, result.getPoints());
-        // Expecting 60 because each task decrements 20 points
     }
 
     @Transactional

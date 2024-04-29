@@ -23,7 +23,6 @@ class OptimisticLockingTest extends IntegrationTest {
     @Test
     @Transactional
     public void testOptimisticLocking() throws InterruptedException {
-        // Initialize user account with 100 points
         OptimisticUserAccount user = new OptimisticUserAccount("testuser", 100);
         optimisticUserAccountRepository.save(user);
 
@@ -34,7 +33,6 @@ class OptimisticLockingTest extends IntegrationTest {
                 loadedUser.setPoints(loadedUser.getPoints() - 50);
                 optimisticUserAccountRepository.save(loadedUser);
             } catch (RuntimeException e) {
-                System.out.println("Caught optimistic lock exception");
             }
         };
 
@@ -43,7 +41,6 @@ class OptimisticLockingTest extends IntegrationTest {
         service.shutdown();
         service.awaitTermination(1, TimeUnit.MINUTES);
 
-        // Confirm the balance is either 50 or 100 due to optimistic lock handling
         OptimisticUserAccount result = optimisticUserAccountRepository.findById(user.getId()).orElseThrow();
         assertTrue(result.getPoints() == 50 || result.getPoints() == 100);
     }
