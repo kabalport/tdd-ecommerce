@@ -1,7 +1,7 @@
-package com.example.ecommercecicd.member.infrastructure;
+package com.example.tddecommerce.member.infrastructure;
 
-import com.example.ecommercecicd.member.business.domain.PointTransaction;
-import com.example.ecommercecicd.member.business.repository.PointTransactionRepository;
+import com.example.tddecommerce.member.business.domain.PointTransaction;
+import com.example.tddecommerce.member.business.repository.PointTransactionRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

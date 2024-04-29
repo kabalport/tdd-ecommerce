@@ -1,7 +1,8 @@
-package com.example.ecommercecicd.member;
+package com.example.tddecommerce.member;
 
-import com.example.ecommercecicd.member.business.domain.Member;
-import com.example.ecommercecicd.member.api.UserPointRequest;
+
+import com.example.tddecommerce.member.api.UserPointRequest;
+import com.example.tddecommerce.member.business.domain.Member;
 
 import java.math.BigDecimal;
 

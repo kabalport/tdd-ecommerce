@@ -1,4 +1,4 @@
-package com.example.ecommercecicd.member.application;
+package com.example.tddecommerce.member.application;
 
 import java.math.BigDecimal;
 

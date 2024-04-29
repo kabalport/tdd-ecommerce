@@ -1,4 +1,4 @@
-package com.example.ecommercecicd.member.business.exception;
+package com.example.tddecommerce.member.business.exception;
 
 public class UserPointBadRequestException extends UserPointException {
     public UserPointBadRequestException(UserPointError error){

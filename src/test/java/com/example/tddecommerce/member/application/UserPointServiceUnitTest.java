@@ -1,13 +1,13 @@
-package com.example.ecommercecicd.member.application;
+package com.example.tddecommerce.member.application;
+import com.example.tddecommerce.member.business.exception.UserPointBadRequestException;
+import com.example.tddecommerce.member.MemberFixture;
+import com.example.tddecommerce.member.business.domain.Member;
+import com.example.tddecommerce.member.business.exception.UserPointError;
+import com.example.tddecommerce.member.business.repository.MemberRepository;
+import com.example.tddecommerce.member.api.UserPointRequest;
 
-import com.example.ecommercecicd.member.business.exception.UserPointBadRequestException;
-import com.example.ecommercecicd.member.MemberFixture;
-import com.example.ecommercecicd.member.business.domain.Member;
-import com.example.ecommercecicd.member.business.exception.UserPointError;
-import com.example.ecommercecicd.member.business.repository.MemberRepository;
-import com.example.ecommercecicd.member.api.UserPointRequest;
+import com.example.tddecommerce.member.business.repository.PointTransactionRepository;
 
-import com.example.ecommercecicd.member.business.repository.PointTransactionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

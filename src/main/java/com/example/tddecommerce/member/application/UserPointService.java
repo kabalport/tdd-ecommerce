@@ -1,15 +1,16 @@
-package com.example.ecommercecicd.member.application;
+package com.example.tddecommerce.member.application;
 
-import com.example.ecommercecicd.member.business.domain.Member;
-import com.example.ecommercecicd.member.business.domain.PointTransaction;
-import com.example.ecommercecicd.member.business.exception.UserPointBadRequestException;
-import com.example.ecommercecicd.member.business.repository.MemberRepository;
-import com.example.ecommercecicd.member.business.repository.PointTransactionRepository;
+import com.example.tddecommerce.member.business.domain.Member;
+import com.example.tddecommerce.member.business.domain.PointTransaction;
+import com.example.tddecommerce.member.business.exception.UserPointBadRequestException;
+import com.example.tddecommerce.member.business.exception.UserPointError;
+import com.example.tddecommerce.member.business.repository.MemberRepository;
+import com.example.tddecommerce.member.business.repository.PointTransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-import static com.example.ecommercecicd.member.business.exception.UserPointError.USER_NOT_FOUND;
+
 
 @Service
 public class UserPointService {
@@ -24,7 +25,7 @@ public class UserPointService {
 
     public void charge(String userId, BigDecimal chargePoint) {
         validator.validate(chargePoint);
-        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new UserPointBadRequestException(USER_NOT_FOUND));
+        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new UserPointBadRequestException(UserPointError.USER_NOT_FOUND));
         member.chargeUserPoint(chargePoint);
         pointTransactionRepository.save(PointTransaction.createByCharge(member, chargePoint));
     }
@@ -32,7 +33,7 @@ public class UserPointService {
 
     public void use(String userId, BigDecimal usePoint) {
         validator.validate(usePoint);
-        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new UserPointBadRequestException(USER_NOT_FOUND));
+        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new UserPointBadRequestException(UserPointError.USER_NOT_FOUND));
         member.useUserPoint(usePoint);
         pointTransactionRepository.save(PointTransaction.createByPayment(member, usePoint));
     }

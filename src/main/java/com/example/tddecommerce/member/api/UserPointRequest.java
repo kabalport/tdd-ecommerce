@@ -1,4 +1,4 @@
-package com.example.ecommercecicd.member.api;
+package com.example.tddecommerce.member.api;
 
 import lombok.Getter;
 

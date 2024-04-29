@@ -1,4 +1,4 @@
-package com.example.ecommercecicd.member.business.domain;
+package com.example.tddecommerce.member.business.domain;
 
 public enum TransactionType {
     CHARGE, PAYMENT

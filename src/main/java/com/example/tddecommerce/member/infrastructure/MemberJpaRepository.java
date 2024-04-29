@@ -1,11 +1,9 @@
-package com.example.ecommercecicd.member.infrastructure;
+package com.example.tddecommerce.member.infrastructure;
 
-import com.example.ecommercecicd.member.business.domain.Member;
+import com.example.tddecommerce.member.business.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 public interface MemberJpaRepository extends JpaRepository<Member,Long> {

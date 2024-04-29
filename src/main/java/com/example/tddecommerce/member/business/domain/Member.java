@@ -1,6 +1,6 @@
-package com.example.ecommercecicd.member.business.domain;
+package com.example.tddecommerce.member.business.domain;
 
-import com.example.ecommercecicd.member.business.exception.UserPointBadRequestException;
+import com.example.tddecommerce.member.business.exception.UserPointBadRequestException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-import static com.example.ecommercecicd.member.business.exception.UserPointError.INSUFFICIENT_USER_POINT;
+import static com.example.tddecommerce.member.business.exception.UserPointError.INSUFFICIENT_USER_POINT;
+
 
 @Entity
 @Table(name = "member")

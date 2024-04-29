@@ -1,4 +1,4 @@
-package com.example.ecommercecicd;
+package com.example.tddecommerce;
 
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;

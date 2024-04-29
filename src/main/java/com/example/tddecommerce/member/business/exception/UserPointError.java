@@ -1,4 +1,4 @@
-package com.example.ecommercecicd.member.business.exception;
+package com.example.tddecommerce.member.business.exception;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,4 +15,7 @@ public enum UserPointError {
     LOCK_ACQUISITION_FAILED("작업을 시작하지 못했습니다.");
 
     String errorMsg;
+
 }
+
+

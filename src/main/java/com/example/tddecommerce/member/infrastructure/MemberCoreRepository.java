@@ -1,7 +1,7 @@
-package com.example.ecommercecicd.member.infrastructure;
+package com.example.tddecommerce.member.infrastructure;
 
-import com.example.ecommercecicd.member.business.domain.Member;
-import com.example.ecommercecicd.member.business.repository.MemberRepository;
+import com.example.tddecommerce.member.business.domain.Member;
+import com.example.tddecommerce.member.business.repository.MemberRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
