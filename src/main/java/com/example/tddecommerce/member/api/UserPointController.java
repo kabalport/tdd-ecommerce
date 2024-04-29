@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 
 @RestController
 public class UserPointController {
-
     private final UserPointService userPointService;
 
     public UserPointController(UserPointService userPointService) {
