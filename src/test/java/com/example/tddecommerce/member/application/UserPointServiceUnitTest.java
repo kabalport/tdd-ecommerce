@@ -86,9 +86,7 @@ class UserPointServiceUnitTest {
         });
     }
 
-    private class UserPointPayRequest {
 
-    }
 
 
 

@@ -1,8 +1,11 @@
 package com.example.tddecommerce.member.application;
 
 import com.example.tddecommerce.IntegrationTest;
+import com.example.tddecommerce.member.UserPointStep;
+import com.example.tddecommerce.member.api.UserPointRequest;
 import com.example.tddecommerce.member.business.domain.Member;
 import com.example.tddecommerce.member.business.repository.MemberRepository;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,14 +28,14 @@ class UserPointServiceTest extends IntegrationTest {
     @DisplayName("회원이 포인트충전요청을 하면 회원의포인트를 충전시킵니다.")
     void 유저포인트충전() {
         // given
-        Member member = new Member("user1",BigDecimal.ZERO);
-        memberRepository.save(member);
-
-        BigDecimal chargeAmount = BigDecimal.valueOf(20000L);
+        UserPointRequest request = UserPointStep.유저포인트충전요청();
         // when
-        userPointService.charge(member.getUserId(), chargeAmount);
+        userPointService.charge(request.getUserId(), request.getAddPoint());
         // then
-        Member chargedMember = memberRepository.findById(member.getMemberId()).get();
-        Assertions.assertEquals(chargeAmount, chargedMember.getUserPoint());
+        Member chargedMember = memberRepository.findByUserId(request.getUserId()).get();
+        Assertions.assertEquals(request.getAddPoint(), chargedMember.getUserPoint());
     }
+
+
+
 }

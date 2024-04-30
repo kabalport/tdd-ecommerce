@@ -30,8 +30,6 @@ class ConcurrencyLockingTests extends IntegrationTest {
     @Autowired
     private PessimisticUserAccountService pessimisticUserAccountService;
 
-    //    @Transactional(isolation = Isolation.SERIALIZABLE)
-
 
     @Test
     @Transactional
