@@ -27,11 +27,11 @@ class UserPointServiceTest extends IntegrationTest {
     @Test
     @DisplayName("회원이 포인트충전요청을 하면 회원의포인트를 충전시킵니다.")
     void 유저포인트충전() {
-        // given
+        // given : 충전요청
         UserPointRequest request = UserPointStep.유저포인트충전요청();
-        // when
+        // when : 충전을 실행합니다.
         userPointService.charge(request.getUserId(), request.getAddPoint());
-        // then
+        // then : 요청한충전금액과 충전한유저의 유저포인트가 일치한지 확인합니다.
         Member chargedMember = memberRepository.findByUserId(request.getUserId()).get();
         Assertions.assertEquals(request.getAddPoint(), chargedMember.getUserPoint());
     }
