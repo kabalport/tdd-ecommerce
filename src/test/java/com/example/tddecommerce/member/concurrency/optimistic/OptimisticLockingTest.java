@@ -22,7 +22,7 @@ class OptimisticLockingTest extends IntegrationTest {
 
     @Test
     @Transactional
-    public void testOptimisticLocking() throws InterruptedException {
+    void testOptimisticLocking() throws InterruptedException {
         OptimisticUserAccount user = new OptimisticUserAccount("testuser", 100);
         optimisticUserAccountRepository.save(user);
 
