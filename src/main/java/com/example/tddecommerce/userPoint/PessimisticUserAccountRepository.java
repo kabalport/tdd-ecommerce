@@ -1,4 +1,4 @@
-package com.example.tddecommerce.member.concurrency.pessimistic;
+package com.example.tddecommerce.userPoint;
 
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;

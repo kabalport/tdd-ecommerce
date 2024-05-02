@@ -1,4 +1,4 @@
-package com.example.tddecommerce.member.concurrency.pessimistic;
+package com.example.tddecommerce.userPoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

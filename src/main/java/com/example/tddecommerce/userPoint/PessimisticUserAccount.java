@@ -1,10 +1,10 @@
-package com.example.tddecommerce.member.concurrency.optimistic;
+package com.example.tddecommerce.userPoint;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "optimistic_user_accounts")
-public class OptimisticUserAccount {
+@Table(name = "pessimistic_user_accounts")
+public class PessimisticUserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -12,17 +12,15 @@ public class OptimisticUserAccount {
     private String username;
     private int points;
 
-    @Version
-    private int version;
-
-    public OptimisticUserAccount() {
+    public PessimisticUserAccount() {
     }
 
-    public OptimisticUserAccount(String username, int points) {
+    public PessimisticUserAccount(String username, int points) {
         this.username = username;
         this.points = points;
     }
 
+    // Standard getters and setters
     public Long getId() {
         return id;
     }
@@ -37,9 +35,5 @@ public class OptimisticUserAccount {
 
     public void setPoints(int points) {
         this.points = points;
-    }
-
-    public int getVersion() {
-        return version;
     }
 }

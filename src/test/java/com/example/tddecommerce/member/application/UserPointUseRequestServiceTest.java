@@ -17,10 +17,13 @@ import java.math.BigDecimal;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
-class UserPointServiceTest extends IntegrationTest {
+class UserPointUseRequestServiceTest extends IntegrationTest {
     @Autowired
     private UserPointService userPointService;
 
@@ -39,7 +42,22 @@ class UserPointServiceTest extends IntegrationTest {
         Assertions.assertEquals(request.getAddPoint(), chargedMember.getUserPoint());
     }
 
+    @Test
+    void testPessimisticLocking() throws InterruptedException {
+        Member user = new Member("testuser", BigDecimal.valueOf(100));
+        memberRepository.save(user);
 
+        ExecutorService service = Executors.newFixedThreadPool(2);
+        Runnable task = () -> userPointService.use(user.getUserId(), BigDecimal.valueOf(50));
+
+        service.execute(task);
+        service.execute(task);
+        service.shutdown();
+        service.awaitTermination(1, TimeUnit.MINUTES);
+
+        Member result = memberRepository.findByUserId(user.getUserId()).orElseThrow();
+        assertEquals(0, result.getUserPoint());
+    }
 
     @Test
     @DisplayName("동시성 포인트 충전 테스트")

@@ -1,8 +1,11 @@
-package com.example.tddecommerce.member.concurrency.pessimistic;
+package com.example.tddecommerce.userPoint;
 
 import com.example.tddecommerce.IntegrationTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.math.BigDecimal;
 import java.util.concurrent.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,6 +16,8 @@ class PessimisticLockingTest extends IntegrationTest {
     private PessimisticUserAccountService pessimisticUserAccountService;
     @Autowired
     private PessimisticUserAccountRepository repository;
+
+
 
     @Test
     void testPessimisticLocking() throws InterruptedException {
@@ -30,4 +35,7 @@ class PessimisticLockingTest extends IntegrationTest {
         PessimisticUserAccount result = repository.findById(user.getId()).orElseThrow();
         assertEquals(0, result.getPoints());
     }
+
+
+
 }

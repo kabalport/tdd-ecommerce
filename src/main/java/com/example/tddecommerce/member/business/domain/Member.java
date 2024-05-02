@@ -30,7 +30,6 @@ public class Member {
     }
 
     public Member(String userId, BigDecimal userPoint) {
-
         this.userId = userId;
         this.userPoint = userPoint;
     }

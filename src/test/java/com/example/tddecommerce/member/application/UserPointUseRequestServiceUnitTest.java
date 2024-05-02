@@ -15,12 +15,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CountDownLatch;
 
-class UserPointServiceUnitTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class UserPointUseRequestServiceUnitTest {
     private UserPointService userPointService;
     private MemberRepository memberRepository;
     private PointTransactionRepository pointTransactionRepository;
@@ -86,6 +85,9 @@ class UserPointServiceUnitTest {
             userPointService.charge(request.getUserId(), request.getAddPoint());
         });
     }
+
+
+
 
 //    @Test
 //    @DisplayName("포인트 사용 동시성 테스트")

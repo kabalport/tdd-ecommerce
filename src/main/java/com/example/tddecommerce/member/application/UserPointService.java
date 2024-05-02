@@ -41,14 +41,9 @@ public class UserPointService {
     @Transactional
     public void use(String userId, BigDecimal usePoint) {
         validator.validate(usePoint);
-        Member member = memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new UserPointBadRequestException(UserPointError.USER_NOT_FOUND));
-        try {
-            member.useUserPoint(usePoint);
-            pointTransactionRepository.save(PointTransaction.createByPayment(member, usePoint));
-        } finally {
-            lockHandler.releaseLock(member);
-        }
+        Member member = memberRepository.findByUserIdLocked(userId).orElseThrow(() -> new UserPointBadRequestException(UserPointError.USER_NOT_FOUND));
+        member.useUserPoint(usePoint);
+        pointTransactionRepository.save(PointTransaction.createByPayment(member, usePoint));
     }
 
     private class LockHandler {
