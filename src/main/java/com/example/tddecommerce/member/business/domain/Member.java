@@ -2,6 +2,7 @@ package com.example.tddecommerce.member.business.domain;
 
 import com.example.tddecommerce.member.business.exception.UserPointBadRequestException;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

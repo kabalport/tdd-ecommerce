@@ -30,4 +30,9 @@ public class MemberCoreRepository implements MemberRepository {
     public Optional<Member> findByUserId(String userId) {
         return memberJpaRepository.findByUserId(userId);
     }
+    @Override
+    public Optional<Member> findByUserIdLocked(String userId) {
+        return memberJpaRepository.findByUserIdLocked(userId);
+    }
+
 }

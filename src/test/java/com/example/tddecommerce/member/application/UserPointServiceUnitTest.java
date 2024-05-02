@@ -15,14 +15,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
 
 class UserPointServiceUnitTest {
     private UserPointService userPointService;
     private MemberRepository memberRepository;
     private PointTransactionRepository pointTransactionRepository;
-
-
 
     @BeforeEach
     void setUp() {
@@ -86,6 +87,42 @@ class UserPointServiceUnitTest {
         });
     }
 
+//    @Test
+//    @DisplayName("포인트 사용 동시성 테스트")
+//    void testPointUsageConcurrency() {
+//        int numberOfThreads = 100;
+//        CountDownLatch startLatch = new CountDownLatch(1);
+//        CountDownLatch endLatch = new CountDownLatch(numberOfThreads);
+//        String userId = "concurrencyTestUser";
+//        BigDecimal requestPoint = BigDecimal.valueOf(100);
+//        Member member = new Member(userId, BigDecimal.valueOf(10000));
+//        Mockito.when(memberRepository.findByUserId(userId)).thenReturn(Optional.of(member));
+//
+//        Runnable task = () -> {
+//            try {
+//                startLatch.await();
+//                userPointService.use(userId, requestPoint);
+//            } catch (InterruptedException e) {
+//                Thread.currentThread().interrupt();
+//            } finally {
+//                endLatch.countDown();
+//            }
+//        };
+//
+//        for (int i = 0; i < numberOfThreads; i++) {
+//            new Thread(task).start();
+//        }
+//
+//        startLatch.countDown(); // 모든 스레드 동시 시작
+//        try {
+//            endLatch.await(); // 모든 스레드의 종료를 기다림
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
+//
+//        BigDecimal expectedPoints = BigDecimal.valueOf(10000).subtract(requestPoint.multiply(BigDecimal.valueOf(numberOfThreads)));
+//        Assertions.assertEquals(expectedPoints, member.getUserPoint());
+//    }
 
 
 

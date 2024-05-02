@@ -14,6 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SpringBootTest
 @Transactional
@@ -38,4 +41,42 @@ class UserPointServiceTest extends IntegrationTest {
 
 
 
+    @Test
+    @DisplayName("동시성 포인트 충전 테스트")
+    void testConcurrentPointCharging() throws InterruptedException {
+        int numberOfThreads = 10;
+        BigDecimal chargeAmount = BigDecimal.valueOf(100);
+        String userId = "testUser";
+        Member member = new Member(userId, BigDecimal.ZERO);
+        memberRepository.save(member);
+
+        ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
+        CountDownLatch startLatch = new CountDownLatch(1);
+        CountDownLatch endLatch = new CountDownLatch(numberOfThreads);
+
+        Runnable chargeTask = () -> {
+            try {
+                startLatch.await();
+                userPointService.charge(userId, chargeAmount);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                endLatch.countDown();
+            }
+        };
+
+        for (int i = 0; i < numberOfThreads; i++) {
+            executor.submit(chargeTask);
+        }
+
+        startLatch.countDown(); // Start all threads
+        endLatch.await(); // Wait for all threads to finish
+
+        executor.shutdown();
+
+        // Verify
+        Member chargedMember = memberRepository.findByUserId(userId).orElseThrow();
+        BigDecimal expectedTotal = chargeAmount.multiply(BigDecimal.valueOf(numberOfThreads));
+        Assertions.assertEquals(expectedTotal, chargedMember.getUserPoint());
+    }
 }

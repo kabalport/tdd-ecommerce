@@ -11,4 +11,5 @@ public interface MemberRepository {
     void save(Member member);
 
     Optional<Member> findByUserId(String userId);
+    Optional<Member> findByUserIdLocked(String userId);
 }
