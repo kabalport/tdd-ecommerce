@@ -1,4 +1,4 @@
-package com.example.tddecommerce.member.business.exception;
+package com.example.tddecommerce.userPoint.business.exception;
 
 import lombok.Getter;
 

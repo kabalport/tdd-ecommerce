@@ -1,4 +1,4 @@
-package com.example.tddecommerce.userPoint;
+package com.example.tddecommerce.userPoint.business;
 
 import jakarta.persistence.*;
 import lombok.Getter;

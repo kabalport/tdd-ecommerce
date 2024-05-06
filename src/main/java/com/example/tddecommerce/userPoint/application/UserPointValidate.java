@@ -1,4 +1,4 @@
-package com.example.tddecommerce.member.application;
+package com.example.tddecommerce.userPoint.application;
 
 import java.math.BigDecimal;
 

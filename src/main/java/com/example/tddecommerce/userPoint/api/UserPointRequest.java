@@ -1,4 +1,4 @@
-package com.example.tddecommerce.member.api;
+package com.example.tddecommerce.userPoint.api;
 
 import lombok.Getter;
 

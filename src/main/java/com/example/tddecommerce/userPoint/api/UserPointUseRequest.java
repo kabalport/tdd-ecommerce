@@ -1,8 +1,8 @@
-package com.example.tddecommerce.userPoint;
+package com.example.tddecommerce.userPoint.api;
 
 import java.math.BigDecimal;
 
-class UserPointUseRequest {
+public class UserPointUseRequest {
     private final String userId;
     private final BigDecimal userPoint;
 

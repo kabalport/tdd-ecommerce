@@ -1,6 +1,10 @@
-package com.example.tddecommerce.userPoint;
+package com.example.tddecommerce.userPoint.application;
 
 import com.example.tddecommerce.IntegrationTest;
+import com.example.tddecommerce.userPoint.api.UserPointResponse;
+import com.example.tddecommerce.userPoint.api.UserPointUseRequest;
+import com.example.tddecommerce.userPoint.business.UserPoint;
+import com.example.tddecommerce.userPoint.infrastructure.UserPointRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserPointServiceTest extends IntegrationTest {
     @Autowired
-    private UserPointManagerService userPointManagerService;
+    private UserPointService userPointService;
 
     @Autowired
-    private UserPointManagerRepository userPointManagerRepository;
+    private UserPointRepository userPointRepository;
 
     @Test
     @DisplayName("동시성테스트-유저포인트")
@@ -27,10 +31,10 @@ class UserPointServiceTest extends IntegrationTest {
         UserPointUseRequest request = new UserPointUseRequest(givenUserId, givenUserPoint);
 
         UserPoint user = new UserPoint(request.getUserId(),request.getUserPoint());
-        userPointManagerRepository.save(user);
+        userPointRepository.save(user);
 
         ExecutorService service = Executors.newFixedThreadPool(2);
-        Runnable task = () -> userPointManagerService.use(user.getUserId(),BigDecimal.valueOf(50));
+        Runnable task = () -> userPointService.use(user.getUserId(),BigDecimal.valueOf(50));
 
 
         service.execute(task);
@@ -38,7 +42,7 @@ class UserPointServiceTest extends IntegrationTest {
         service.shutdown();
         service.awaitTermination(1, TimeUnit.MINUTES);
 
-        UserPoint result = userPointManagerRepository.findById(user.getId()).orElseThrow();
+        UserPoint result = userPointRepository.findById(user.getId()).orElseThrow();
 
         UserPointResponse response = new UserPointResponse(result);
 
