@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
-@Table(name = "user_pont")
+@Table(name = "user_point")
 public class UserPoint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +28,10 @@ public class UserPoint {
     }
 
 
+    public void decrease(BigDecimal totalAmount) {
+        if (this.point.compareTo(totalAmount) < 0) {
+            throw new IllegalArgumentException("Insufficient points");
+        }
+        this.point = this.point.subtract(totalAmount);
+    }
 }
