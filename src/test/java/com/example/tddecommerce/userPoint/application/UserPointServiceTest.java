@@ -4,7 +4,7 @@ import com.example.tddecommerce.IntegrationTest;
 import com.example.tddecommerce.userPoint.api.UserPointResponse;
 import com.example.tddecommerce.userPoint.api.UserPointUseRequest;
 import com.example.tddecommerce.userPoint.business.UserPoint;
-import com.example.tddecommerce.userPoint.infrastructure.UserPointRepository;
+import com.example.tddecommerce.userPoint.infrastructure.IUserPointRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ class UserPointServiceTest extends IntegrationTest {
     private UserPointService userPointService;
 
     @Autowired
-    private UserPointRepository userPointRepository;
+    private IUserPointRepository userPointRepository;
 
     @Test
     @DisplayName("동시성테스트-유저포인트")
@@ -43,9 +43,7 @@ class UserPointServiceTest extends IntegrationTest {
         service.awaitTermination(1, TimeUnit.MINUTES);
 
         UserPoint result = userPointRepository.findById(user.getId()).orElseThrow();
-
         UserPointResponse response = new UserPointResponse(result);
-
         assertEquals(0, response.getPoint());
     }
 }

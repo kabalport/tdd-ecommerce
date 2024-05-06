@@ -1,7 +1,7 @@
 package com.example.tddecommerce.order;
 
 import com.example.tddecommerce.userPoint.business.UserPoint;
-import com.example.tddecommerce.userPoint.infrastructure.UserPointRepository;
+import com.example.tddecommerce.userPoint.infrastructure.IUserPointRepository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,15 +9,14 @@ import java.util.Date;
 import java.util.List;
 
 public class OrderService {
-    private final OrderServiceTest orderServiceTest;
+
     private final CustomerRepository customerRepository;
     private final OrderRepository orderRepository;
-    private final UserPointRepository userPointRepository;
+    private final IUserPointRepository userPointRepository;
     private final ProductRepository productRepository;
     private final ProductStockRepository productStockRepository;
 
-    public OrderService(OrderServiceTest orderServiceTest, CustomerRepository customerRepository, OrderRepository orderRepository, UserPointRepository userPointRepository, ProductRepository productRepository, ProductStockRepository productStockRepository) {
-        this.orderServiceTest = orderServiceTest;
+    public OrderService(CustomerRepository customerRepository, OrderRepository orderRepository, IUserPointRepository userPointRepository, ProductRepository productRepository, ProductStockRepository productStockRepository) {
         this.customerRepository = customerRepository;
         this.orderRepository = orderRepository;
         this.userPointRepository = userPointRepository;
@@ -26,27 +25,22 @@ public class OrderService {
     }
 
     public Order createOrder(CreateOrderRequest request) {
-        // 사용자 포인트정보조회 및 검증
-        String userId = "testuser";
-
         // 주문요청 유효성검증
         createOrderRequestValidate(request);
 
         // 고객정보조회
-        Customer customer = customerRepository.findById(request.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("고객정보가 없습니다"));
+        Customer customer = customerRepository.findById(request.getCustomerId()).orElseThrow(() -> new RuntimeException("고객정보가 없습니다"));
 
         // 주문항목 준비 및 주문항목 객체 생성
         List<OrderItem> orderItems = new ArrayList<>();
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (OrderItemDto itemDto : request.getOrderItems()) {
-            Product product = productRepository.findById(itemDto.getProductId())
-                    .orElseThrow(() -> new RuntimeException("상품 정보가 없습니다: " + itemDto.getProductId()));
+            Product product = productRepository.findById(itemDto.getProductId()).orElseThrow(() -> new RuntimeException("상품 정보가 없습니다: " + itemDto.getProductId()));
 
             // 상품들 재고차감
             ProductStock stock = product.getStock();
             if (stock == null) {
-                throw new RuntimeException("Stock information is missing for product: " + product.getName());
+                throw new RuntimeException("재고정보가 없습니다." + product.getName());
             }
             stock.decreaseStock(itemDto.getOrderQuantity()); // 재고 차감
             productStockRepository.save(stock); // 재고 정보 업데이트
@@ -61,7 +55,8 @@ public class OrderService {
             BigDecimal itemTotal = itemDto.getOrderPrice().multiply(new BigDecimal(itemDto.getOrderQuantity()));
             totalAmount = totalAmount.add(itemTotal);
         }
-
+        // 사용자 포인트정보조회 및 검증
+        String userId = request.getUserId();
         // 잔액 조회
         UserPoint userPoint = userPointRepository.findByUserId(userId);
         // 유효성 검증 - 주문총금액과 잔액을 확인합니다.

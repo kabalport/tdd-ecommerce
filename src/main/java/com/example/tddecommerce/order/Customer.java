@@ -18,6 +18,11 @@ public class Customer {
         this.phone = phone;
     }
 
+    public Customer(long customerId, String customerName) {
+        this.customerId = customerId;
+        name = customerName;
+    }
+
     // 고객 ID를 반환하는 getter 메소드
     public Long getCustomerId() {
         return customerId;

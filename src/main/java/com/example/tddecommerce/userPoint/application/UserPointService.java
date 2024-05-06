@@ -1,7 +1,7 @@
 package com.example.tddecommerce.userPoint.application;
 
 import com.example.tddecommerce.userPoint.business.UserPoint;
-import com.example.tddecommerce.userPoint.infrastructure.UserPointRepository;
+import com.example.tddecommerce.userPoint.infrastructure.IUserPointRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class UserPointService {
 
     @Autowired
-    private UserPointRepository userPointRepository;
+    private IUserPointRepository userPointRepository;
     @Transactional
     public void use(String userId, BigDecimal point) {
         UserPoint user = userPointRepository.findByUserId(userId);
