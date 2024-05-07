@@ -1,4 +1,6 @@
-package com.example.tddecommerce.order;
+package com.example.tddecommerce.order.repository;
+
+import com.example.tddecommerce.order.business.domain.Customer;
 
 import java.util.HashMap;
 import java.util.Map;

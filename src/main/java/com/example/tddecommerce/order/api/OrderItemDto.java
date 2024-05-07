@@ -1,4 +1,4 @@
-package com.example.tddecommerce.order;
+package com.example.tddecommerce.order.api;
 
 import java.math.BigDecimal;
 

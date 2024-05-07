@@ -1,4 +1,4 @@
-package com.example.tddecommerce.order;
+package com.example.tddecommerce.order.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,5 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateOrderRequest {
     private String userId;
-    private Long customerId;
     private List<OrderItemDto> orderItems;
 }
