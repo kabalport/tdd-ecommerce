@@ -84,13 +84,10 @@ class OrderServiceTest {
         // Mocking product and stock
         Product product1 = new Product(1L, "Product1", new BigDecimal("10000"), new ProductStock(1L, 1L, null, 10, LocalDateTime.now()));
         Product product2 = new Product(2L, "Product2", new BigDecimal("120000"), new ProductStock(2L, 2L, null, 40, LocalDateTime.now()));
-
         when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
         when(productRepository.findById(2L)).thenReturn(Optional.of(product2));
-
         when(productStockRepository.findByProductId(1L)).thenReturn(Optional.of(product1.getStock()));
         when(productStockRepository.findByProductId(2L)).thenReturn(Optional.of(product2.getStock()));
-
         when(userPointRepository.findByUserId("userId")).thenReturn(new UserPoint("userId", new BigDecimal("150000000")));
 
         // when
