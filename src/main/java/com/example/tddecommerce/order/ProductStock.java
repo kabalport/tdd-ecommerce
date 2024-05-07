@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 public class ProductStock {
 
+    private final long l;
+    private final int i;
     private Long productStockId;
 
     private Long productId;
@@ -12,6 +14,13 @@ public class ProductStock {
 
 
     private LocalDateTime lastUpdated;
+
+    public ProductStock(long l, int i) {
+
+
+        this.l = l;
+        this.i = i;
+    }
 
     public Long getProductStockId() {
         return productStockId;
