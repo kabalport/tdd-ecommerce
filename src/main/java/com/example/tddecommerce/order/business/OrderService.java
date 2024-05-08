@@ -84,7 +84,7 @@ public class OrderService {
         order.setOrderItem(orderItems);  // 이제 orderItems 리스트를 설정합니다.
         order.setOrderTotalPrice(totalAmount);
 
-        // 주문 저장 로직
+        // 주문정보 생성
         orderRepository.save(order);
 
         // 데이터 플랫폼으로 주문 정보 전송
