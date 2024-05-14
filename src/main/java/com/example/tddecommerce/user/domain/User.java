@@ -34,8 +34,11 @@ public class User {
     private LocalDateTime updatedAt;
 
     // Constructors
-    public User() {
+    public User(String name, String email) {
     }
 
 
+    public User() {
+
+    }
 }
