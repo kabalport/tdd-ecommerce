@@ -1,6 +1,6 @@
 package com.example.tddecommerce.user.component;
 
-import com.example.tddecommerce.user.business.component.ReadUser;
+import com.example.tddecommerce.user.business.component.UserReader;
 import com.example.tddecommerce.user.business.repository.IUserRepository;
 import com.example.tddecommerce.user.business.domain.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,15 +13,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-class ReadUserTest {
+class UserReaderTest {
     private IUserRepository iUserRepository;
-    private ReadUser readUser;
+    private UserReader userReader;
 
     @BeforeEach
     void setUp() {
         iUserRepository = mock(IUserRepository.class);
 
-        readUser = new ReadUser(iUserRepository);
+        userReader = new UserReader(iUserRepository);
     }
 
     @Test
@@ -34,7 +34,7 @@ class ReadUserTest {
         given(iUserRepository.findById(userId)).willReturn(user);
 
         // When
-        User result = readUser.readUser(userId);
+        User result = userReader.readUser(userId);
 
         // Then
         assertThat(result.getName()).isEqualTo("홍길동");

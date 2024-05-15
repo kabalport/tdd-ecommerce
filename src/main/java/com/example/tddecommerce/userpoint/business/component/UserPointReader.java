@@ -2,9 +2,11 @@ package com.example.tddecommerce.userpoint.business.component;
 
 import com.example.tddecommerce.userpoint.IUserPointRepository;
 import com.example.tddecommerce.userpoint.business.domain.UserPoint;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class UserPointReader {
 
     private final IUserPointRepository iUserPointRepository;

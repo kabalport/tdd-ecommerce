@@ -1,5 +1,6 @@
 package com.example.tddecommerce.userpoint.business;
 
+import com.example.tddecommerce.IntegrationTest;
 import com.example.tddecommerce.user.api.dto.CreateUserRequest;
 import com.example.tddecommerce.user.business.component.CreateUser;
 import com.example.tddecommerce.userpoint.application.UserPointService;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 
-class UserPointServiceTest {
+class UserPointServiceTest extends IntegrationTest {
 
     @Autowired
     private UserPointService userPointService;
@@ -49,13 +50,4 @@ class UserPointServiceTest {
     }
 
 
-    public class AddAccountRequest {
-        private final long userId;
-        private final BigDecimal chargeAmount;
-
-        public AddAccountRequest(long userId, BigDecimal chargeAmount) {
-            this.userId = userId;
-            this.chargeAmount = chargeAmount;
-        }
-    }
 }

@@ -5,11 +5,11 @@ import com.example.tddecommerce.user.business.domain.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReadUser {
+public class UserReader {
 
     private final IUserRepository iUserRepository;
 
-    public ReadUser(IUserRepository iUserRepository) {
+    public UserReader(IUserRepository iUserRepository) {
         this.iUserRepository = iUserRepository;
     }
 
