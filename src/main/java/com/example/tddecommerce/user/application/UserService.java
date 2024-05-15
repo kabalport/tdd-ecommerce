@@ -12,9 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserReader userReader;
     private final CreateUser userCreator;
-
     private final UpdateUser updateUser;
-
 
     public UserService(UserReader userReader, CreateUser createUser, UpdateUser updateUser) {
         this.userReader = userReader;
@@ -34,10 +32,6 @@ public class UserService {
 
     @Transactional
     public User updateUserName(Long userId, String newName) {
-
-        User updateUserName = updateUser.updateUserName(userId, newName);
-
-        return updateUserName;
-
+        return updateUser.updateUserName(userId, newName);
     }
 }
