@@ -33,15 +33,23 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-	// 데이터베이스
+	// 로컬 데이터베이스
 	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'org.postgresql:postgresql'
+	// 테스트,운영 MySQL 데이터베이스
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
 	//테스크컨테이너
+	testImplementation "org.testcontainers:mysql:1.19.7"
 	testImplementation "org.testcontainers:testcontainers:1.19.7"
-	testImplementation "org.testcontainers:postgresql:1.19.7"
 	testImplementation "org.testcontainers:junit-jupiter:1.19.7"
 
-	implementation 'mysql:mysql-connector-java:8.0.30'
+	// rest-assured
+	testImplementation 'io.rest-assured:rest-assured:5.1.1'
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	// 단위테스트-승인테스트
+	implementation group: 'com.approvaltests', name: 'approvaltests', version: '23.0.0'
+
 	//swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 	//lombok

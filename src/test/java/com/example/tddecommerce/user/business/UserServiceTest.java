@@ -1,119 +1,79 @@
 package com.example.tddecommerce.user.business;
 
-import com.example.tddecommerce.user.domain.User;
+import com.example.tddecommerce.IntegrationTest;
+import com.example.tddecommerce.user.api.dto.CreateUserRequest;
+import com.example.tddecommerce.user.application.UserService;
+import com.example.tddecommerce.user.business.component.CreateUser;
+import com.example.tddecommerce.user.business.domain.User;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
-class UserServiceTest {
-    private IUserRepository userRepository;
-    private CreateMember createMember;
 
+class UserServiceTest extends IntegrationTest {
+
+    @Autowired
     private UserService userService;
 
-    @BeforeEach
-    void setUp() {
-        userRepository = Mockito.mock(IUserRepository.class);
-        createMember = new CreateMember(userRepository);
+    @Autowired
+    private CreateUser userCreator;
+
+    @Test
+    @DisplayName("유저를 생성한다.")
+    void createUser(){
+        // given
+        final CreateUserRequest request = UserFixture.createUserRequest();
+
+        // when
+        User createdUser = userService.addUser(request);
+
+        // then
+        Assertions.assertEquals(request.getName(),createdUser.getName());
+        Assertions.assertEquals(request.getEmail(),createdUser.getEmail());
+
+        // Additional checks for createdAt and updatedAt
+        Assertions.assertNotNull(createdUser.getCreatedAt(), "createdAt should not be null");
+        Assertions.assertNotNull(createdUser.getUpdatedAt(), "updatedAt should not be null");
+        Assertions.assertTrue(createdUser.getCreatedAt().isBefore(LocalDateTime.now()), "createdAt should be before now");
+        Assertions.assertTrue(createdUser.getUpdatedAt().isBefore(LocalDateTime.now()), "updatedAt should be before now");
     }
 
     @Test
-    @DisplayName("멤버를 생성한다.")
-    void createMember(){
-        String username = "username";
-        String password = "password";
-        String email = "email";
-        LocalDateTime createdAt = LocalDateTime.now();
-        LocalDateTime updatedAt = LocalDateTime.now();
-        final CreateMember.Request createMemberRequest = new CreateMember.Request(username,password,email,createdAt,updatedAt);
-        //given
-
-
+    @DisplayName("유저이름을 수정한다.")
+    void updateUserName() {
+        // given
+        final CreateUserRequest request = UserFixture.createUserRequest();
+        final User existUser = userCreator.execute(request);
+        final Long userId = existUser.getUserId();
+        final String userNameUpdate = "철수";
         // when
-        createMember.request(createMemberRequest);
+        User updateUser = userService.updateUserName(userId,userNameUpdate);
+
         // then
-        // 멤버가 생성된다.
-        // 멤버가 생성되었을때 기대 되어지는 객체를 만들고 검증한다.
-        CreatedMemberExpectation createdMemberExpectation = new CreatedMemberExpectation(username, password, email, createdAt, updatedAt);
-        Assertions.assertEquals(createdMemberExpectation,createdMemberExpectation);
+        Assertions.assertEquals(userNameUpdate,updateUser.getName());
     }
 
-    private interface IUserRepository {
-        void createUser(User user);
+    @Test
+    @DisplayName("유저조회한다.")
+    void getUser() {
+        // given
+        final User existUser = userCreator.execute(UserFixture.createUserRequest());
+        Long userId = existUser.getUserId();
+        // when
+        User updateUser = userService.getUserById(userId);
+
+        // then
+        Assertions.assertEquals(updateUser,updateUser);
     }
 
-    private class CreatedMemberExpectation {
-        private final String username;
-        private final String email;
-        private final LocalDateTime createdAt;
-        private final LocalDateTime updatedAt;
-
-        public CreatedMemberExpectation(String username, String password, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
-            this.username = username;
-            this.email = email;
-            this.createdAt = createdAt;
-            this.updatedAt = updatedAt;
-        }
-    }
-
-    private class CreateMember {
-
-        private UserRepository userRepository;
-
-        public CreateMember(IUserRepository userRepository) {
+    private static class UserFixture {
+        public static CreateUserRequest createUserRequest() {
+            return new CreateUserRequest("홍길동", "gildong@gmail.com");
         }
 
-        public User request(Request createMemberRequest) {
 
-            final String name = createMemberRequest.username;
-            final String email = createMemberRequest.email;
-
-            final LocalDateTime createAt = createMemberRequest.createdAt;
-            final LocalDateTime updatedAt = createMemberRequest.updatedAt;
-
-
-
-
-            final User user = new User(name,email);
-            userRepository.createUser(user);
-
-            return user;
-        }
-
-        public record Request(String username, String password, String email, LocalDateTime createdAt,
-                              LocalDateTime updatedAt) {
-        }
-    }
-
-    private class CreateMemberRequest {
-        String username;
-        String password;
-        String email;
-        LocalDateTime createdAt;
-        LocalDateTime updatedAt;
-
-
-
-
-        public CreateMemberRequest(String username, String password, String email, LocalDateTime createdAt, LocalDateTime updatedAt
-        ) {
-            this.username = username;
-            this.password = password;
-            this.email = email;
-            this.createdAt = createdAt;
-            this.updatedAt = updatedAt;
-        }
-
-        public CreateMemberRequest() {
-
-        }
-    }
-
-    private interface UserRepository {
-        void createUser(User user);
     }
 }

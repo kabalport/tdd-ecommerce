@@ -1,24 +1,22 @@
 package com.example.tddecommerce.user.domain;
 
+import com.example.tddecommerce.user.business.domain.User;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 
 class UserTest {
 
     @Test
-    void testUserGettersAndSetters() {
+    void updateName() {
+        //given
+        final User user = new User("길동","gildong@gmail.com", LocalDateTime.now(),LocalDateTime.now());
+        final String nameUpdate = "철수";
+        // when
+        user.updateName(nameUpdate);
 
-    }
-
-    @Test
-    void testUserEquality() {
-
-    }
-
-    @Test
-    void testUserNotEqual() {
-
+        // then
+        Assertions.assertEquals(nameUpdate,user.getName());
     }
 }
