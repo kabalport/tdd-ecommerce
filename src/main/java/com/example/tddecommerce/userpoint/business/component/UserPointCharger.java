@@ -19,6 +19,8 @@ public class UserPointCharger {
 
     @Transactional
     public UserPoint execute(long userId, BigDecimal userPointAmount) {
+
+
         UserPoint userPoint = iUserPointRepository.findByUserUserId(userId)
                 .orElseThrow(() -> new RuntimeException("UserPoint not found for user id: " + userId));
 

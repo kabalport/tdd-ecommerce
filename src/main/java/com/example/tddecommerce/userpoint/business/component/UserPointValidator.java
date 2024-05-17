@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 @Component
 public class UserPointValidator {
     public void validateChargeAmount(BigDecimal chargeAmount) {
-        throw new UserPointException(UserPointError.CHARGE_AMOUNT_MUST_BE_POSITIVE);
+        if(chargeAmount.compareTo(BigDecimal.ZERO) <= 0){
+            throw new UserPointException(UserPointError.CHARGE_AMOUNT_MUST_BE_POSITIVE);
+        }
     }
 }

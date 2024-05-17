@@ -32,14 +32,14 @@ public class UserPointService {
         userPointValidator.validateChargeAmount(chargeAmount);
         // 유저 조회
         User user = userReader.readUser(userId);
-        // 잔액 조회
+        // 잔액 조회 또는 신규 생성
         UserPoint userPoint = userPointReader.readByUserId(user.getUserId());
         // 충전 잔액 계산 : 기존 잔액에 충전금을 더합니다.
         userPoint.addPoints(chargeAmount);
         // 충전 처리 : 새로 계산된 충전금을 반영합니다.
         UserPoint chargedBalance = userPointCharger.execute(user.getUserId(),chargeAmount);
         // 잔액 충전 로그를 남깁니다.
-        userPointTransactionHistory.add(chargedBalance,chargeAmount);
+        userPointTransactionHistory.add(chargedBalance, chargeAmount, "CHARGE", "User charged points");
         // 충전된 잔액 정보를 반환합니다.
         return chargedBalance;
     }
@@ -53,7 +53,7 @@ public class UserPointService {
     public UserPoint getUserPoint(Long userId) {
         // 유저 검증
         User user = userReader.readUser(userId);
-        // 기존포인트를 조회합니다.
+        // 유저의 기존포인트를 조회합니다.
         return userPointReader.readByUserId(user.getUserId());
     }
 

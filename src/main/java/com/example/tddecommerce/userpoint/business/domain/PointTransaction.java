@@ -2,11 +2,15 @@ package com.example.tddecommerce.userpoint.business.domain;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@Setter
+@Getter
 public class PointTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
