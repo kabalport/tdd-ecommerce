@@ -36,6 +36,12 @@ public class UserPoint {
         return userPoint;
     }
 
+    public static UserPoint empty(long userId) {
+        UserPoint userPoint = new UserPoint();
+        userPoint.pointBalance = BigDecimal.ZERO;
+        return userPoint;
+    }
+
     public void addPoints(BigDecimal points) {
         this.pointBalance = this.pointBalance.add(points);
     }

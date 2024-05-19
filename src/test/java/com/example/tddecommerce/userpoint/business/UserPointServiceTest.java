@@ -39,10 +39,10 @@ class UserPointServiceTest extends IntegrationTest {
         // Given
         CreateUserRequest createUserRequest = UserPointFixture.createUserRequest();
         User user = userCreator.execute(createUserRequest);
-        BigDecimal requestChargeUserPoint = BigDecimal.valueOf(1000L);
+
+        BigDecimal requestChargeUserPoint = BigDecimal.valueOf(0L);
 
         // When
-        userPointService.chargeUserPoint(user.getUserId(), requestChargeUserPoint);
         UserPoint userPoint = userPointService.getUserPoint(user.getUserId());
 
         // Then

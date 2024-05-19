@@ -22,7 +22,8 @@ public class UserPointCharger {
 
 
         UserPoint userPoint = iUserPointRepository.findByUserUserId(userId)
-                .orElseThrow(() -> new RuntimeException("UserPoint not found for user id: " + userId));
+                .orElseGet(()->UserPoint.empty(userId));
+
 
         userPoint.addPoints(userPointAmount);
         return iUserPointRepository.charge(userPoint);
