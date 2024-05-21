@@ -1,4 +1,4 @@
-package com.example.tddecommerce.product.application.business;
+package com.example.tddecommerce.product.application.service;
 
 public class ProductException extends RuntimeException {
     public ProductException(String message) {

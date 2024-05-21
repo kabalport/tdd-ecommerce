@@ -58,8 +58,7 @@ public class ProductService {
             // 상품유무조회
             Optional<Product> result = productReader.selectOne(productId);
             // 상품유무결과
-            return result.filter(product -> !product.isDelFlag())
-                    .orElseThrow(() -> new ProductException("Product not found or deleted: " + productId));
+            return result.filter(product -> !product.isDelFlag()).orElseThrow(() -> new ProductException("Product not found or deleted: " + productId));
         } catch (Exception e) {
             log.error("상품 조회 중 오류 발생: {}", e.getMessage());
             throw new ProductException("상품 조회 중 오류 발생", e);

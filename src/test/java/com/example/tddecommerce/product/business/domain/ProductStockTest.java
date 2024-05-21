@@ -1,6 +1,6 @@
 package com.example.tddecommerce.product.business.domain;
 
-import com.example.tddecommerce.product.application.business.ProductException;
+import com.example.tddecommerce.product.application.service.ProductException;
 import com.example.tddecommerce.product.domain.model.DiscountPolicy;
 import com.example.tddecommerce.product.domain.model.Product;
 import com.example.tddecommerce.product.domain.model.ProductStock;
