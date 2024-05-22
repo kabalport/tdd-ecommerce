@@ -11,7 +11,7 @@ public class ProductOrderDTO {
     @Getter
     @Setter
     public static class Request {
-        private String userId;
+        private Long userId;
         private List<ProductOrderDetail> products;
     }
 

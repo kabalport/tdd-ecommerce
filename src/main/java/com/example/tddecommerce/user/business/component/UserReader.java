@@ -16,4 +16,8 @@ public class UserReader {
     public User readUser(Long userId) {
         return iUserRepository.findById(userId);
     }
+
+    public User readByUserId(Long userId) {
+        return iUserRepository.findById(userId);
+    }
 }

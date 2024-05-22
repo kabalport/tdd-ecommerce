@@ -36,6 +36,7 @@ public class ProductOrder {
     private ProductOrderStatus status;
 
 
+
     public static ProductOrder createProductOrder(User member, LocalDate orderDate, ProductOrderStatus status, List<ProductOrderItem> items) {
         ProductOrder order = new ProductOrder();
         order.member = member;
@@ -59,5 +60,8 @@ public class ProductOrder {
         item.setProductOrder(this);
     }
 
-
+    // 주문 상태를 설정하는 메서드
+    public void setStatus(ProductOrderStatus status) {
+        this.status = status;
+    }
 }

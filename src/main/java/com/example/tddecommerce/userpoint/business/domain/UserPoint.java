@@ -46,4 +46,7 @@ public class UserPoint {
         this.pointBalance = this.pointBalance.add(points);
     }
 
+    public void decreasePoint(BigDecimal points) {
+        this.pointBalance = this.pointBalance.subtract(points);
+    }
 }

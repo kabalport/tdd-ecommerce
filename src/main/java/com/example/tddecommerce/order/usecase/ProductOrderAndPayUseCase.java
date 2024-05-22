@@ -1,93 +1,159 @@
 package com.example.tddecommerce.order.usecase;
 
-
+import com.example.tddecommerce.notification.EmailService;
 import com.example.tddecommerce.order.business.component.ProductOrderManager;
 import com.example.tddecommerce.order.business.component.ProductOrderValidate;
 import com.example.tddecommerce.order.business.model.ProductOrder;
 import com.example.tddecommerce.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.order.business.model.ProductOrderStatus;
 import com.example.tddecommerce.order.controller.ProductOrderDTO;
+import com.example.tddecommerce.payment.business.PaymentManager;
 import com.example.tddecommerce.product.application.business.ProductReader;
+import com.example.tddecommerce.product.application.business.ProductStockReader;
+import com.example.tddecommerce.product.application.business.ProductStockUpdater;
+import com.example.tddecommerce.product.application.service.ProductException;
 import com.example.tddecommerce.product.domain.model.Product;
+import com.example.tddecommerce.product.domain.model.ProductStock;
 import com.example.tddecommerce.user.business.component.UserReader;
 import com.example.tddecommerce.user.business.domain.User;
 import com.example.tddecommerce.userpoint.business.component.UserPointReader;
 import com.example.tddecommerce.userpoint.business.component.UserPointValidator;
 import com.example.tddecommerce.userpoint.business.domain.UserPoint;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
-@Transactional
 public class ProductOrderAndPayUseCase {
     private final ProductOrderValidate productOrderValidate;
     private final UserPointValidator userPointValidator;
-    private final UserReader memberReader;
+    private final UserReader userReader;
     private final UserPointReader userPointReader;
     private final ProductOrderManager productOrderManager;
-
     private final ProductReader productReader;
+    private final PaymentManager paymentManager;
+    private final ProductStockUpdater productStockUpdater;
+    private final ProductStockReader productStockReader;
+    private final EmailService emailService;
 
+    @Transactional
     public ProductOrder execute(ProductOrderDTO.Request request) {
+        ProductOrder order = null;
+        List<ProductOrderItem> items = null;
+        try {
+            // 주문 요청 유효성 검증
+            productOrderValidate.validate(request);
 
-        // 주문요청 유효성 검증
-        productOrderValidate.validate(request);
+            // 유저 조회
+            User user = userReader.readByUserId(request.getUserId());
 
-        // 유저 조회
-        User member = memberReader.read(request.getUserId());
+            // 주문 항목 준비
+            items = request.getProducts().stream().map(detail -> {
+                Product product = productReader.selectOne(detail.getProductId())
+                        .orElseThrow(() -> new ProductException("Product not found: " + detail.getProductId()));
+                return new ProductOrderItem(product, detail.getQuantity(), product.getPrice());
+            }).collect(Collectors.toList());
 
-        // 주문 항목 준비
-        List<ProductOrderItem> items = request.getProducts().stream().map(detail -> {
-            Optional<Product> getProduct = productReader.selectOne(detail.getProductId());
-            Product product = getProduct.orElseThrow();
-            // 재고감소 결제일어날때
-            productStockManager.save();
-            // 주문 항목 객체 생성
-            return new ProductOrderItem(product, detail.getQuantity(), product.getPrice());
-        }).collect(Collectors.toList());
+            // 재고 검사 및 저장
+            Map<Product, ProductStock> productStockMap = items.stream().collect(Collectors.toMap(
+                    ProductOrderItem::getProduct,
+                    item -> {
+                        ProductStock productStock = productStockReader.getProductStock(item.getProduct());
+                        if (productStock.getQuantity() < item.getQuantity()) {
+                            throw new ProductException("Insufficient stock for product: " + item.getProduct().getId());
+                        }
+                        return productStock;
+                    }
+            ));
+            log.info("Stock availability checked for all items");
 
-        // 요청된 모든 상품에 대해 총 금액 계산
-        int totalAmount = 0;
-//        int totalAmount = items.stream()
-//                .mapToInt(item -> item.getProduct().getPrice() * item.getQuantity())
-//                .sum();
+            // 총 금액 계산
+            BigDecimal totalPurchaseAmount = items.stream()
+                    .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+            // 사용자 포인트 정보 조회 및 검증
+            UserPoint currentUserPoint = userPointReader.readByUserId(user.getUserId());
+            userPointValidator.validatePurchase(currentUserPoint, totalPurchaseAmount);
 
-        // 사용자 포인트 정보 조회 및 검증
-        UserPoint userPoint = userPointReader.read(member);
-        userPointValidator.validatePurchase(userPoint, totalAmount);
+            // 포인트 차감
+            currentUserPoint.decreasePoint(totalPurchaseAmount);
 
-        // 사용자 잔액 차감
-        userPoint.purchase(totalAmount);
+            // 주문 생성
+            order = ProductOrder.builder()
+                    .member(user)
+                    .orderDate(LocalDate.now())
+                    .status(ProductOrderStatus.PENDING)
+                    .items(items)
+                    .build();
 
-        // 주문 엔티티 생성
-        ProductOrder order = ProductOrder.builder()
-                .member(member)
-                .orderDate(LocalDate.now())
-                .status(ProductOrderStatus.PENDING)
-                .items(items)
-                .build();
+            // 주문 저장
+            productOrderManager.saveOrder(order);
 
-        // 주문 저장 로직
-        productOrderManager.saveOrder(order);
-        paymentManager.createPayment(order, totalAmount, "결제수단");
+            // 결제 생성 및 상태 확인
+            boolean paymentSuccess = paymentManager.createPayment(order, totalPurchaseAmount, "결제수단");
+            if (paymentSuccess) {
+                order.setStatus(ProductOrderStatus.PAID);
+            } else {
+                throw new ProductException("Payment failed for order: " + order.getId());
+            }
+            productOrderManager.saveOrder(order);
 
-        // 데이터 플랫폼으로 주문 정보 전송
-        sendDataToDataPlatform(order);
+            // 재고 감소
+            items.forEach(item -> {
+                ProductStock productStock = productStockMap.get(item.getProduct());
+                productStockUpdater.decreaseStock(productStock, item.getQuantity());
+            });
 
-        // 주문 정보 반환
-        return order;
+            // 데이터 플랫폼으로 주문 정보 전송
+            sendDataToDataPlatform(order);
+
+            // 이메일 알림 전송
+            sendOrderConfirmation(user, order);
+
+            // 주문 정보 반환
+            return order;
+        } catch (Exception e) {
+            log.error("Error occurred while processing order: ", e);
+            if (order != null && items != null) {
+                rollbackStockAndPoints(order, items);
+            }
+            throw e;
+        }
+    }
+
+    private void rollbackStockAndPoints(ProductOrder order, List<ProductOrderItem> items) {
+        log.info("Rolling back stock and points for order {}", order.getId());
+        // 포인트 롤백
+        UserPoint currentUserPoint = userPointReader.readByUserId(order.getMember().getUserId());
+        BigDecimal totalPurchaseAmount = items.stream()
+                .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        currentUserPoint.addPoints(totalPurchaseAmount);
+
+        // 재고 롤백
+        items.forEach(item -> {
+            ProductStock productStock = productStockReader.getProductStock(item.getProduct());
+            productStockUpdater.increaseStock(productStock, item.getQuantity());
+        });
     }
 
     private void sendDataToDataPlatform(ProductOrder order) {
+        log.info("Sending order information to data platform for order {}", order.getId());
         // 결제 성공 시 데이터 플랫폼으로 주문 정보를 전송하는 로직 구현
-        System.out.println("결제성공했고 데이터 플랫폼으로 주문 정보를 전송합니다.");
+    }
+
+    private void sendOrderConfirmation(User user, ProductOrder order) {
+        emailService.sendOrderConfirmationEmail(user, order);
+        log.info("Order confirmation email sent to user {}", user.getUserId());
     }
 }
