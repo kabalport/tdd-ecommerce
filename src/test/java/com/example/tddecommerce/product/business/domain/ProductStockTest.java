@@ -27,7 +27,8 @@ class ProductStockTest {
         productStock.decrease(3);
 
         // then
-        assertThat(productStock.getProductQuantity()).isEqualTo(7);
+        assertThat(productStock
+                .getQuantity()).isEqualTo(7);
     }
 
     @Test
@@ -64,7 +65,7 @@ class ProductStockTest {
 
         // then
         LocalDateTime afterUpdate = productStock.getLastUpdated();
-        assertThat(productStock.getProductQuantity()).isEqualTo(8);
+        assertThat(productStock.getQuantity()).isEqualTo(8);
         assertThat(afterUpdate).isAfter(beforeUpdate);
     }
 

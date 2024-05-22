@@ -21,6 +21,7 @@ public class PaymentManager {
                 .paymentMethod(paymentMethod)
                 .status(PaymentStatus.SUCCESS)
                 .build();
-        return paymentRepository.save(payment);
+        paymentRepository.save(payment);
+        return true;
     }
 }
