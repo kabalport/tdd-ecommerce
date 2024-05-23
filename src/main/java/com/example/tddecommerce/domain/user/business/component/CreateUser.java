@@ -1,0 +1,34 @@
+package com.example.tddecommerce.domain.user.business.component;
+
+import com.example.tddecommerce.api.user.dto.CreateUserRequest;
+import com.example.tddecommerce.domain.user.business.domain.User;
+import com.example.tddecommerce.domain.user.business.repository.IUserRepository;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+
+@Component
+public class CreateUser {
+
+    private final IUserRepository iUserRepository;
+
+    public CreateUser(IUserRepository iUserRepository) {
+        this.iUserRepository = iUserRepository;
+    }
+
+
+    public User execute(CreateUserRequest createMemberRequest) {
+
+        final String name = createMemberRequest.getName();
+        final String email = createMemberRequest.getEmail();
+
+        final LocalDateTime createdAt = LocalDateTime.now();
+        final LocalDateTime updatedAt = LocalDateTime.now();
+
+        final User user = new User(name, email, createdAt, updatedAt);
+        iUserRepository.createUser(user);
+
+        return user;
+    }
+
+}
