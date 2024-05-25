@@ -1,8 +1,8 @@
 package com.example.tddecommerce.domain.userpoint.business.component;
 
-import com.example.tddecommerce.domain.userpoint.business.domain.PointTransaction;
-import com.example.tddecommerce.domain.userpoint.business.domain.UserPoint;
-import com.example.tddecommerce.domain.userpoint.business.repository.PointTransactionRepository;
+import com.example.tddecommerce.domain.userpoint.business.model.UserPointTransaction;
+import com.example.tddecommerce.domain.userpoint.business.model.UserPoint;
+import com.example.tddecommerce.domain.userpoint.business.repository.IUserPointTransactionRepository;
 import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
@@ -12,17 +12,17 @@ import java.time.LocalDateTime;
 @Component
 @RequiredArgsConstructor
 public class UserPointTransactionHistory {
-    private final PointTransactionRepository pointTransactionRepository;
+    private final IUserPointTransactionRepository IUserPointTransactionRepository;
 
     public void add(UserPoint userPoint, BigDecimal chargeAmount, String transactionType, String description) {
-        PointTransaction pointTransaction = new PointTransaction();
-        pointTransaction.setUserPoint(userPoint);
-        pointTransaction.setChangeAmount(chargeAmount);
-        pointTransaction.setTransactionDate(LocalDateTime.now());
-        pointTransaction.setTransactionType(transactionType);
-        pointTransaction.setDescription(description);
+        UserPointTransaction userPointTransaction = new UserPointTransaction();
+        userPointTransaction.setUserPoint(userPoint);
+        userPointTransaction.setChangeAmount(chargeAmount);
+        userPointTransaction.setTransactionDate(LocalDateTime.now());
+        userPointTransaction.setTransactionType(transactionType);
+        userPointTransaction.setDescription(description);
 
-        pointTransactionRepository.save(pointTransaction);
+        IUserPointTransactionRepository.save(userPointTransaction);
     }
 
 

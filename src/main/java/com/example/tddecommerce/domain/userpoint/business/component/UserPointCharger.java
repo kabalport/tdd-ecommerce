@@ -1,7 +1,7 @@
 package com.example.tddecommerce.domain.userpoint.business.component;
 
-import com.example.tddecommerce.domain.userpoint.IUserPointRepository;
-import com.example.tddecommerce.domain.userpoint.business.domain.UserPoint;
+import com.example.tddecommerce.domain.userpoint.business.repository.IUserPointRepository;
+import com.example.tddecommerce.domain.userpoint.business.model.UserPoint;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
@@ -18,14 +18,8 @@ public class UserPointCharger {
     }
 
     @Transactional
-    public UserPoint execute(long userId, BigDecimal userPointAmount) {
+    public UserPoint execute(UserPoint userPoint) {
 
-
-        UserPoint userPoint = iUserPointRepository.findByUserUserId(userId)
-                .orElseGet(()->UserPoint.empty(userId));
-
-
-        userPoint.addPoints(userPointAmount);
         return iUserPointRepository.charge(userPoint);
     }
 

@@ -1,6 +1,6 @@
 package com.example.tddecommerce.domain.userpoint.business.component;
 
-import com.example.tddecommerce.domain.userpoint.business.domain.UserPoint;
+import com.example.tddecommerce.domain.userpoint.business.model.UserPoint;
 import com.example.tddecommerce.domain.userpoint.business.exception.UserPointError;
 import com.example.tddecommerce.domain.userpoint.business.exception.UserPointException;
 import org.springframework.stereotype.Component;

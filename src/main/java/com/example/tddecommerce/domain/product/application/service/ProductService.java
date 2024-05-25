@@ -52,6 +52,7 @@ public class ProductService {
      * @param productId
      * @return
      */
+    @Transactional(readOnly = true)
     public Product getProduct(Long productId){
         // 상품 하나를 조회합니다.
         try {

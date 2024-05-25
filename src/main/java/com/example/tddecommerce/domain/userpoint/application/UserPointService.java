@@ -6,9 +6,10 @@ import com.example.tddecommerce.domain.userpoint.business.component.UserPointTra
 import com.example.tddecommerce.domain.userpoint.business.component.UserPointValidator;
 import com.example.tddecommerce.domain.user.business.component.UserReader;
 import com.example.tddecommerce.domain.userpoint.business.component.UserPointCharger;
-import com.example.tddecommerce.domain.userpoint.business.domain.UserPoint;
+import com.example.tddecommerce.domain.userpoint.business.model.UserPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -37,7 +38,7 @@ public class UserPointService {
         // 충전 잔액 계산 : 기존 잔액에 충전금을 더합니다.
         userPoint.addPoints(chargeAmount);
         // 충전 처리 : 새로 계산된 충전금을 반영합니다.
-        UserPoint chargedBalance = userPointCharger.execute(user.getUserId(),chargeAmount);
+        UserPoint chargedBalance = userPointCharger.execute(userPoint);
         // 잔액 충전 로그를 남깁니다.
         userPointTransactionHistory.add(chargedBalance, chargeAmount, "CHARGE", "User charged points");
         // 충전된 잔액 정보를 반환합니다.
@@ -50,6 +51,7 @@ public class UserPointService {
      * @param userId
      * @return
      */
+    @Transactional(readOnly = true)
     public UserPoint getUserPoint(Long userId) {
         // 유저 검증
         User user = userReader.readUser(userId);

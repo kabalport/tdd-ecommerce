@@ -1,6 +1,6 @@
 package com.example.tddecommerce.domain.user.application;
 
-import com.example.tddecommerce.api.user.dto.CreateUserRequest;
+import com.example.tddecommerce.domain.user.api.CreateUserRequest;
 import com.example.tddecommerce.domain.user.business.component.CreateUser;
 import com.example.tddecommerce.domain.user.business.component.UserReader;
 import com.example.tddecommerce.domain.user.business.component.UpdateUser;
@@ -28,6 +28,11 @@ public class UserService {
     @Transactional
     public User addUser(CreateUserRequest request) {
         return userCreator.execute(request);
+    }
+
+    @Transactional
+    public User registerUser(String name, String email) {
+        return userCreator.request(name, email);
     }
 
     @Transactional

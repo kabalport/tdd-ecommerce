@@ -1,7 +1,7 @@
 package com.example.tddecommerce.domain.userpoint.business.component;
 
-import com.example.tddecommerce.domain.userpoint.IUserPointRepository;
-import com.example.tddecommerce.domain.userpoint.business.domain.UserPoint;
+import com.example.tddecommerce.domain.userpoint.business.repository.IUserPointRepository;
+import com.example.tddecommerce.domain.userpoint.business.model.UserPoint;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -19,7 +19,7 @@ public class UserPointReader {
         // 유저 잔금 조회
         Optional<UserPoint> result = iUserPointRepository.findByUserUserId(userId);
         // 유저의 잔금 결과 가져오기. 없으면 잔금을 0으로 반환하기
-        return result.orElseGet(()->UserPoint.empty());
+        return result.orElseGet(()->UserPoint.empty(userId));
 
     }
 }

@@ -14,7 +14,7 @@ import com.example.tddecommerce.domain.product.domain.model.ProductStock;
 import com.example.tddecommerce.domain.user.business.domain.User;
 import com.example.tddecommerce.domain.userpoint.business.component.UserPointReader;
 import com.example.tddecommerce.domain.userpoint.business.component.UserPointValidator;
-import com.example.tddecommerce.domain.userpoint.business.domain.UserPoint;
+import com.example.tddecommerce.domain.userpoint.business.model.UserPoint;
 import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderStatus;
 import com.example.tddecommerce.domain.order.controller.ProductOrderDTO;
