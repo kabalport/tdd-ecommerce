@@ -1,7 +1,7 @@
 package com.example.tddecommerce.domain.product.api;
 
-import com.example.tddecommerce.domain.product.application.service.ProductService;
-import com.example.tddecommerce.domain.product.domain.model.Product;
+import com.example.tddecommerce.domain.product.application.ProductService;
+import com.example.tddecommerce.domain.product.business.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

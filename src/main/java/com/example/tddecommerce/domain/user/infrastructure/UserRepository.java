@@ -1,8 +1,8 @@
 package com.example.tddecommerce.domain.user.infrastructure;
 
+import com.example.tddecommerce.domain.user.business.exception.UserException;
 import com.example.tddecommerce.domain.user.business.domain.User;
 import com.example.tddecommerce.domain.user.business.repository.IUserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -27,7 +27,7 @@ public class UserRepository implements IUserRepository {
     @Override
     public User findById(Long userId) {
         return userJpaRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾지 못했습니다. - id: " + userId));
+                .orElseThrow(() -> new UserException("사용자를 찾지 못했습니다. - id: " + userId));
     }
 
 }

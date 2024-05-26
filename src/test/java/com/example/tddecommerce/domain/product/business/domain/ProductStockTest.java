@@ -1,9 +1,9 @@
 package com.example.tddecommerce.domain.product.business.domain;
 
-import com.example.tddecommerce.domain.product.application.service.ProductException;
-import com.example.tddecommerce.domain.product.domain.model.DiscountPolicy;
-import com.example.tddecommerce.domain.product.domain.model.Product;
-import com.example.tddecommerce.domain.product.domain.model.ProductStock;
+import com.example.tddecommerce.domain.product.business.exception.ProductException;
+import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
+import com.example.tddecommerce.domain.product.business.model.Product;
+import com.example.tddecommerce.domain.productstock.application.model.ProductStock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

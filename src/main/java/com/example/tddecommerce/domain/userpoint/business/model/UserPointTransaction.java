@@ -30,5 +30,15 @@ public class UserPointTransaction {
     private String transactionType;
 
     private String description;
+    public UserPointTransaction(UserPoint userPoint, BigDecimal changeAmount, String transactionType, String description, LocalDateTime transactionDate) {
+        this.userPoint = userPoint;
+        this.changeAmount = changeAmount;
+        this.transactionType = transactionType;
+        this.description = description;
+        this.transactionDate = transactionDate;
+    }
 
+    public UserPointTransaction() {
+
+    }
 }

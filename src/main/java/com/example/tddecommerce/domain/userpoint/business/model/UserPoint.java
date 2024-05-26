@@ -30,6 +30,9 @@ public class UserPoint {
 
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public static UserPoint empty(Long userId) {
         UserPoint userPoint = new UserPoint();

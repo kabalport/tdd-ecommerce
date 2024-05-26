@@ -1,6 +1,6 @@
 package com.example.tddecommerce.domain.product.api;
 
-import com.example.tddecommerce.domain.product.domain.model.DiscountPolicy;
+import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

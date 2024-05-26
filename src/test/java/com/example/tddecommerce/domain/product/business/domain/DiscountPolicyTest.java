@@ -1,6 +1,6 @@
 package com.example.tddecommerce.domain.product.business.domain;
 
-import com.example.tddecommerce.domain.product.domain.model.DiscountPolicy;
+import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

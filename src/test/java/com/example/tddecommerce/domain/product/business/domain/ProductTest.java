@@ -1,7 +1,7 @@
 package com.example.tddecommerce.domain.product.business.domain;
 
-import com.example.tddecommerce.domain.product.domain.model.DiscountPolicy;
-import com.example.tddecommerce.domain.product.domain.model.Product;
+import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
+import com.example.tddecommerce.domain.product.business.model.Product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

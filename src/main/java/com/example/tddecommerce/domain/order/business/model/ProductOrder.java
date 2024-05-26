@@ -23,8 +23,8 @@ public class ProductOrder {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private User member;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "order_date")
     private LocalDate orderDate;
@@ -37,9 +37,9 @@ public class ProductOrder {
 
 
 
-    public static ProductOrder createProductOrder(User member, LocalDate orderDate, ProductOrderStatus status, List<ProductOrderItem> items) {
+    public static ProductOrder createProductOrder(User user, LocalDate orderDate, ProductOrderStatus status, List<ProductOrderItem> items) {
         ProductOrder order = new ProductOrder();
-        order.member = member;
+        order.user = user;
         order.orderDate = orderDate;
         order.status = status;
         order.items = new ArrayList<>();
