@@ -4,13 +4,12 @@ import com.example.tddecommerce.domain.product.business.component.*;
 import com.example.tddecommerce.domain.product.business.exception.ProductException;
 import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
 import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.productstock.application.business.ProductStockCreator;
-import com.example.tddecommerce.domain.productstock.application.model.ProductStock;
+import com.example.tddecommerce.domain.productstock.business.component.ProductStockCreator;
+import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import com.example.tddecommerce.setting.IntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;

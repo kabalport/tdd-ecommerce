@@ -1,4 +1,4 @@
-package com.example.tddecommerce.domain.productstock.application.model;
+package com.example.tddecommerce.domain.productstock.business.model;
 
 import com.example.tddecommerce.domain.product.business.exception.ProductException;
 import com.example.tddecommerce.domain.product.business.model.Product;

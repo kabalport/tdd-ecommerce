@@ -1,8 +1,8 @@
 package com.example.tddecommerce.domain.productstock.infrastructure;
 
 import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.productstock.application.repository.IProductStockRepository;
-import com.example.tddecommerce.domain.productstock.application.model.ProductStock;
+import com.example.tddecommerce.domain.productstock.business.repository.IProductStockRepository;
+import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

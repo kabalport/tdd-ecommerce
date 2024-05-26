@@ -7,11 +7,11 @@ import com.example.tddecommerce.domain.order.business.component.ProductOrderVali
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.payment.business.component.PaymentCreator;
 import com.example.tddecommerce.domain.product.business.component.ProductReader;
-import com.example.tddecommerce.domain.productstock.application.business.ProductStockReader;
-import com.example.tddecommerce.domain.productstock.application.business.ProductStockUpdater;
+import com.example.tddecommerce.domain.productstock.business.component.ProductStockReader;
+import com.example.tddecommerce.domain.productstock.business.component.ProductStockUpdater;
 import com.example.tddecommerce.domain.product.business.exception.ProductException;
 import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.productstock.application.model.ProductStock;
+import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import com.example.tddecommerce.domain.user.business.component.UserReader;
 import com.example.tddecommerce.domain.user.business.domain.User;
 import com.example.tddecommerce.domain.userpoint.business.component.UserPointReader;

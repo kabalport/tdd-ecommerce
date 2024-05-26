@@ -1,4 +1,4 @@
-package com.example.tddecommerce.domain.user.api;
+package com.example.tddecommerce.domain.user.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;

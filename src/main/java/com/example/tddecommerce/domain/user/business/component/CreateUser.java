@@ -1,6 +1,6 @@
 package com.example.tddecommerce.domain.user.business.component;
 
-import com.example.tddecommerce.domain.user.api.CreateUserRequest;
+import com.example.tddecommerce.domain.user.api.dto.CreateUserRequest;
 import com.example.tddecommerce.domain.user.business.domain.User;
 import com.example.tddecommerce.domain.user.business.repository.IUserRepository;
 import org.springframework.stereotype.Component;

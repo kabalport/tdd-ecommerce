@@ -1,10 +1,11 @@
-package com.example.tddecommerce.domain.productstock.application.business;
+package com.example.tddecommerce.domain.productstock.business.component;
 
 import com.example.tddecommerce.domain.product.business.model.Product;
 import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
-import com.example.tddecommerce.domain.productstock.application.model.ProductStock;
-import com.example.tddecommerce.domain.productstock.application.repository.IProductStockRepository;
+import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
+import com.example.tddecommerce.domain.productstock.business.repository.IProductStockRepository;
 import com.example.tddecommerce.domain.product.business.exception.ProductException;
+import com.example.tddecommerce.domain.productstock.business.component.ProductStockReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

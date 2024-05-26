@@ -4,8 +4,8 @@ import com.example.tddecommerce.domain.product.business.exception.ProductExcepti
 import com.example.tddecommerce.domain.product.business.component.*;
 import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
 import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.productstock.application.model.ProductStock;
-import com.example.tddecommerce.domain.productstock.application.business.ProductStockCreator;
+import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
+import com.example.tddecommerce.domain.productstock.business.component.ProductStockCreator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

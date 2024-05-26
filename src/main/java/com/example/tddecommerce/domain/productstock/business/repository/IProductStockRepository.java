@@ -1,7 +1,7 @@
-package com.example.tddecommerce.domain.productstock.application.repository;
+package com.example.tddecommerce.domain.productstock.business.repository;
 
 import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.productstock.application.model.ProductStock;
+import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 
 import java.util.Optional;
 

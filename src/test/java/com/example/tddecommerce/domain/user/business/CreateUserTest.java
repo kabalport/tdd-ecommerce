@@ -1,7 +1,7 @@
 package com.example.tddecommerce.domain.user.business;
 
 
-import com.example.tddecommerce.domain.user.api.CreateUserRequest;
+import com.example.tddecommerce.domain.user.api.dto.CreateUserRequest;
 import com.example.tddecommerce.domain.user.business.component.CreateUser;
 import com.example.tddecommerce.domain.user.business.repository.IUserRepository;
 import com.example.tddecommerce.domain.user.business.domain.User;

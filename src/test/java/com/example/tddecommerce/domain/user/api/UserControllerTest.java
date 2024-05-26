@@ -1,8 +1,8 @@
 package com.example.tddecommerce.domain.user.api;
 
 import com.example.tddecommerce.setting.IntegrationTest;
-import com.example.tddecommerce.domain.user.api.CreateUserRequest;
-import com.example.tddecommerce.domain.user.api.UpdateUserNameRequest;
+import com.example.tddecommerce.domain.user.api.dto.CreateUserRequest;
+import com.example.tddecommerce.domain.user.api.dto.UpdateUserNameRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
