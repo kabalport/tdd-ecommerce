@@ -40,6 +40,18 @@ class ProductStockServiceTest extends IntegrationTest {
         productStock = new ProductStock(product, 50);
         productStockRepository.save(productStock);
     }
+    @Test
+    @Transactional
+    void createProductStock_success(){
+        Product addProduct = new Product("add Test Product", BigDecimal.valueOf(100), "add Test Description", DiscountPolicy.NONE);
+        Product addProductResult = productRepository.save(addProduct);
+
+        ProductStock addProductStock = new ProductStock(addProductResult, 50);
+        productStockService.createProductStock(addProductStock);
+
+        assertNotNull(addProductStock);
+        assertEquals(50, addProductStock.getQuantity());
+    }
 
     @Test
     @Transactional
