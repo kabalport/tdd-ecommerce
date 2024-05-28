@@ -17,10 +17,7 @@ public class CreateUser {
     }
 
 
-    public User execute(CreateUserRequest createMemberRequest) {
-
-        final String name = createMemberRequest.getName();
-        final String email = createMemberRequest.getEmail();
+    public User execute(String name, String email) {
 
         final LocalDateTime createdAt = LocalDateTime.now();
         final LocalDateTime updatedAt = LocalDateTime.now();

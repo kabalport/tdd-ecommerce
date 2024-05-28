@@ -26,8 +26,8 @@ public class UserService {
     }
 
     @Transactional
-    public User addUser(CreateUserRequest request) {
-        return userCreator.execute(request);
+    public User addUser(String name, String email) {
+        return userCreator.execute(name, email);
     }
 
     @Transactional

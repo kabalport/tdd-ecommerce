@@ -31,7 +31,7 @@ class CreateUserTest {
         CreateUserRequest createUserRequest = UserFixture.createUserRequest();
 
         // when
-        User createdUser = createUser.execute(createUserRequest);
+        User createdUser = createUser.execute(createUserRequest.getName(),createUserRequest.getEmail());
 
         // then
         Assertions.assertNotNull(createdUser);

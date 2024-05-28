@@ -26,9 +26,11 @@ class UserServiceTest extends IntegrationTest {
     void createUser(){
         // given
         final CreateUserRequest request = UserFixture.createUserRequest();
+        final String name = "홍길동";
+        final String email = "gildong@gmail.com";
 
         // when
-        User createdUser = userService.addUser(request);
+        User createdUser = userService.addUser(name,email);
 
         // then
         Assertions.assertEquals(request.getName(),createdUser.getName());
@@ -46,7 +48,7 @@ class UserServiceTest extends IntegrationTest {
     void updateUserName() {
         // given
         final CreateUserRequest request = UserFixture.createUserRequest();
-        final User existUser = userCreator.execute(request);
+        final User existUser = userCreator.execute(request.getName(),request.getEmail());
         final Long userId = existUser.getUserId();
         final String userNameUpdate = "철수";
         // when
@@ -60,7 +62,7 @@ class UserServiceTest extends IntegrationTest {
     @DisplayName("유저조회한다.")
     void getUser() {
         // given
-        final User existUser = userCreator.execute(UserFixture.createUserRequest());
+        final User existUser = userCreator.execute(UserFixture.createUserRequest().getName(),UserFixture.createUserRequest().getEmail());
         Long userId = existUser.getUserId();
         // when
         User updateUser = userService.getUserById(userId);

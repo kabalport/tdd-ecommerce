@@ -22,9 +22,9 @@ class UserPointServiceTest extends IntegrationTest {
     @Test
     void 포인트충전() {
         // Given
-        CreateUserRequest createUserRequest = UserPointFixture.createUserRequest();
-        User user = userCreator.execute(createUserRequest);
-
+        String name = "홍길동";
+        String email = "gildong@gmail.com";
+        User user = userCreator.execute(name,email);
         // When
         UserPoint result = userPointService.chargeUserPoint(user.getUserId(), BigDecimal.valueOf(1000L));
 
@@ -36,8 +36,9 @@ class UserPointServiceTest extends IntegrationTest {
     @Test
     void 잔고조회() {
         // Given
-        CreateUserRequest createUserRequest = UserPointFixture.createUserRequest();
-        User user = userCreator.execute(createUserRequest);
+        String name = "홍길동";
+        String email = "gildong@gmail.com";
+        User user = userCreator.execute(name,email);
 
         BigDecimal requestChargeUserPoint = BigDecimal.valueOf(0L);
 
