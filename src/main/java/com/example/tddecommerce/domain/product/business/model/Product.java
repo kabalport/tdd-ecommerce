@@ -22,6 +22,10 @@ public class Product {
     @Column(name = "id")
     private Long id;
 
+    public Long getId() {
+        return id;
+    }
+
     // 상품명
     @Column(name = "name", nullable = false)
     private String name;

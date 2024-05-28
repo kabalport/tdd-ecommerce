@@ -153,7 +153,7 @@ public class ProductOrderAndPayUseCase {
     }
 
     private void sendOrderConfirmation(User user, ProductOrder order) {
-        emailService.sendOrderConfirmationEmail(user, order);
+        emailService.sendOrderConfirmationEmail("", order);
         log.info("Order confirmation email sent to user {}", user.getUserId());
     }
 }

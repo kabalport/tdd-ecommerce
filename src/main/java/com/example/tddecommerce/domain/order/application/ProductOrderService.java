@@ -21,6 +21,7 @@ import com.example.tddecommerce.domain.userpoint.business.component.UserPointVal
 import com.example.tddecommerce.domain.userpoint.business.model.UserPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,8 +50,35 @@ public class ProductOrderService {
     private final ProductStockReader productStockReader;
     private final EmailService emailService;
 
-    @Transactional
+
+    @Autowired
+    private ProductOrderValidator productOrderValidator;
+
+    @Autowired
+    private ProductOrderUpdater productOrderUpdater;
+
     public ProductOrder createOrder(Long userId, List<ProductOrderDetail> productOrderDetails) {
+        BigDecimal totalAmount = BigDecimal.ZERO;
+
+        for (ProductOrderDetail detail : productOrderDetails) {
+            //Product product = productService.getProduct(detail.getProductId());
+            Product product = productReader.selectOne(detail.getProductId()).orElseThrow();
+            // 재고 확인
+            productOrderValidator.validateStock(detail.getProductId(), detail.getQuantity());
+
+            totalAmount = totalAmount.add(product.getPrice().multiply(BigDecimal.valueOf(detail.getQuantity())));
+
+            // 재고 업데이트
+            productOrderUpdater.updateStock(detail.getProductId(), detail.getQuantity());
+        }
+
+        // 주문 생성
+//        return new ProductOrder(userId, productOrderDetails, totalAmount);
+        return null;
+    }
+
+    @Transactional
+    public ProductOrder createOrder2(Long userId, List<ProductOrderDetail> productOrderDetails) {
         ProductOrder order = null;
         List<ProductOrderItem> items = null;
         try {
@@ -156,7 +185,7 @@ public class ProductOrderService {
     }
 
     private void sendOrderConfirmation(User user, ProductOrder order) {
-        emailService.sendOrderConfirmationEmail(user, order);
+        emailService.sendOrderConfirmationEmail("user", order);
         log.info("Order confirmation email sent to user {}", user.getUserId());
     }
 }

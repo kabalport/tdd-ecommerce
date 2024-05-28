@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class EmailService {
-    public void sendOrderConfirmationEmail(User user, ProductOrder order) {
+    public void sendOrderConfirmationEmail(String email, ProductOrder order) {
 
     }
 }

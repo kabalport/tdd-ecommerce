@@ -1,5 +1,6 @@
 package com.example.tddecommerce.domain.order.business.model;
 
+import com.example.tddecommerce.domain.order.api.ProductOrderDetail;
 import com.example.tddecommerce.domain.user.business.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ public class ProductOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+//    private final List<ProductOrderDetail> productOrderDetails;
+//    private final BigDecimal totalAmount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -35,6 +39,12 @@ public class ProductOrder {
     @Enumerated(EnumType.STRING)
     private ProductOrderStatus status;
 
+//    public ProductOrder(Long userId, List<ProductOrderDetail> productOrderDetails, BigDecimal totalAmount) {
+//
+//        id = userId;
+//        this.productOrderDetails = productOrderDetails;
+//        this.totalAmount = totalAmount;
+//    }
 
 
     public static ProductOrder createProductOrder(User user, LocalDate orderDate, ProductOrderStatus status, List<ProductOrderItem> items) {

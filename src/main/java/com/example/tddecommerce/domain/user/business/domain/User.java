@@ -29,6 +29,10 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public User(String name, String email) {
         this.name = name;
         this.email = email;
