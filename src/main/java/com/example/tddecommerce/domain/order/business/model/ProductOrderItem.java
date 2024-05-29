@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-
 @Entity
 @Table(name = "ecommerce_product_order_item")
 @Getter
@@ -17,6 +16,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductOrderItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,6 +40,7 @@ public class ProductOrderItem {
         this.quantity = quantity;
         this.price = price;
     }
+
     void setProductOrder(ProductOrder productOrder) {
         this.productOrder = productOrder;
     }

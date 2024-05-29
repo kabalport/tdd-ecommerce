@@ -2,23 +2,20 @@ package com.example.tddecommerce.domain.order.application;
 
 import com.example.tddecommerce.domain.notification.EmailService;
 import com.example.tddecommerce.domain.order.api.ProductOrderDetail;
-import com.example.tddecommerce.domain.order.business.component.ProductOrderValidate;
 import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.payment.business.PaymentService;
-import com.example.tddecommerce.domain.product.application.ProductService;
-import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.productstock.application.ProductStockService;
-import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import com.example.tddecommerce.domain.user.application.UserService;
 import com.example.tddecommerce.domain.user.business.domain.User;
-import com.example.tddecommerce.domain.userpoint.application.UserPointService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ProductOrderUseCase {
 
     @Autowired
@@ -31,30 +28,34 @@ public class ProductOrderUseCase {
     private EmailService emailService;
 
     @Autowired
-    private ProductService productService;
-
-    @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserPointService userPointService;
-    @Autowired
-    private ProductStockService productStockService;
-
+    /**
+     * 제품 주문을 시작한다
+     * 서비스 앞에 파사드를 두어 파사드에서 서비스들을 관리한다
+     * @param userId 유저 ID
+     * @param productOrderDetails 주문 세부 정보 목록
+     */
+    @Transactional
     public void execute(Long userId, List<ProductOrderDetail> productOrderDetails) {
-        // 유저조회
-        User user = userService.getUserById(userId);
+        try {
+            // 유저 검증
+            User user = userService.getUserById(userId);
 
-        // 주문 생성 및 재고 확인/업데이트
-        ProductOrder order = productOrderService.createOrder(userId, productOrderDetails);
+            // 주문 생성
+            ProductOrder order = productOrderService.createOrder(user.getUserId(), productOrderDetails, BigDecimal.ZERO);
 
-        // 결제 처리
-        paymentService.processPayment(order);
+            // 결제 처리
+            paymentService.processPayment(order);
 
-        // 이메일 발송
-        emailService.sendOrderConfirmationEmail(user.getEmail(), order);
+            // 이메일 발송
+            emailService.sendOrderConfirmationEmail(user.getEmail(), order);
 
-        // 포인트 적립 (옵션)
-       // userPointService.addPoints(userId, order.getTotalAmount().multiply(BigDecimal.valueOf(0.1)));
+            log.info("해당주문완료-유저: {}", userId);
+
+        } catch (Exception e) {
+            log.error("주문에러 유저아이디: {}", userId, e);
+            throw new RuntimeException("주문실패 보상트랜잭션 발동", e);
+        }
     }
 }
