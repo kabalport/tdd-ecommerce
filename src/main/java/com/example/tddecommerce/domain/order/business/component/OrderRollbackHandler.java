@@ -32,4 +32,8 @@ public class OrderRollbackHandler {
             productStockManager.increaseStock(productStock, item.getQuantity());
         });
     }
+
+    public void rollbackStockAndPoints(Long userId, List<ProductOrderItem> items, Map<Product, ProductStock> productStockMap) {
+
+    }
 }
