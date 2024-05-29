@@ -6,8 +6,8 @@ import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.payment.business.PaymentService;
 import com.example.tddecommerce.domain.user.application.UserService;
 import com.example.tddecommerce.domain.user.business.domain.User;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,19 +16,13 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ProductOrderUseCase {
 
-    @Autowired
-    private ProductOrderService productOrderService;
-
-    @Autowired
-    private PaymentService paymentService;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private UserService userService;
+    private final ProductOrderService productOrderService;
+    private final PaymentService paymentService;
+    private final EmailService emailService;
+    private final UserService userService;
 
     /**
      * 제품 주문을 시작한다

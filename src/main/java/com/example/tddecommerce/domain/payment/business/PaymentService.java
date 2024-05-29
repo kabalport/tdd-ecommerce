@@ -33,7 +33,6 @@ public class PaymentService {
 
         } catch (Exception e) {
             log.error("Error occurred while processing order: ", e);
-            rollbackPoints(productOrder);
             throw e;
         }
     }
@@ -45,12 +44,5 @@ public class PaymentService {
         }
     }
 
-    private void rollbackPoints(ProductOrder order) {
-        log.info("Rolling back points for order {}", order.getId());
-        BigDecimal totalPurchaseAmount = order.getTotalAmount();
 
-        // 포인트 롤백
-        UserPoint currentUserPoint = userPointReader.readByUserId(order.getUserId());
-        currentUserPoint.addPoints(totalPurchaseAmount);
-    }
 }
