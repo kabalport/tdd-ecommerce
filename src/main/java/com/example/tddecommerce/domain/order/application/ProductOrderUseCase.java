@@ -9,8 +9,6 @@ import com.example.tddecommerce.domain.user.application.UserService;
 import com.example.tddecommerce.domain.user.business.domain.User;
 import com.example.tddecommerce.domain.userpoint.application.UserPointService;
 import com.example.tddecommerce.domain.userpoint.business.component.UserPointsHandler;
-import com.example.tddecommerce.domain.userpoint.business.model.UserPoint;
-import com.example.tddecommerce.domain.order.business.component.TotalAmountCalculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,9 +27,7 @@ public class ProductOrderUseCase {
     private final EmailService emailService;
     private final UserService userService;
     private final UserPointsHandler userPointsHandler;
-
     private final UserPointService userPointService;
-    private final TotalAmountCalculator totalAmountCalculator;
 
     /**
      * 제품 주문을 시작한다
@@ -49,12 +45,14 @@ public class ProductOrderUseCase {
             // 포인트 검증 및 차감
             userPointsHandler.handleUserPoints(userId, pointsToUse);
 
-            // 주문 항목 준비 및 총 금액 계산
+            // 주문 항목 준비
             List<ProductOrderItem> items = productOrderService.prepareOrderItems(productOrderDetails);
-            // 총 금액 계산
-            BigDecimal totalAmount = totalAmountCalculator.calculateTotalAmount(items);
+
             // 결제 금액 계산
-            BigDecimal amountToBePaid = totalAmount.subtract(pointsToUse);
+            BigDecimal amountToBePaid = productOrderService.prepareAmountToBePaid(items, pointsToUse);
+
+            // 총 금액 계산
+            BigDecimal totalAmount = amountToBePaid.add(pointsToUse);
 
             // 주문 생성
             ProductOrder order = productOrderService.createOrder(user.getUserId(), items, totalAmount, amountToBePaid);

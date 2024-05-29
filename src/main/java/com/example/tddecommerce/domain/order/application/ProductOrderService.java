@@ -28,6 +28,7 @@ public class ProductOrderService {
     private final ProductOrderItemCreator productOrderItemCreator;
     private final ProductStockManager productStockManager;
     private final OrderRollbackHandler orderRollbackHandler;
+    private final TotalAmountCalculator totalAmountCalculator;
 
     @Transactional
     public ProductOrder createOrder(Long userId, List<ProductOrderItem> items, BigDecimal totalAmount, BigDecimal amountToBePaid) {
@@ -58,5 +59,10 @@ public class ProductOrderService {
 
     public List<ProductOrderItem> prepareOrderItems(List<ProductOrderDetail> productOrderDetails) {
         return productOrderItemCreator.prepareOrderItems(productOrderDetails);
+    }
+
+    public BigDecimal prepareAmountToBePaid(List<ProductOrderItem> items, BigDecimal pointsToUse) {
+        BigDecimal totalAmount = totalAmountCalculator.calculateTotalAmount(items);
+        return totalAmount.subtract(pointsToUse);
     }
 }
