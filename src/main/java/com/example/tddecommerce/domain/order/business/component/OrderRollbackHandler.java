@@ -22,7 +22,7 @@ public class OrderRollbackHandler {
     private final UserPointsHandler userPointsHandler;
     private final ProductStockManager productStockManager;
 
-    public void rollbackStockAndPoints(Long userId, BigDecimal pointsToUse, List<ProductOrderItem> items, Map<Product, ProductStock> productStockMap) {
+    public void rollbackStockAndPoints(Long userId,  List<ProductOrderItem> items, Map<Product, ProductStock> productStockMap,BigDecimal pointsToUse) {
         log.info("Rolling back stock and points for user {}", userId);
         UserPoint currentUserPoint = userPointsHandler.getUserPoints(userId);
         currentUserPoint.addPoints(pointsToUse);

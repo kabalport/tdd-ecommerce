@@ -27,11 +27,10 @@ public class ProductOrderService {
     private final ProductOrderValidator productOrderValidator;
     private final ProductOrderItemCreator productOrderItemCreator;
     private final ProductStockManager productStockManager;
-    private final OrderRollbackHandler orderRollbackHandler;
     private final TotalAmountCalculator totalAmountCalculator;
 
     @Transactional
-    public ProductOrder createOrder(Long userId, List<ProductOrderItem> items, BigDecimal totalAmount, BigDecimal amountToBePaid) {
+    public ProductOrder createOrder(Long userId, List<ProductOrderItem> items, BigDecimal totalAmount) {
         // 재고 확인 및 감소
         Map<Product, ProductStock> productStockMap = productStockManager.manageProductStock(items);
 
@@ -44,13 +43,11 @@ public class ProductOrderService {
                     .status(ProductOrderStatus.PENDING)
                     .items(items)
                     .totalAmount(totalAmount)
-                    .amountToBePaid(amountToBePaid)
                     .build();
 
             productOrderCreator.saveOrder(order);
         } catch (Exception e) {
             log.error("Error occurred while creating order: ", e);
-            orderRollbackHandler.rollbackStockAndPoints(userId, items, productStockMap);
             throw e;
         }
 
@@ -61,8 +58,8 @@ public class ProductOrderService {
         return productOrderItemCreator.prepareOrderItems(productOrderDetails);
     }
 
-    public BigDecimal prepareAmountToBePaid(List<ProductOrderItem> items, BigDecimal pointsToUse) {
+    public BigDecimal prepareAmountToBePaid(List<ProductOrderItem> items) {
         BigDecimal totalAmount = totalAmountCalculator.calculateTotalAmount(items);
-        return totalAmount.subtract(pointsToUse);
+        return null;
     }
 }

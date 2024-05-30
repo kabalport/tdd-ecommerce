@@ -21,7 +21,6 @@ public class UserPointService {
     private final UserPointReader userPointReader;
     private final UserPointCharger userPointCharger;
     private final UserPointTransactionHistory userPointTransactionHistory;
-
     /**
      *잔액 충전 기능
      * @param userId
@@ -72,5 +71,18 @@ public class UserPointService {
         UserPoint chargedBalance = userPointCharger.execute(userPoint);
         // 잔액 충전 로그를 남깁니다.
         userPointTransactionHistory.add(chargedBalance, chargeAmount, "CHARGE", "User charged points");
+    }
+
+
+
+    public UserPoint handleUserPoints(Long userId, BigDecimal pointsToUse) {
+        UserPoint currentUserPoint = userPointReader.readByUserId(userId);
+        userPointValidator.validatePurchase(currentUserPoint, pointsToUse);
+        currentUserPoint.decreasePoint(pointsToUse);
+        return currentUserPoint;
+    }
+
+    public UserPoint getUserPoints(Long userId) {
+        return null;
     }
 }
