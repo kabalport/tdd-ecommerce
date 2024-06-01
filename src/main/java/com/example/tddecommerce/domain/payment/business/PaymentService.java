@@ -6,7 +6,6 @@ import com.example.tddecommerce.domain.order.business.model.ProductOrderStatus;
 import com.example.tddecommerce.domain.payment.business.component.PaymentCreator;
 import com.example.tddecommerce.domain.product.business.exception.ProductException;
 import com.example.tddecommerce.domain.userpoint.business.component.UserPointReader;
-import com.example.tddecommerce.domain.userpoint.business.model.UserPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

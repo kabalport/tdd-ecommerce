@@ -1,4 +1,4 @@
-package com.example.tddecommerce.domain.order.application;
+package com.example.tddecommerce.domain.order.business.component;
 
 import com.example.tddecommerce.domain.productstock.application.ProductStockService;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;

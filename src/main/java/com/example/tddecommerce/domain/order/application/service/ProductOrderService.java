@@ -1,12 +1,15 @@
-package com.example.tddecommerce.domain.order.application;
+package com.example.tddecommerce.domain.order.application.service;
 
 import com.example.tddecommerce.domain.order.api.ProductOrderDetail;
-import com.example.tddecommerce.domain.order.business.component.*;
+import com.example.tddecommerce.domain.order.business.component.ProductOrderItemCreator;
+import com.example.tddecommerce.domain.order.business.component.ProductOrderValidator;
+import com.example.tddecommerce.domain.order.business.component.ProductOrderCreator;
+import com.example.tddecommerce.domain.order.business.component.TotalAmountCalculator;
 import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderStatus;
 import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.productstock.business.component.ProductStockManager;
+import com.example.tddecommerce.domain.order.business.component.ProductStockManager;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

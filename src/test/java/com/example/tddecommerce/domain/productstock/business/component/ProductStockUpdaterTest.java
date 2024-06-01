@@ -28,7 +28,7 @@ class ProductStockUpdaterTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         productStock = new ProductStock();
-        productStock.setQuantity(100);
+        productStock.increase(100);
     }
 
     @Test
@@ -60,7 +60,7 @@ class ProductStockUpdaterTest {
     @Test
     void testDecreaseStock_InsufficientQuantity() {
         // Given
-        productStock.setQuantity(20);
+        productStock.increase(20);
 
         // When & Then
         ProductException exception = assertThrows(ProductException.class, () -> productStockUpdater.decreaseStock(productStock, 50));

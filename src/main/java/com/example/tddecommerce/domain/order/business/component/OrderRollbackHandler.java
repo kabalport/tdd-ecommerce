@@ -2,9 +2,7 @@ package com.example.tddecommerce.domain.order.business.component;
 
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.productstock.business.component.ProductStockManager;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
-import com.example.tddecommerce.domain.userpoint.business.component.UserPointsHandler;
 import com.example.tddecommerce.domain.userpoint.business.model.UserPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +29,8 @@ public class OrderRollbackHandler {
             ProductStock productStock = productStockMap.get(item.getProduct());
             productStockManager.increaseStock(productStock, item.getQuantity());
         });
+
+
     }
 
     public void rollbackStockAndPoints(Long userId, List<ProductOrderItem> items, Map<Product, ProductStock> productStockMap) {

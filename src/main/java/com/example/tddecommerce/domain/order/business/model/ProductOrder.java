@@ -1,6 +1,5 @@
 package com.example.tddecommerce.domain.order.business.model;
 
-import com.example.tddecommerce.domain.product.business.model.Product;
 import jakarta.persistence.*;
 import lombok.*;
 

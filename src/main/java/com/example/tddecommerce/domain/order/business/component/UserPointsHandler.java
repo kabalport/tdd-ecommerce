@@ -1,5 +1,7 @@
-package com.example.tddecommerce.domain.userpoint.business.component;
+package com.example.tddecommerce.domain.order.business.component;
 
+import com.example.tddecommerce.domain.userpoint.business.component.UserPointReader;
+import com.example.tddecommerce.domain.userpoint.business.component.UserPointValidator;
 import com.example.tddecommerce.domain.userpoint.business.model.UserPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

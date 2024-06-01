@@ -1,5 +1,6 @@
 package com.example.tddecommerce.domain.productstock.application;
 
+import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.product.business.model.Product;
 import com.example.tddecommerce.domain.productstock.business.component.ProductStockCreator;
 import com.example.tddecommerce.domain.productstock.business.component.ProductStockReader;
@@ -7,6 +8,9 @@ import com.example.tddecommerce.domain.productstock.business.component.ProductSt
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +55,9 @@ public class ProductStockService {
      */
     public ProductStock decreaseProductStock(ProductStock productStock, int quantity) {
         return productStockUpdater.decreaseStock(productStock, quantity);
+    }
+
+    public Map<Product, ProductStock> manageProductStock(List<ProductOrderItem> items) {
+        return null;
     }
 }

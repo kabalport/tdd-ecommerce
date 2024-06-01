@@ -10,8 +10,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductOrderDetail {
-    private Long productId;
-    private int quantity;
+public class ProductOrderRequest {
+    private Long userId;
+    private List<ProductOrderDetail> productOrderDetails;
+    private BigDecimal pointsToUse;
 }
-
