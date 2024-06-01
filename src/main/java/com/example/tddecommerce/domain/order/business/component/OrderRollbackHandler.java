@@ -1,7 +1,6 @@
 package com.example.tddecommerce.domain.order.business.component;
 
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
-import com.example.tddecommerce.domain.product.business.model.Product;
 import com.example.tddecommerce.domain.productstock.application.ProductStockService;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import com.example.tddecommerce.domain.userpoint.application.UserPointService;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @Slf4j
@@ -23,7 +21,7 @@ public class OrderRollbackHandler {
     private final ProductStockService productStockService;
 
 
-    public void rollbackStockAndPoints(Long userId,  List<ProductOrderItem> items, Map<Product, ProductStock> productStockMap,BigDecimal pointsToUse) {
+    public void rollbackStockAndPoints(Long userId, List<ProductOrderItem> items, BigDecimal pointsToUse) {
         log.info("Rolling back stock and points for user {}", userId);
         UserPoint currentUserPoint = userPointService.getUserPoint(userId);
         currentUserPoint.addPoints(pointsToUse);

@@ -3,6 +3,7 @@ package com.example.tddecommerce.domain.order.application.service;
 import com.example.tddecommerce.domain.order.api.ProductOrderDetail;
 import com.example.tddecommerce.domain.order.business.component.ProductOrderItemCreator;
 import com.example.tddecommerce.domain.order.business.component.ProductOrderCreator;
+import com.example.tddecommerce.domain.order.business.component.ProductOrderValidator;
 import com.example.tddecommerce.domain.order.business.component.TotalAmountCalculator;
 import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
@@ -23,6 +24,8 @@ public class ProductOrderService {
     private final ProductOrderCreator productOrderCreator;
     private final ProductOrderItemCreator productOrderItemCreator;
     private final TotalAmountCalculator totalAmountCalculator;
+
+    private final ProductOrderValidator productOrderValidator;
 
     @Transactional
     public ProductOrder createOrder(Long userId, List<ProductOrderItem> items, BigDecimal totalAmount) {
@@ -51,6 +54,14 @@ public class ProductOrderService {
     }
 
     public BigDecimal prepareAmountToBePaid(List<ProductOrderItem> items) {
+        // 주문 검증
+//        productOrderValidator.validateOrder(user, items, totalAmount);
+//        log.info("주문 검증 완료");
+
+        // 주문 항목 검증
+        productOrderValidator.validateOrderItems(items);
+        log.info("주문 항목 검증 완료");
+
         return totalAmountCalculator.calculateTotalAmount(items);
     }
 }
