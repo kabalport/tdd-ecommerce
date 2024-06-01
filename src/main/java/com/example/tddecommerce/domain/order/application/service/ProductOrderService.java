@@ -2,15 +2,11 @@ package com.example.tddecommerce.domain.order.application.service;
 
 import com.example.tddecommerce.domain.order.api.ProductOrderDetail;
 import com.example.tddecommerce.domain.order.business.component.ProductOrderItemCreator;
-import com.example.tddecommerce.domain.order.business.component.ProductOrderValidator;
 import com.example.tddecommerce.domain.order.business.component.ProductOrderCreator;
 import com.example.tddecommerce.domain.order.business.component.TotalAmountCalculator;
 import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderStatus;
-import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.order.business.component.ProductStockManager;
-import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,24 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ProductOrderService {
-
     private final ProductOrderCreator productOrderCreator;
-    private final ProductOrderValidator productOrderValidator;
     private final ProductOrderItemCreator productOrderItemCreator;
-    private final ProductStockManager productStockManager;
     private final TotalAmountCalculator totalAmountCalculator;
 
     @Transactional
     public ProductOrder createOrder(Long userId, List<ProductOrderItem> items, BigDecimal totalAmount) {
-        // 재고 확인 및 감소
-        Map<Product, ProductStock> productStockMap = productStockManager.manageProductStock(items);
-
         // 주문 생성 및 저장
         ProductOrder order;
         try {
@@ -62,7 +51,7 @@ public class ProductOrderService {
     }
 
     public BigDecimal prepareAmountToBePaid(List<ProductOrderItem> items) {
-        BigDecimal totalAmount = totalAmountCalculator.calculateTotalAmount(items);
-        return null;
+        return totalAmountCalculator.calculateTotalAmount(items);
     }
 }
+

@@ -19,7 +19,6 @@ public class PaymentService {
 
     private final PaymentCreator paymentCreator;
     private final ProductOrderCreator productOrderCreator;
-    private final UserPointReader userPointReader;
 
     public void processPayment(ProductOrder productOrder) {
         try {

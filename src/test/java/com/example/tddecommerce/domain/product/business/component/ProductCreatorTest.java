@@ -29,8 +29,8 @@ class ProductCreatorTest {
     void testSaveProduct() {
         // Given
         Product product = new Product();
-        product.setId(1L);
-        product.setName("Test Product");
+//        product.setId(1L);
+//        product.setName("Test Product");
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
         // When

@@ -6,6 +6,7 @@ import com.example.tddecommerce.domain.product.infrastructure.ProductJpaReposito
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -23,5 +24,10 @@ public class ProductRepository implements IProductRepository {
     @Override
     public Optional<Product> findByProductId(Long productId) {
         return productJpaRepository.findByIdAndNotDeleted(productId);
+    }
+
+    @Override
+    public void saveAll(List<Product> productList) {
+        productJpaRepository.saveAll(productList);
     }
 }

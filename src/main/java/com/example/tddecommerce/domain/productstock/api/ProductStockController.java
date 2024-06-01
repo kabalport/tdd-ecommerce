@@ -1,5 +1,6 @@
 package com.example.tddecommerce.domain.productstock.api;
 
+import com.example.tddecommerce.domain.product.application.ProductService;
 import com.example.tddecommerce.domain.product.business.model.Product;
 import com.example.tddecommerce.domain.productstock.application.ProductStockService;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/stock")
 @RequiredArgsConstructor
 public class ProductStockController {
-
+    private final ProductService productService;
     private final ProductStockService productStockService;
 
     /**
@@ -33,8 +34,8 @@ public class ProductStockController {
     @GetMapping("/{productId}")
     public ResponseEntity<ProductStock> getProductStock(@PathVariable Long productId) {
         // 상품을 ID를 사용하여 조회
-        Product product = new Product(); // 실제로는 서비스나 리포지토리를 통해 조회
-        product.setId(productId);
+        Product product = productService.getProduct(productId);
+
         ProductStock productStock = productStockService.getProductStock(product);
         return ResponseEntity.ok(productStock);
     }

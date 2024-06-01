@@ -65,7 +65,7 @@ class UserServiceTest extends IntegrationTest {
         final User existUser = userCreator.execute(UserFixture.createUserRequest().getName(),UserFixture.createUserRequest().getEmail());
         Long userId = existUser.getUserId();
         // when
-        User updateUser = userService.getUserById(userId);
+        User updateUser = userService.getUser(userId);
 
         // then
         Assertions.assertEquals(updateUser,updateUser);

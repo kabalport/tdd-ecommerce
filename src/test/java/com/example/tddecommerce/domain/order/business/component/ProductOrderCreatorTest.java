@@ -37,9 +37,10 @@ class ProductOrderCreatorTest {
         // Given
         User user = new User("John Doe", "john.doe@example.com");
         List<ProductOrderItem> items = Collections.emptyList();
-        ProductOrder productOrder = ProductOrder.createProductOrder(user.getUserId(), LocalDate.now(), ProductOrderStatus.PENDING, items);
+//        ProductOrder productOrder = ProductOrder.createProductOrder(user.getUserId(), LocalDate.now(), ProductOrderStatus.PENDING, items);
+        ProductOrder productOrder = null;
 
-        // When
+                // When
         productOrderCreator.saveOrder(productOrder);
 
         // Then

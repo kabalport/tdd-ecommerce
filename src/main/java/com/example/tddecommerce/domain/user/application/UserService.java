@@ -1,6 +1,5 @@
 package com.example.tddecommerce.domain.user.application;
 
-import com.example.tddecommerce.domain.user.api.dto.CreateUserRequest;
 import com.example.tddecommerce.domain.user.business.component.CreateUser;
 import com.example.tddecommerce.domain.user.business.component.UserReader;
 import com.example.tddecommerce.domain.user.business.component.UpdateUser;
@@ -21,7 +20,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUserById(Long userId) {
+    public User getUser(Long userId) {
         return userReader.readUser(userId);
     }
 

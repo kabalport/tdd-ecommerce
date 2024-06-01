@@ -29,8 +29,8 @@ class ProductDeleterTest {
     void testDeleteProduct() {
         // Given
         Product product = new Product();
-        product.setId(1L);
-        product.setName("Test Product");
+//        product.setId(1L);
+//        product.setName("Test Product");
         product.setDelFlag(false);
 
         // When

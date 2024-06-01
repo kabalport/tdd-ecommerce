@@ -8,6 +8,7 @@ import com.example.tddecommerce.domain.product.business.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,8 @@ public class ProductOrderItemCreator {
         return productOrderDetails.stream().map(detail -> {
             Product product = productReader.selectOne(detail.getProductId())
                     .orElseThrow(() -> new ProductException("Product not found: " + detail.getProductId()));
-            return new ProductOrderItem(product, detail.getQuantity(), product.getPrice());
+            return new ProductOrderItem(product, detail.getQuantity(), product.getPrice().multiply(BigDecimal.valueOf(detail.getQuantity())));
         }).collect(Collectors.toList());
     }
 }
+

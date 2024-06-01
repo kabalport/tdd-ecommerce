@@ -5,6 +5,8 @@ import com.example.tddecommerce.domain.product.business.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class ProductCreator {
@@ -13,5 +15,9 @@ public class ProductCreator {
 
     public Product save(Product product) {
         return productRepository.save(product);
+    }
+
+    public void saveAllProducts(List<Product> productList) {
+        productRepository.saveAll(productList);
     }
 }

@@ -27,7 +27,7 @@ public class ProductService {
     private final ProductDeleter productDeleter;
 
     /**
-     * 상품 등록 및 상품 재고 설정 기능
+     * 상품 등록 기능
      */
     public Product addProduct(String name, BigDecimal price, String description, DiscountPolicy discountPolicy, int stock) {
         // 입력 데이터 유효성 검사

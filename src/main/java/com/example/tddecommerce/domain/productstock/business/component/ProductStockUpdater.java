@@ -1,10 +1,16 @@
 package com.example.tddecommerce.domain.productstock.business.component;
 
+import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.product.business.exception.ProductException;
+import com.example.tddecommerce.domain.product.business.model.Product;
 import com.example.tddecommerce.domain.productstock.business.repository.IProductStockRepository;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -36,4 +42,5 @@ public class ProductStockUpdater {
         productStock.decrease(quantity);
         return productStockRepository.save(productStock);
     }
+
 }

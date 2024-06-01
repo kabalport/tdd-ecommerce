@@ -19,12 +19,13 @@ public class ProductOrderController {
      * @return 주문 결과
      */
     @PostMapping
-    public ResponseEntity<String> createOrder(@RequestBody ProductOrderRequest productOrderRequest) {
+    public ResponseEntity<ProductOrderResponse> processProductOrder(@RequestBody ProductOrderRequest productOrderRequest) {
         try {
-            productOrderUseCase.execute(productOrderRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Order created successfully");
+            ProductOrderResponse response = productOrderUseCase.execute(productOrderRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create order: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }
+

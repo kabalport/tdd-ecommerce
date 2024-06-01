@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class ProductOrderCreateResponse {
+public class ProductOrderResponse {
     private Long orderId;
     private String status;
     private List<OrderItem> items;

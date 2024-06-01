@@ -44,6 +44,20 @@ public class UserPointService {
         return chargedBalance;
     }
 
+    /**
+     * 잔액 사용 기능
+     * @param userId
+     * @param pointsToUse
+     * @return
+     */
+    public UserPoint useUserPoint(Long userId, BigDecimal pointsToUse) {
+        UserPoint currentUserPoint = userPointReader.readByUserId(userId);
+        userPointValidator.validatePurchase(currentUserPoint, pointsToUse);
+        currentUserPoint.decreasePoint(pointsToUse);
+        return currentUserPoint;
+    }
+
+
 
     /**
      * 잔액 조회기능
@@ -56,33 +70,5 @@ public class UserPointService {
         User user = userReader.readUser(userId);
         // 유저의 기존포인트를 조회합니다.
         return userPointReader.readByUserId(user.getUserId());
-    }
-
-    public void addPoints(Long userId, BigDecimal chargeAmount) {
-        // 유효성 검증 - 충전금액을 확인합니다.
-        userPointValidator.validateChargeAmount(chargeAmount);
-        // 유저 조회
-        User user = userReader.readUser(userId);
-        // 잔액 조회 또는 신규 생성
-        UserPoint userPoint = userPointReader.readByUserId(user.getUserId());
-        // 충전 잔액 계산 : 기존 잔액에 충전금을 더합니다.
-        userPoint.addPoints(chargeAmount);
-        // 충전 처리 : 새로 계산된 충전금을 반영합니다.
-        UserPoint chargedBalance = userPointCharger.execute(userPoint);
-        // 잔액 충전 로그를 남깁니다.
-        userPointTransactionHistory.add(chargedBalance, chargeAmount, "CHARGE", "User charged points");
-    }
-
-
-
-    public UserPoint handleUserPoints(Long userId, BigDecimal pointsToUse) {
-        UserPoint currentUserPoint = userPointReader.readByUserId(userId);
-        userPointValidator.validatePurchase(currentUserPoint, pointsToUse);
-        currentUserPoint.decreasePoint(pointsToUse);
-        return currentUserPoint;
-    }
-
-    public UserPoint getUserPoints(Long userId) {
-        return null;
     }
 }

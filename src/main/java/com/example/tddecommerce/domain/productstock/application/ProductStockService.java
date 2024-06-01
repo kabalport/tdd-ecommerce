@@ -1,6 +1,5 @@
 package com.example.tddecommerce.domain.productstock.application;
 
-import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.product.business.model.Product;
 import com.example.tddecommerce.domain.productstock.business.component.ProductStockCreator;
 import com.example.tddecommerce.domain.productstock.business.component.ProductStockReader;
@@ -9,8 +8,6 @@ import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +24,6 @@ public class ProductStockService {
     public void createProductStock(ProductStock productStock) {
         productStockCreator.save(productStock);
     }
-
     /**
      * 주어진 상품에 대한 재고 정보를 조회합니다.
      * @param product 조회할 상품 객체
@@ -55,9 +51,5 @@ public class ProductStockService {
      */
     public ProductStock decreaseProductStock(ProductStock productStock, int quantity) {
         return productStockUpdater.decreaseStock(productStock, quantity);
-    }
-
-    public Map<Product, ProductStock> manageProductStock(List<ProductOrderItem> items) {
-        return null;
     }
 }

@@ -34,7 +34,5 @@ public class ProductStockManager {
         ));
     }
 
-    public void increaseStock(ProductStock productStock, int quantity) {
 
-    }
 }

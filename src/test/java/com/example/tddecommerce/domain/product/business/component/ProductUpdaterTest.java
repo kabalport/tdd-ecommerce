@@ -32,11 +32,11 @@ class ProductUpdaterTest {
     void testUpdateProduct() {
         // Given
         Product product = new Product();
-        product.setId(1L);
-        product.setName("Old Product");
+//        product.setId(1L);
+//        product.setName("Old Product");
         product.changePrice(new BigDecimal("100.00"));
-        product.setDescription("Old Description");
-        product.setDiscountPolicy(DiscountPolicy.NONE);
+//        product.setDescription("Old Description");
+//        product.setDiscountPolicy(DiscountPolicy.NONE);
 
         String newName = "New Product";
         BigDecimal newPrice = new BigDecimal("150.00");
@@ -44,11 +44,11 @@ class ProductUpdaterTest {
         DiscountPolicy newDiscountPolicy = DiscountPolicy.FIX_1000_AMOUNT;
 
         Product updatedProduct = new Product();
-        updatedProduct.setId(1L);
-        updatedProduct.setName(newName);
+//        updatedProduct.setId(1L);
+//        updatedProduct.setName(newName);
         updatedProduct.changePrice(newPrice);
-        updatedProduct.setDescription(newDescription);
-        updatedProduct.setDiscountPolicy(newDiscountPolicy);
+//        updatedProduct.setDescription(newDescription);
+//        updatedProduct.setDiscountPolicy(newDiscountPolicy);
 
         when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
 

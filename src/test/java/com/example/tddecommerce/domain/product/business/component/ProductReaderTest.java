@@ -33,8 +33,8 @@ class ProductReaderTest {
         // Given
         Long productId = 1L;
         Product product = new Product();
-        product.setId(productId);
-        product.setName("Test Product");
+//        product.setId(productId);
+//        product.setName("Test Product");
         when(iProductRepository.findByProductId(anyLong())).thenReturn(Optional.of(product));
 
         // When

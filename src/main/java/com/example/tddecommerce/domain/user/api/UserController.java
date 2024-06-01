@@ -23,14 +23,14 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<CreateUserResponse> createUser(@RequestBody @Valid CreateUserRequest request) {
-        User user = userService.addUser(request);
+        User user = userService.addUser(request.getName(),request.getEmail());
         CreateUserResponse response = new CreateUserResponse(user.getUserId(),user.getName(), user.getEmail());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<GetUserResponse> getUser(@PathVariable Long userId){
-        User user = userService.getUserById(userId);
+        User user = userService.getUser(userId);
         GetUserResponse response = new GetUserResponse(user.getUserId(),user.getName(),user.getEmail());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -55,4 +55,12 @@ public class User {
     public void updateName(String updateName) {
         this.name = updateName;
     }
+
+    public boolean isActive() {
+        return true;
+    }
+
+    public boolean canPlaceOrder() {
+        return true;
+    }
 }

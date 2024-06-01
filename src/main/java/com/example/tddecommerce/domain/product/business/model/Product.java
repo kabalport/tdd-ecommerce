@@ -31,7 +31,7 @@ public class Product {
     @Column(name = "discount_policy", nullable = false)
     private DiscountPolicy discountPolicy;
 
-    @Column(name = "del_flag", nullable = false)
+    @Column(name = "del_flag", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean delFlag;
 
     public Product(String name, BigDecimal price, String description, DiscountPolicy discountPolicy) {
