@@ -64,15 +64,15 @@ class ProductOrderUseCaseTest extends IntegrationTest {
         user = userService.addUser(name,email);
 
         // Product 및 ProductStock 생성
-        product1 = new Product("Product 1", BigDecimal.valueOf(100), "Description 1", DiscountPolicy.NONE);
-        product2 = new Product("Product 2", BigDecimal.valueOf(200), "Description 2", DiscountPolicy.NONE);
+        Product productRequest1 = new Product("Product 1", BigDecimal.valueOf(100), "Description 1", DiscountPolicy.NONE);
+        Product productRequest2 = new Product("Product 2", BigDecimal.valueOf(200), "Description 2", DiscountPolicy.NONE);
 
-        Product addProduct1 = productService.addProduct(product1.getName(),product1.getPrice(),product1.getDescription(),product1.getDiscountPolicy(),10);
-        Product addProduct2 = productService.addProduct(product2.getName(),product2.getPrice(),product2.getDescription(),product2.getDiscountPolicy(),10);
+        product1 = productService.addProduct(productRequest1.getName(),productRequest1.getPrice(),productRequest1.getDescription(),productRequest1.getDiscountPolicy(),10);
+        product2 = productService.addProduct(productRequest2.getName(),productRequest2.getPrice(),productRequest2.getDescription(),productRequest2.getDiscountPolicy(),10);
 
 
-        productStock1 = new ProductStock(addProduct1, 10);
-        productStock2 = new ProductStock(addProduct2, 10);
+        productStock1 = new ProductStock(product1, 10);
+        productStock2 = new ProductStock(product2, 10);
 
         productStockService.createProductStock(productStock1);
         productStockService.createProductStock(productStock2);
@@ -83,6 +83,13 @@ class ProductOrderUseCaseTest extends IntegrationTest {
     void testExecute() {
         // Given
         ProductOrderDetail detail1 = new ProductOrderDetail(product1.getId(), 2);
+
+        System.out.println(product1.getId());
+        System.out.println(product2.getId());
+        System.out.println(product1.getId());
+        System.out.println(product2.getId());
+
+
         ProductOrderDetail detail2 = new ProductOrderDetail(product2.getId(), 3);
         List<ProductOrderDetail> productOrderDetails = Arrays.asList(detail1, detail2);
         ProductOrderRequest request = ProductOrderRequest.builder()
@@ -100,6 +107,6 @@ class ProductOrderUseCaseTest extends IntegrationTest {
         assertEquals("PAID", response.getStatus());
         assertEquals(BigDecimal.valueOf(750), response.getTotalAmount());
 
-        
+
     }
 }
