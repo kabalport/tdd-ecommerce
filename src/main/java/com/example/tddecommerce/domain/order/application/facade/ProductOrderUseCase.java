@@ -53,7 +53,6 @@ public class ProductOrderUseCase {
         BigDecimal pointsToUse = productOrderRequest.getPointsToUse();
 
         List<ProductOrderItem> items = null;
-        Map<Product, ProductStock> productStockMap = null;
         User user;
         ProductOrder order;
         BigDecimal totalAmount;
@@ -116,7 +115,7 @@ public class ProductOrderUseCase {
             log.error("주문 에러: userId={}", userId, e);
 
             if (items != null) {
-                orderRollbackHandler.rollbackStockAndPoints(userId, items, productStockMap, pointsToUse);
+//                orderRollbackHandler.rollbackStockAndPoints(userId, items, productStockMap, pointsToUse);
                 log.info("롤백 완료: userId={}, pointsToUse={}", userId, pointsToUse);
             }
 

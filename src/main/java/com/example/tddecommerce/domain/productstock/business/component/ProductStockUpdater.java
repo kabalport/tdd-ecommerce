@@ -43,4 +43,20 @@ public class ProductStockUpdater {
         return productStockRepository.save(productStock);
     }
 
+    public Map<Product, ProductStock> manageProductStock(List<ProductOrderItem> items) {
+        return items.stream().collect(Collectors.toMap(
+                ProductOrderItem::getProduct,
+                item -> {
+//                    ProductStock productStock = productStockReader.getProductStock(item.getProduct());
+//                    if (productStock.getQuantity() < item.getQuantity()) {
+//                        throw new ProductException("Insufficient stock for product: " + item.getProduct().getId());
+//                    }
+//                    productStockUpdater.decreaseStock(productStock, item.getQuantity());
+//                    return productStock;
+                    return null;
+                }
+        ));
+    }
+
+
 }

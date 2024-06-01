@@ -8,6 +8,8 @@ import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +18,8 @@ public class ProductStockService {
     private final ProductStockCreator productStockCreator;
     private final ProductStockReader productStockReader;
     private final ProductStockUpdater productStockUpdater;
+
+
 
     /**
      * 상품 재고를 생성하여 저장합니다.
@@ -51,5 +55,11 @@ public class ProductStockService {
      */
     public ProductStock decreaseProductStock(ProductStock productStock, int quantity) {
         return productStockUpdater.decreaseStock(productStock, quantity);
+    }
+    //        Map<Product, ProductStock> productStockMap
+    public Map<Product, ProductStock> decreaseProductStockList(ProductStock productStock, int quantity) {
+        Map<Product, ProductStock> productStockMap = null;
+        productStockUpdater.manageProductStock(null);
+        return productStockMap;
     }
 }
