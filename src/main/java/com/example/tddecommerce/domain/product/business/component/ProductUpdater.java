@@ -1,6 +1,7 @@
 package com.example.tddecommerce.domain.product.business.component;
 
 
+import com.example.tddecommerce.domain.product.business.repository.IProductRepository;
 import com.example.tddecommerce.domain.product.infrastructure.ProductRepository;
 import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
 import com.example.tddecommerce.domain.product.business.model.Product;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class ProductUpdater {
 
-    private final ProductRepository productRepository;
+    private final IProductRepository iproductRepository;
 
     public Product updateProduct(Product product, String name, BigDecimal price,String description, DiscountPolicy discountPolicy) {
 
@@ -21,6 +22,6 @@ public class ProductUpdater {
         product.update(name, price, description, discountPolicy);
 
         // 상품을 데이터베이스에 저장
-        return productRepository.save(product);
+        return iproductRepository.save(product);
     }
 }

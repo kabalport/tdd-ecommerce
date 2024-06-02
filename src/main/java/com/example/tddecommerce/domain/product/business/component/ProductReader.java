@@ -1,7 +1,7 @@
 package com.example.tddecommerce.domain.product.business.component;
 
-import com.example.tddecommerce.domain.product.business.repository.IProductRepository;
 import com.example.tddecommerce.domain.product.business.model.Product;
+import com.example.tddecommerce.domain.product.business.repository.IProductRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -15,10 +15,8 @@ public class ProductReader {
         this.iProductRepository = iProductRepository;
     }
 
-    public Optional<Product> selectOne(Long productId) {
-        return iProductRepository.findByProductId(productId);
+    public Optional<Product> execute(Long productId) {
+        Optional<Product> product = iProductRepository.findByProductId(productId);
+        return product.filter(p -> !p.isDelFlag());
     }
-
-
-
 }

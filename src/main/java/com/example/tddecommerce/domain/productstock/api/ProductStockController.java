@@ -15,16 +15,6 @@ public class ProductStockController {
     private final ProductService productService;
     private final ProductStockService productStockService;
 
-    /**
-     * 새로운 상품 재고를 생성합니다.
-     * @param productStock 생성할 상품 재고 객체
-     * @return 생성된 상품 재고 객체
-     */
-    @PostMapping
-    public ResponseEntity<ProductStock> createProductStock(@RequestBody ProductStock productStock) {
-        productStockService.createProductStock(productStock);
-        return ResponseEntity.ok(productStock);
-    }
 
     /**
      * 특정 상품의 재고를 조회합니다.
@@ -34,7 +24,7 @@ public class ProductStockController {
     @GetMapping("/{productId}")
     public ResponseEntity<ProductStock> getProductStock(@PathVariable Long productId) {
         // 상품을 ID를 사용하여 조회
-        Product product = productService.getProduct(productId);
+        Product product = productService.getProductById(productId);
 
         ProductStock productStock = productStockService.getProductStock(product);
         return ResponseEntity.ok(productStock);

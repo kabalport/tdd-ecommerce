@@ -24,11 +24,11 @@ public class ProductStockManager {
         return items.stream().collect(Collectors.toMap(
                 ProductOrderItem::getProduct,
                 item -> {
-                    ProductStock productStock = productStockReader.getProductStock(item.getProduct());
+                    ProductStock productStock = productStockReader.getProductStock(item.getProduct().getId());
                     if (productStock.getQuantity() < item.getQuantity()) {
                         throw new ProductException("Insufficient stock for product: " + item.getProduct().getId());
                     }
-                    productStockUpdater.decreaseStock(productStock, item.getQuantity());
+//                    productStockUpdater.decreaseStock(productStock, item.getQuantity());
                     return productStock;
                 }
         ));

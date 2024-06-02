@@ -2,6 +2,7 @@ package com.example.tddecommerce.domain.productstock.application;
 
 import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
 import com.example.tddecommerce.domain.product.business.model.Product;
+import com.example.tddecommerce.domain.product.business.repository.IProductRepository;
 import com.example.tddecommerce.domain.product.infrastructure.ProductRepository;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import com.example.tddecommerce.domain.productstock.business.repository.IProductStockRepository;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +22,7 @@ class ProductStockServiceTest extends IntegrationTest {
     private ProductStockService productStockService;
 
     @Autowired
-    private ProductRepository productRepository;
+    private IProductRepository productRepository;
 
     @Autowired
     private IProductStockRepository productStockRepository;
@@ -39,18 +39,6 @@ class ProductStockServiceTest extends IntegrationTest {
         // 재고 생성 및 저장
         productStock = new ProductStock(product, 50);
         productStockRepository.save(productStock);
-    }
-    @Test
-    @Transactional
-    void createProductStock_success(){
-        Product addProduct = new Product("add Test Product", BigDecimal.valueOf(100), "add Test Description", DiscountPolicy.NONE);
-        Product addProductResult = productRepository.save(addProduct);
-
-        ProductStock addProductStock = new ProductStock(addProductResult, 50);
-        productStockService.createProductStock(addProductStock);
-
-        assertNotNull(addProductStock);
-        assertEquals(50, addProductStock.getQuantity());
     }
 
     @Test

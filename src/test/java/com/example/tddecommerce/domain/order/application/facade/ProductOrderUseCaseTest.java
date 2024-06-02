@@ -4,7 +4,6 @@ import com.example.tddecommerce.domain.notification.EmailService;
 import com.example.tddecommerce.domain.order.api.ProductOrderDetail;
 import com.example.tddecommerce.domain.order.api.ProductOrderRequest;
 import com.example.tddecommerce.domain.order.api.ProductOrderResponse;
-import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.payment.business.PaymentService;
 import com.example.tddecommerce.domain.product.application.ProductService;
 import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
@@ -67,15 +66,15 @@ class ProductOrderUseCaseTest extends IntegrationTest {
         Product productRequest1 = new Product("Product 1", BigDecimal.valueOf(100), "Description 1", DiscountPolicy.NONE);
         Product productRequest2 = new Product("Product 2", BigDecimal.valueOf(200), "Description 2", DiscountPolicy.NONE);
 
-        product1 = productService.addProduct(productRequest1.getName(),productRequest1.getPrice(),productRequest1.getDescription(),productRequest1.getDiscountPolicy(),10);
-        product2 = productService.addProduct(productRequest2.getName(),productRequest2.getPrice(),productRequest2.getDescription(),productRequest2.getDiscountPolicy(),10);
+        product1 = productService.createProduct(productRequest1.getName(),productRequest1.getPrice(),productRequest1.getDescription(),productRequest1.getDiscountPolicy());
+        product2 = productService.createProduct(productRequest2.getName(),productRequest2.getPrice(),productRequest2.getDescription(),productRequest2.getDiscountPolicy());
 
 
         productStock1 = new ProductStock(product1, 10);
         productStock2 = new ProductStock(product2, 10);
 
-        productStockService.createProductStock(productStock1);
-        productStockService.createProductStock(productStock2);
+//        productStockService.createProductStock(productStock1);
+//        productStockService.createProductStock(productStock2);
 
     }
 

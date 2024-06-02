@@ -21,6 +21,7 @@ public class UserPointService {
     private final UserPointReader userPointReader;
     private final UserPointCharger userPointCharger;
     private final UserPointTransactionHistory userPointTransactionHistory;
+
     /**
      *잔액 충전 기능
      * @param userId

@@ -19,7 +19,7 @@ public class ProductOrderItemCreator {
 
     public List<ProductOrderItem> prepareOrderItems(List<ProductOrderDetail> productOrderDetails) {
         return productOrderDetails.stream().map(detail -> {
-            Product product = productReader.selectOne(detail.getProductId()).orElseThrow(() -> new ProductException("Product not found: " + detail.getProductId()));
+            Product product = productReader.execute(detail.getProductId()).orElseThrow(() -> new ProductException("Product not found: " + detail.getProductId()));
             return new ProductOrderItem(product, detail.getQuantity(), product.getPrice().multiply(BigDecimal.valueOf(detail.getQuantity())));
         }).collect(Collectors.toList());
     }

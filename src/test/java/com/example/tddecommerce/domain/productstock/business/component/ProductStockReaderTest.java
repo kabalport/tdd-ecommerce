@@ -1,64 +1,63 @@
 package com.example.tddecommerce.domain.productstock.business.component;
 
+import com.example.tddecommerce.domain.product.business.exception.ProductException;
 import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
+import com.example.tddecommerce.domain.product.business.repository.IProductRepository;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import com.example.tddecommerce.domain.productstock.business.repository.IProductStockRepository;
-import com.example.tddecommerce.domain.product.business.exception.ProductException;
-import com.example.tddecommerce.domain.productstock.business.component.ProductStockReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ProductStockReaderTest {
 
-    @Mock
     private IProductStockRepository productStockRepository;
-
-    @InjectMocks
+    private IProductRepository productRepository;
     private ProductStockReader productStockReader;
-
-    private Product testProduct;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        testProduct = new Product("Test Product", BigDecimal.valueOf(100), "Description", DiscountPolicy.NONE);
+        // Mock 객체 생성
+        productStockRepository = Mockito.mock(IProductStockRepository.class);
+        productRepository = Mockito.mock(IProductRepository.class);
+
+        // ProductStockReader 인스턴스 생성 및 Mock 주입
+        productStockReader = new ProductStockReader(productStockRepository, productRepository);
     }
 
     @Test
-    void testGetProductStock() {
-        // Given
-        ProductStock productStock = new ProductStock(testProduct, 100);
-        when(productStockRepository.findByProduct(testProduct)).thenReturn(Optional.of(productStock));
+    void getProductStock_WhenStockExists() {
+        Long productId = 1L;
+        Product product = new Product();  // 상품 객체 생성
+        ProductStock expectedStock = new ProductStock(product, 10);
 
-        // When
-        ProductStock foundProductStock = productStockReader.getProductStock(testProduct);
+        when(productRepository.findByProductId(productId)).thenReturn(Optional.of(product));
+        when(productStockRepository.findByProductId(productId)).thenReturn(Optional.of(expectedStock));
 
-        // Then
-        assertThat(foundProductStock).isNotNull();
-        assertThat(foundProductStock.getQuantity()).isEqualTo(100);
-        assertThat(foundProductStock.getProduct()).isEqualTo(testProduct);
-        verify(productStockRepository, times(1)).findByProduct(testProduct);
+        ProductStock result = productStockReader.getProductStock(productId);
+
+        assertNotNull(result);
+        assertEquals(expectedStock, result);
+        verify(productStockRepository).findByProductId(productId);
     }
-
     @Test
-    void testGetProductStock_ProductStockNotFound() {
-        // Given
-        when(productStockRepository.findByProduct(testProduct)).thenReturn(Optional.empty());
+    void getProductStock_WhenStockDoesNotExist_ReturnsDefaultStock() {
+        Long productId = 2L;
+        Product product = new Product();
+        when(productRepository.findByProductId(productId)).thenReturn(Optional.of(product));
+        when(productStockRepository.findByProductId(productId)).thenReturn(Optional.empty());
 
-        // When & Then
-        ProductException exception = assertThrows(ProductException.class, () -> productStockReader.getProductStock(testProduct));
-        assertThat(exception.getMessage()).contains("Product stock not found for product id: " + testProduct.getId());
-        verify(productStockRepository, times(1)).findByProduct(testProduct);
+        ProductStock result = productStockReader.getProductStock(productId);
+
+        assertNotNull(result);
+        assertEquals(0, result.getQuantity());
+        verify(productRepository).findByProductId(productId);
+        verify(productStockRepository).findByProductId(productId);
     }
+
 }

@@ -18,7 +18,4 @@ public class ProductStockCreator {
         iProductStockRepository.save(stock);
     }
 
-    public Optional<ProductStock> findByProduct(Product result) {
-        return iProductStockRepository.findByProduct(result);
-    }
 }

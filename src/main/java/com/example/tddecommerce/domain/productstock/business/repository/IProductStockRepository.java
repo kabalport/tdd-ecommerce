@@ -9,4 +9,6 @@ public interface IProductStockRepository {
     ProductStock save(ProductStock productStock);
 
     Optional<ProductStock> findByProduct(Product product);
+
+    Optional<ProductStock> findByProductId(Long productId);
 }

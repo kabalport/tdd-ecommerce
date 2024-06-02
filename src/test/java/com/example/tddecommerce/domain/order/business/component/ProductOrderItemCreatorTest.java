@@ -41,8 +41,8 @@ class ProductOrderItemCreatorTest {
         Product product1 = new Product(1L, "Product 1", BigDecimal.valueOf(100), "Description 1", null, false);
         Product product2 = new Product(2L, "Product 2", BigDecimal.valueOf(200), "Description 2", null, false);
 
-        when(productReader.selectOne(1L)).thenReturn(Optional.of(product1));
-        when(productReader.selectOne(2L)).thenReturn(Optional.of(product2));
+        when(productReader.execute(1L)).thenReturn(Optional.of(product1));
+        when(productReader.execute(2L)).thenReturn(Optional.of(product2));
 
         // When
         List<ProductOrderItem> orderItems = productOrderItemCreator.prepareOrderItems(Arrays.asList(detail1, detail2));
@@ -60,8 +60,8 @@ class ProductOrderItemCreatorTest {
         assertEquals(3, item2.getQuantity());
         assertEquals(BigDecimal.valueOf(600), item2.getPrice());
 
-        verify(productReader, times(1)).selectOne(1L);
-        verify(productReader, times(1)).selectOne(2L);
+        verify(productReader, times(1)).execute(1L);
+        verify(productReader, times(1)).execute(2L);
     }
 
     @Test
@@ -69,7 +69,7 @@ class ProductOrderItemCreatorTest {
         // Given
         ProductOrderDetail detail = new ProductOrderDetail(1L, 2);
 
-        when(productReader.selectOne(1L)).thenReturn(Optional.empty());
+        when(productReader.execute(1L)).thenReturn(Optional.empty());
 
         // When & Then
         ProductException exception = assertThrows(ProductException.class, () -> {
@@ -78,6 +78,6 @@ class ProductOrderItemCreatorTest {
 
         assertEquals("Product not found: 1", exception.getMessage());
 
-        verify(productReader, times(1)).selectOne(1L);
+        verify(productReader, times(1)).execute(1L);
     }
 }

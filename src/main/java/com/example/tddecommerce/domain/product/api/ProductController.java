@@ -15,12 +15,11 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductCreateRequest request) {
-        Product product = productService.addProduct(
+        Product product = productService.createProduct(
                 request.getName(),
                 request.getPrice(),
                 request.getDescription(),
-                request.getDiscountPolicy(),
-                request.getInitialStock()
+                request.getDiscountPolicy()
         );
         ProductResponse response = new ProductResponse(
                 product.getId(),
@@ -35,7 +34,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable Long id) {
-        Product product = productService.getProduct(id);
+        Product product = productService.getProductById(id);
         ProductResponse response = new ProductResponse(
                 product.getId(),
                 product.getName(),

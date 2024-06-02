@@ -4,8 +4,6 @@ import com.example.tddecommerce.domain.product.business.exception.ProductExcepti
 import com.example.tddecommerce.domain.product.business.component.*;
 import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
 import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
-import com.example.tddecommerce.domain.productstock.business.component.ProductStockCreator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,6 @@ import java.util.Optional;
 public class ProductService {
     private final ProductValidator productValidator;
     private final ProductCreator productCreator;
-    private final ProductStockCreator productStockCreator;
     private final ProductReader productReader;
     private final ProductUpdater productUpdater;
     private final ProductDeleter productDeleter;
@@ -29,21 +26,12 @@ public class ProductService {
     /**
      * 상품 등록 기능
      */
-    public Product addProduct(String name, BigDecimal price, String description, DiscountPolicy discountPolicy, int stock) {
+    public Product createProduct(String name, BigDecimal price, String description, DiscountPolicy discountPolicy) {
         // 입력 데이터 유효성 검사
-        productValidator.createRequestValidate(name, price, stock);
-
-        // 상품 정보를 바탕으로 상품 객체 생성
-        Product product = new Product(name, price, description, discountPolicy);
+        productValidator.createRequestValidate(name, price);
 
         // 상품을 데이터베이스에 저장
-        Product result = productCreator.save(product);
-
-        // 요청된 초기 재고 수량으로 재고 객체 생성
-        ProductStock productStock = new ProductStock(result, stock);
-
-        // 재고를 데이터베이스에 저장
-        productStockCreator.save(productStock);
+        Product result = productCreator.execute(name,price,description,discountPolicy);
 
         // 추가된 상품 정보 반환
         return result;
@@ -54,11 +42,11 @@ public class ProductService {
      * @param productId
      * @return
      */
-    public Product getProduct(Long productId){
+    public Product getProductById(Long productId){
         // 상품 하나를 조회합니다.
         try {
             // 상품유무조회
-            Optional<Product> result = productReader.selectOne(productId);
+            Optional<Product> result = productReader.execute(productId);
             // 상품유무결과
             return result.orElseThrow(() -> new ProductException("Product not found or deleted: " + productId));
         } catch (Exception e) {
@@ -81,7 +69,8 @@ public class ProductService {
         productValidator.updateRequestValidate(name, price);
 
         // 상품 유무 조회
-        Product product = getProduct(productId);
+        Product product = productReader.execute(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + productId));
 
         // 상품 정보 업데이트
         return productUpdater.updateProduct(product, name, price, description, discountPolicy);
@@ -94,7 +83,7 @@ public class ProductService {
      */
     public void deleteProduct(Long productId) {
         // 상품 유무 조회
-        Product product = getProduct(productId);
+        Product product = productReader.execute(productId).orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + productId));
 
         // 상품 삭제
         productDeleter.deleteProduct(product);

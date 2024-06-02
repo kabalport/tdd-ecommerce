@@ -7,6 +7,7 @@ import com.example.tddecommerce.domain.product.business.model.Product;
 import com.example.tddecommerce.domain.productstock.business.component.ProductStockCreator;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import com.example.tddecommerce.setting.IntegrationTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,30 +18,15 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
 @Transactional
 class ProductServiceTest extends IntegrationTest {
-
     @Autowired
     private ProductService productService;
-
-    @Autowired
-    private ProductValidator productValidator;
-
     @Autowired
     private ProductCreator productCreator;
-
-    @Autowired
-    private ProductStockCreator productStockCreator;
-
-    @Autowired
-    private ProductReader productReader;
-
-    @Autowired
-    private ProductUpdater productUpdater;
-
-    @Autowired
-    private ProductDeleter productDeleter;
 
     private Product testProduct;
 
@@ -54,7 +40,7 @@ class ProductServiceTest extends IntegrationTest {
     @Test
     void testAddProduct() {
         // When
-        Product result = productService.addProduct("New Product", BigDecimal.valueOf(200), "New Description", DiscountPolicy.FIX_1000_AMOUNT, 20);
+        Product result = productService.createProduct("New Product", BigDecimal.valueOf(200), "New Description", DiscountPolicy.FIX_1000_AMOUNT);
 
         // Then
         assertThat(result).isNotNull();
@@ -62,16 +48,12 @@ class ProductServiceTest extends IntegrationTest {
         assertThat(result.getPrice()).isEqualByComparingTo(BigDecimal.valueOf(200));
         assertThat(result.getDescription()).isEqualTo("New Description");
 
-        // Verify stock creation
-        Optional<ProductStock> productStock = productStockCreator.findByProduct(result);
-        assertThat(productStock).isPresent();
-        assertThat(productStock.get().getQuantity()).isEqualTo(20);
     }
 
     @Test
     void testGetProduct() {
         // When
-        Product result = productService.getProduct(testProduct.getId());
+        Product result = productService.getProductById(testProduct.getId());
 
         // Then
         assertThat(result).isNotNull();
@@ -89,7 +71,7 @@ class ProductServiceTest extends IntegrationTest {
         Long nonExistentProductId = 999L;
 
         // When & Then
-        Exception exception = assertThrows(ProductException.class, () -> productService.getProduct(nonExistentProductId));
+        Exception exception = assertThrows(ProductException.class, () -> productService.getProductById(nonExistentProductId));
         assertThat(exception.getMessage()).contains("Product not found or deleted: " + nonExistentProductId);
     }
 
@@ -111,6 +93,6 @@ class ProductServiceTest extends IntegrationTest {
         productService.deleteProduct(testProduct.getId());
 
         // Then
-        assertThrows(ProductException.class, () -> productService.getProduct(testProduct.getId()));
+        assertThrows(ProductException.class, () -> productService.getProductById(testProduct.getId()));
     }
 }

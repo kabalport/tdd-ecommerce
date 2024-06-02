@@ -35,10 +35,10 @@ public class ProductOrderUseCaseTest {
     @BeforeEach
     void setUp() {
         // 상품 만들기
-        Product addProduct = productService.addProduct("New Product", BigDecimal.valueOf(200), "New Description", DiscountPolicy.FIX_1000_AMOUNT, 20);
+        Product addProduct = productService.createProduct("New Product", BigDecimal.valueOf(200), "New Description", DiscountPolicy.FIX_1000_AMOUNT);
         // 상품 재고설정하기
         ProductStock addProductStock = new ProductStock(addProduct, 50);
-        productStockService.createProductStock(addProductStock);
+//        productStockService.createProductStock(addProductStock);
         // 유저 만들기
         final String name = "홍길동";
         final String email = "gildong@gmail.com";

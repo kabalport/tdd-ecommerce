@@ -1,70 +1,114 @@
 package com.example.tddecommerce.domain.productstock.business.component;
 
 import com.example.tddecommerce.domain.product.business.exception.ProductException;
+import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
+import com.example.tddecommerce.domain.product.business.model.Product;
+import com.example.tddecommerce.domain.product.business.repository.IProductRepository;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import com.example.tddecommerce.domain.productstock.business.repository.IProductStockRepository;
-import com.example.tddecommerce.domain.productstock.business.component.ProductStockUpdater;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.math.BigDecimal;
+import java.util.Optional;
+
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ProductStockUpdaterTest {
 
-    @Mock
-    private IProductStockRepository productStockRepository;
 
-    @InjectMocks
+    private IProductStockRepository productStockRepository;
+    private IProductRepository productRepository;
     private ProductStockUpdater productStockUpdater;
 
-    private ProductStock productStock;
-
+    Product testProduct;
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        productStock = new ProductStock();
-        productStock.increase(100);
+        productStockRepository = Mockito.mock(IProductStockRepository.class);
+        productRepository = Mockito.mock(IProductRepository.class);
+        productStockUpdater = new ProductStockUpdater(productStockRepository,productRepository);
+        testProduct = new Product("Test Product", BigDecimal.valueOf(100), "Description", DiscountPolicy.NONE);
+
+    }
+    @Test
+    void setStock_Successful() {
+        Product product = productRepository.save(testProduct);
+        Long productId = product.getId();
+
+
+        ProductStock stock = new ProductStock(testProduct, 50);  // Assuming product is initialized
+        when(productStockRepository.findByProductId(productId)).thenReturn(Optional.of(stock));
+        when(productRepository.findByProductId(productId)).thenReturn(Optional.of(testProduct));
+
+        ProductStock result = productStockUpdater.setStock(productId, 500);
+
+        assertEquals(500, result.getQuantity());
+        verify(productStockRepository).save(stock);
+    }
+
+
+
+    @Test
+    void setStock_Failure_QuantityTooHigh() {
+        Long productId = 1L;
+        ProductStock stock = new ProductStock(null, 50);
+        when(productStockRepository.findByProductId(productId)).thenReturn(Optional.of(stock));
+
+        assertThrows(ProductException.class, () -> productStockUpdater.setStock(productId, 1001));
+
+        assertEquals(50, stock.getQuantity());
+        verify(productStockRepository, never()).save(stock);
     }
 
     @Test
-    void testIncreaseStock() {
-        // Given
-        when(productStockRepository.save(productStock)).thenReturn(productStock);
+    void setStock_Failure_QuantityTooLow() {
+        Long productId = 1L;
+        ProductStock stock = new ProductStock(null, 50);
+        when(productStockRepository.findByProductId(productId)).thenReturn(Optional.of(stock));
 
-        // When
-        ProductStock updatedStock = productStockUpdater.increaseStock(productStock, 50);
+        assertThrows(ProductException.class, () -> productStockUpdater.setStock(productId, -1));
 
-        // Then
-        assertThat(updatedStock.getQuantity()).isEqualTo(150);
-        verify(productStockRepository, times(1)).save(productStock);
+        assertEquals(50, stock.getQuantity());
+        verify(productStockRepository, never()).save(stock);
+    }
+    @Test
+    void increaseStock_Successful() {
+        Long productId = 1L;
+        ProductStock stock = new ProductStock(null, 50);
+        when(productStockRepository.findByProductId(productId)).thenReturn(Optional.of(stock));
+
+        productStockUpdater.increaseStock(productId, 20);
+
+        assertEquals(70, stock.getQuantity());
+        verify(productStockRepository).save(stock);
     }
 
     @Test
-    void testDecreaseStock() {
-        // Given
-        when(productStockRepository.save(productStock)).thenReturn(productStock);
+    void decreaseStock_Successful() {
+        Long productId = 1L;
+        ProductStock stock = new ProductStock(null, 50);
+        when(productStockRepository.findByProductId(productId)).thenReturn(Optional.of(stock));
 
-        // When
-        ProductStock updatedStock = productStockUpdater.decreaseStock(productStock, 50);
+        productStockUpdater.decreaseStock(productId, 20);
 
-        // Then
-        assertThat(updatedStock.getQuantity()).isEqualTo(50);
-        verify(productStockRepository, times(1)).save(productStock);
+        assertEquals(30, stock.getQuantity());
+        verify(productStockRepository).save(stock);
     }
 
     @Test
-    void testDecreaseStock_InsufficientQuantity() {
-        // Given
-        productStock.increase(20);
+    void decreaseStock_Failure_NotEnoughStock() {
+        Long productId = 1L;
+        ProductStock stock = new ProductStock(null, 10);
+        when(productStockRepository.findByProductId(productId)).thenReturn(Optional.of(stock));
 
-        // When & Then
-        ProductException exception = assertThrows(ProductException.class, () -> productStockUpdater.decreaseStock(productStock, 50));
-        assertThat(exception.getMessage()).contains("재고는 0개 미만이 될 수 없습니다.");
-        verify(productStockRepository, never()).save(productStock);
+        Exception exception = assertThrows(ProductException.class, () -> productStockUpdater.decreaseStock(productId, 20));
+
+        assertEquals("재고는 0개 미만이 될 수 없습니다.", exception.getMessage());
+        verify(productStockRepository, never()).save(stock);
     }
 }

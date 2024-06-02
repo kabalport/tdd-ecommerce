@@ -34,6 +34,17 @@ public class ProductStock {
         this.quantity = quantity;
         this.lastUpdated = LocalDateTime.now();
     }
+    public static int zeroQuantity() {
+        return 0;
+    }
+
+    public void increase(int quantity) {
+        if (this.quantity - quantity < 0) {
+            throw new ProductException("재고는 0개 미만이 될 수 없습니다.");
+        }
+        this.quantity += quantity;
+        this.lastUpdated = LocalDateTime.now();
+    }
 
     public void decrease(int quantity) {
         if (this.quantity - quantity < 0) {
@@ -43,13 +54,18 @@ public class ProductStock {
         this.lastUpdated = LocalDateTime.now();
     }
 
-    public void increase(int quantity) {
+    public void setQuantity(int quantity) {
         if (quantity > 1000) { // 비즈니스 로직에 따라 이 조건을 수정할 수 있습니다.
             throw new ProductException("재고는 1000개 초과가 될 수 없습니다.");
         }
-        this.quantity += quantity;
+        if (quantity < 0) { // 비즈니스 로직에 따라 이 조건을 수정할 수 있습니다.
+            throw new ProductException("재고가 마이너스입니다.");
+        }
+        this.quantity = quantity;
         this.lastUpdated = LocalDateTime.now();
     }
+
+
 
     @PrePersist
     protected void onCreate() {
@@ -60,4 +76,6 @@ public class ProductStock {
     protected void onUpdate() {
         this.lastUpdated = LocalDateTime.now();
     }
+
+
 }

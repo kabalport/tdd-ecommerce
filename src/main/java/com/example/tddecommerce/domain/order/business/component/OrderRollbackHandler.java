@@ -27,8 +27,8 @@ public class OrderRollbackHandler {
         currentUserPoint.addPoints(pointsToUse);
 
         items.forEach(item -> {
-            ProductStock productStock = productStockMap.get(item.getProduct());
-            productStockService.increaseProductStock(productStock, item.getQuantity());
+//            ProductStock productStock = productStockMap.get(item.getProduct());
+//            productStockService.increaseProductStock(productStock, item.getQuantity());
         });
     }
 }
