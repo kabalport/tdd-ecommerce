@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ProductOrderController {
 
-    private final ProductOrderUseCase productOrderUseCase;
+//    private final ProductOrderUseCase productOrderUseCase;
 
     /**
      * 제품 주문을 처리한다
@@ -20,12 +20,13 @@ public class ProductOrderController {
      */
     @PostMapping
     public ResponseEntity<ProductOrderResponse> processProductOrder(@RequestBody ProductOrderRequest productOrderRequest) {
-        try {
-            ProductOrderResponse response = productOrderUseCase.execute(productOrderRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+//        try {
+//            ProductOrderResponse response = productOrderUseCase.execute(productOrderRequest);
+//            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        return null;
+//        }
     }
 }
 

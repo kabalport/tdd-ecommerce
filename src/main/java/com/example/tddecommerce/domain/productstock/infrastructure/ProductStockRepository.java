@@ -27,6 +27,6 @@ public class ProductStockRepository implements IProductStockRepository {
 
     @Override
     public Optional<ProductStock> findByProductId(Long productId) {
-        return Optional.empty();
+        return productStockJpaRepository.findByProductId(productId);
     }
 }

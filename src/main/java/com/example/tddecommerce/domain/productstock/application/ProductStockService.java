@@ -2,7 +2,6 @@ package com.example.tddecommerce.domain.productstock.application;
 
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.product.business.model.Product;
-import com.example.tddecommerce.domain.productstock.business.component.ProductStockManager;
 import com.example.tddecommerce.domain.productstock.business.component.ProductStockReader;
 import com.example.tddecommerce.domain.productstock.business.component.ProductStockUpdater;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
@@ -10,18 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-
 
 @Service
 @RequiredArgsConstructor
 public class ProductStockService {
     private final ProductStockReader productStockReader;
     private final ProductStockUpdater productStockUpdater;
-
-    private final ProductStockManager productStockManager;
-
-
 
     /**
      * 주어진 상품에 대한 재고 정보를 조회합니다.
@@ -39,8 +32,7 @@ public class ProductStockService {
      * @return 업데이트된 상품 재고 객체
      */
     public ProductStock increaseProductStock(ProductStock productStock, int quantity) {
-//        return productStockUpdater.increaseStock(productStock, quantity);
-        return null;
+        return productStockUpdater.increaseStock(productStock.getProduct().getId(), quantity);
     }
 
     /**
@@ -50,14 +42,7 @@ public class ProductStockService {
      * @return 업데이트된 상품 재고 객체
      */
     public ProductStock decreaseProductStock(ProductStock productStock, int quantity) {
-//        oductStockUpdater.decreaseStock(productStock, quantity);
-        return null;
-    }
-    //        Map<Product, ProductStock> productStockMap
-    public Map<Product, ProductStock> decreaseProductStockList(ProductStock productStock, int quantity) {
-        Map<Product, ProductStock> productStockMap = null;
-        productStockManager.manageProductStock(null);
-        return productStockMap;
+        return productStockUpdater.decreaseStock(productStock.getProduct().getId(), quantity);
     }
 
     public void validateAndDecreaseStock(List<ProductOrderItem> items) {

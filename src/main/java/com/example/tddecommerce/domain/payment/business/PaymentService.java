@@ -23,10 +23,10 @@ public class PaymentService {
     public void processPayment(ProductOrder productOrder) {
         try {
             // 결제 처리
-            processPaymentTransaction(productOrder, productOrder.getAmountToBePaid());
+            processPaymentTransaction(productOrder, null);
 
             // 주문 상태 업데이트
-            productOrder.setStatus(ProductOrderStatus.PAID);
+            productOrder.setOrderStatus(ProductOrderStatus.PAID);
             productOrderCreator.saveOrder(productOrder);
 
         } catch (Exception e) {

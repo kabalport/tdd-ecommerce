@@ -43,9 +43,9 @@ class PaymentServiceTest extends IntegrationTest {
         productOrder = ProductOrder.builder()
                 .userId(1L)
                 .orderDate(LocalDate.now())
-                .status(ProductOrderStatus.PENDING)
-                .totalAmount(BigDecimal.valueOf(1000))
-                .amountToBePaid(BigDecimal.valueOf(800))
+                .orderStatus(ProductOrderStatus.PENDING)
+//                .totalAmount(BigDecimal.valueOf(1000))
+//                .amountToBePaid(BigDecimal.valueOf(800))
                 .build();
         productOrderCreator.saveOrder(productOrder);
     }
@@ -61,7 +61,7 @@ class PaymentServiceTest extends IntegrationTest {
         Optional<Payment> paymentOptional = paymentRepository.findByOrder(productOrder);
         assertEquals(true, paymentOptional.isPresent());
         assertEquals(PaymentStatus.SUCCESS, paymentOptional.get().getStatus());
-        assertEquals(ProductOrderStatus.PAID, productOrder.getStatus());
+        assertEquals(ProductOrderStatus.PAID, productOrder.getOrderStatus());
     }
 
     @Test
@@ -89,6 +89,6 @@ class PaymentServiceTest extends IntegrationTest {
         assertThrows(ProductException.class, () -> {
             paymentService.processPayment(productOrder);
         });
-        assertEquals(ProductOrderStatus.PENDING, productOrder.getStatus());
+        assertEquals(ProductOrderStatus.PENDING, productOrder.getOrderStatus());
     }
 }

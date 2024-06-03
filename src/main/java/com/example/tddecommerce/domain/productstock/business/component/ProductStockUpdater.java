@@ -37,8 +37,7 @@ public class ProductStockUpdater {
      * @return 업데이트된 상품 재고 객체
      */
     public ProductStock increaseStock(Long productId, int quantity) {
-        ProductStock productStock = productStockRepository.findByProductId(productId)
-                .orElseThrow(() -> new ProductException("No product stock found for product ID: " + productId));
+        ProductStock productStock = productStockRepository.findByProductId(productId).orElseThrow(() -> new ProductException("No product stock found for product ID: " + productId));
         if (quantity < 0 || quantity > 1000) {
             throw new ProductException("Invalid stock quantity. It must be between 0 and 1000.");
         }

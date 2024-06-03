@@ -5,8 +5,7 @@ import com.example.tddecommerce.domain.order.api.ProductOrderDetail;
 import com.example.tddecommerce.domain.order.api.ProductOrderRequest;
 import com.example.tddecommerce.domain.order.api.ProductOrderResponse;
 import com.example.tddecommerce.domain.order.application.service.ProductOrderService;
-import com.example.tddecommerce.domain.order.business.component.OrderRollbackHandler;
-import com.example.tddecommerce.domain.order.business.component.ProductOrderValidator;
+
 import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.payment.business.PaymentService;
@@ -28,8 +27,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductOrderUseCase {
 
-    private final ProductOrderValidator productOrderValidator;
-    private final OrderRollbackHandler orderRollbackHandler;
     private final ProductOrderService productOrderService;
     private final PaymentService paymentService;
     private final UserService userService;
@@ -52,8 +49,6 @@ public class ProductOrderUseCase {
             user = userService.getUser(userId);
             log.info("유저 조회 완료: userId={}", userId);
 
-            productOrderValidator.validateUser(user);
-            productOrderValidator.validateOrderRequest(productOrderRequest);
 
             // 주문 항목 준비
             items = productOrderService.prepareOrderItems(productOrderDetails);
@@ -90,7 +85,7 @@ public class ProductOrderUseCase {
             log.error("주문 에러: userId={}", userId, e);
 
             if (items != null) {
-                orderRollbackHandler.rollbackStockAndPoints(userId, items, pointsToUse);
+//                orderRollbackHandler.rollbackStockAndPoints(userId, items, pointsToUse);
                 log.info("롤백 완료: userId={}, pointsToUse={}", userId, pointsToUse);
             }
 
@@ -109,7 +104,7 @@ public class ProductOrderUseCase {
 
         return ProductOrderResponse.builder()
                 .orderId(order.getId())
-                .status(order.getStatus().toString())
+                .status(order.getOrderStatus().toString())
                 .items(orderItems)
                 .totalAmount(totalAmount)
                 .build();

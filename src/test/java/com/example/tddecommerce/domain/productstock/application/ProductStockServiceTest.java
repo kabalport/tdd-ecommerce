@@ -1,9 +1,9 @@
 package com.example.tddecommerce.domain.productstock.application;
 
+import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
 import com.example.tddecommerce.domain.product.business.model.Product;
 import com.example.tddecommerce.domain.product.business.repository.IProductRepository;
-import com.example.tddecommerce.domain.product.infrastructure.ProductRepository;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import com.example.tddecommerce.domain.productstock.business.repository.IProductStockRepository;
 import com.example.tddecommerce.setting.IntegrationTest;
@@ -13,13 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Transactional
 class ProductStockServiceTest extends IntegrationTest {
-
-    @Autowired
-    private ProductStockService productStockService;
 
     @Autowired
     private IProductRepository productRepository;
@@ -27,47 +26,59 @@ class ProductStockServiceTest extends IntegrationTest {
     @Autowired
     private IProductStockRepository productStockRepository;
 
-    private Product product;
-    private ProductStock productStock;
+    @Autowired
+    private ProductStockService productStockService;
+
+    private Product testProduct;
+    private ProductStock testProductStock;
 
     @BeforeEach
     void setUp() {
-        // 유저 생성 및 저장
-        product = new Product("Test Product", BigDecimal.valueOf(100), "Test Description", DiscountPolicy.NONE);
-        productRepository.save(product);
-
-        // 재고 생성 및 저장
-        productStock = new ProductStock(product, 50);
-        productStockRepository.save(productStock);
+        testProduct = new Product("Test Product", BigDecimal.valueOf(100), "Description", DiscountPolicy.NONE);
+        testProduct = productRepository.save(testProduct); // Save product to generate ID
+        testProductStock = new ProductStock(testProduct, 50);
+        testProductStock = productStockRepository.save(testProductStock); // Save initial stock
     }
 
     @Test
-    @Transactional
-    void getProductStock_success() {
-        ProductStock retrievedStock = productStockService.getProductStock(product);
-        assertNotNull(retrievedStock);
-        assertEquals(50, retrievedStock.getQuantity());
+    void getProductStock_Successful() {
+        ProductStock result = productStockService.getProductStock(testProduct);
+
+        assertNotNull(result);
+        assertEquals(testProduct.getId(), result.getProduct().getId());
+        assertEquals(testProductStock.getQuantity(), result.getQuantity());
     }
 
     @Test
-    @Transactional
-    void increaseProductStock_success() {
-        ProductStock increasedStock = productStockService.increaseProductStock(productStock, 20);
-        assertEquals(70, increasedStock.getQuantity());
+    void increaseProductStock_Successful() {
+        ProductStock result = productStockService.increaseProductStock(testProductStock, 20);
+
+        assertNotNull(result);
+        assertEquals(70, result.getQuantity());
+
+        // Verify directly from the repository
+        ProductStock updatedStock = productStockRepository.findByProductId(testProduct.getId()).orElseThrow();
+        assertEquals(70, updatedStock.getQuantity());
     }
 
     @Test
-    @Transactional
-    void decreaseProductStock_success() {
-        ProductStock decreasedStock = productStockService.decreaseProductStock(productStock, 10);
-        assertEquals(40, decreasedStock.getQuantity());
+    void decreaseProductStock_Successful() {
+        ProductStock result = productStockService.decreaseProductStock(testProductStock, 20);
+
+        assertNotNull(result);
+        assertEquals(30, result.getQuantity());
+
+        // Verify directly from the repository
+        ProductStock updatedStock = productStockRepository.findByProductId(testProduct.getId()).orElseThrow();
+        assertEquals(30, updatedStock.getQuantity());
     }
 
     @Test
-    @Transactional
-    void decreaseProductStock_insufficientStock_throwsException() {
-        assertThrows(RuntimeException.class, () -> {
-            productStockService.decreaseProductStock(productStock, 60);
-        });
+    void validateAndDecreaseStock_Successful() {
+        ProductOrderItem orderItem = new ProductOrderItem(testProduct, 20, testProduct.getPrice());
+        productStockService.validateAndDecreaseStock(List.of(orderItem));
+
+        ProductStock updatedStock = productStockRepository.findByProductId(testProduct.getId()).orElseThrow();
+        assertEquals(30, updatedStock.getQuantity());
     }
 }

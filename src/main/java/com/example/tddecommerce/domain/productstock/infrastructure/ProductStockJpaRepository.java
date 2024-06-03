@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface ProductStockJpaRepository extends JpaRepository<ProductStock, Long> {
     @Query("SELECT ps FROM ProductStock ps WHERE ps.product = :product ORDER BY ps.lastUpdated DESC")
     Optional<ProductStock> findByProduct(@Param("product") Product product);
+
+    @Query("SELECT ps FROM ProductStock ps WHERE ps.product.id = :productId ORDER BY ps.lastUpdated DESC")
+    Optional<ProductStock> findByProductId(Long productId);
 }

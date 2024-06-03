@@ -6,5 +6,6 @@ public enum ProductOrderStatus {
     CONFIRMED, // 확인됨
     SHIPPED, // 배송됨
     DELIVERED, // 배달됨
+    COMPLETED,
     CANCELLED // 취소됨
 }

@@ -22,13 +22,6 @@ public class OrderRollbackHandler {
 
 
     public void rollbackStockAndPoints(Long userId, List<ProductOrderItem> items, BigDecimal pointsToUse) {
-        log.info("Rolling back stock and points for user {}", userId);
-        UserPoint currentUserPoint = userPointService.getUserPoint(userId);
-        currentUserPoint.addPoints(pointsToUse);
 
-        items.forEach(item -> {
-//            ProductStock productStock = productStockMap.get(item.getProduct());
-//            productStockService.increaseProductStock(productStock, item.getQuantity());
-        });
     }
 }
