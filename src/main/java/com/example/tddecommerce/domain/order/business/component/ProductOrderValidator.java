@@ -72,4 +72,8 @@ public class ProductOrderValidator {
             throw new RuntimeException("포인트는 음수가 될 수 없습니다.");
         }
     }
+
+    public void validateOrder(ProductOrderRequest productOrderRequest) {
+
+    }
 }

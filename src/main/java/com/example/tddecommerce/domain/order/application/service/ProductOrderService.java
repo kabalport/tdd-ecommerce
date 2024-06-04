@@ -76,7 +76,7 @@ public class ProductOrderService {
      * @param productOrderDetails 제품 주문 세부 정보 목록.
      * @return 준비된 ProductOrderItem 목록.
      */
-    public List<ProductOrderItem> prepareOrderItems(List<ProductOrderDetail> productOrderDetails) {
+    public List<ProductOrderItem> createOrderItem(List<ProductOrderDetail> productOrderDetails) {
         return productOrderItemCreator.prepareOrderItems(productOrderDetails);
     }
 
