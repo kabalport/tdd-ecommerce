@@ -65,9 +65,7 @@ class ProductOrderControllerTest {
 
         Payment payment = Payment.builder()
                 .id(1L)
-                .userId(1L)
                 .amount(new BigDecimal("30.00"))
-                .status("PAID")
                 .build();
 
         ProductOrderResult result = new ProductOrderResult(order, payment);

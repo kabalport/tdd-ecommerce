@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "ecommerce_product_order")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name="`order`")
 public class ProductOrder {
 
     @Id

@@ -1,4 +1,18 @@
 # 요구사항
+```sql
+-- User 테이블에 데이터 삽입
+INSERT INTO `user` (user_id, created_at, email, name, updated_at) VALUES(1, NOW(), 'customer@example.com', 'choi', NOW());
+
+-- UserPoint 테이블에 데이터 삽입
+INSERT INTO user_point (user_point_id, point_balance, user_id) VALUES(1, 100000.00, 1);
+
+-- Product 테이블에 데이터 삽입
+INSERT INTO product (id, del_flag, description, discount_policy, name, price) VALUES(1, FALSE, 'Description 1', 'NONE', 'Product 1', 100.00),(2, FALSE, 'Description 2', 'NONE', 'Product 2', 200.00);
+
+-- ProductStock 테이블에 데이터 삽입
+INSERT INTO product_stock (product_stock_id, last_updated, product_id, product_quantity) VALUES(1, NOW(), 1, 1000),(2, NOW(), 2, 1000);
+```
+
 
 ## 포인트
 - 포인트충전-회원이 포인트충전요청을 하면 회원의포인트를 충전시킵니다.

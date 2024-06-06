@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Setter
 @Getter
+@Table(name="`user_point_transaction`")
 public class UserPointTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

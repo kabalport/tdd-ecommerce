@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "ecommerce_product_stock")
 @Getter
 @NoArgsConstructor
+@Table(name="`product_stock`")
 public class ProductStock {
 
     @Id

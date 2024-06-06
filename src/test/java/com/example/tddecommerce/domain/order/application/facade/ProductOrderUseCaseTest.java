@@ -13,6 +13,7 @@ import com.example.tddecommerce.domain.productstock.application.ProductStockServ
 import com.example.tddecommerce.domain.user.application.UserService;
 import com.example.tddecommerce.domain.user.business.domain.User;
 import com.example.tddecommerce.domain.userpoint.application.UserPointService;
+import com.example.tddecommerce.domain.userpoint.business.component.UserPointCharger;
 import com.example.tddecommerce.setting.IntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,6 +61,9 @@ class ProductOrderUseCaseTest extends IntegrationTest {
         final String email = "customer@example.com";
         user = userService.addUser(name,email);
 
+        final BigDecimal initialChargeAmount = BigDecimal.valueOf(100000);
+        userPointService.chargeUserPoint(user.getUserId(), initialChargeAmount);
+
         // Product 및 ProductStock 생성
         final String productName1 = "Product 1";
         final BigDecimal productPrice1 = BigDecimal.valueOf(100);
@@ -71,6 +75,8 @@ class ProductOrderUseCaseTest extends IntegrationTest {
         final String productDescription2 = "Description 2";
         final DiscountPolicy productDiscountPolicy2 = DiscountPolicy.NONE;
         final int initialProductStock2 = 1000;
+
+
 
         product1 = productService.createProduct(productName1,productPrice1,productDescription1,productDiscountPolicy1,initialProductStock1);
         product2 = productService.createProduct(productName2,productPrice2,productDescription2,productDiscountPolicy2,initialProductStock2);

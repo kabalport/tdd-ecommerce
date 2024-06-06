@@ -10,6 +10,7 @@ import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.payment.business.PaymentService;
 import com.example.tddecommerce.domain.payment.business.model.Payment;
 import com.example.tddecommerce.domain.productstock.application.ProductStockService;
+import com.example.tddecommerce.domain.userpoint.application.UserPointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class ProductOrderUseCase {
     private final PaymentService paymentService;
 
     private final ProductStockService productStockService;
+    private final UserPointService userPointService;
+
     private final ProductOrderValidator productOrderValidator;
     private final OrderRollbackHandler orderRollbackHandler;
 
@@ -48,8 +51,11 @@ public class ProductOrderUseCase {
             order = productOrderService.processOrder(userId, items);
             log.info("주문 생성 완료: orderId={}", order.getId());
             // 주문 결제 처리
-            payment = paymentService.executePay(userId, order.getTotalPrice());
+            payment = paymentService.executePay(order);
             log.info("주문 결제 처리 완료: paymentId={}", payment.getId());
+            // 유저 포인트 차감
+            userPointService.useUserPoint(userId, order.getTotalPrice());
+            log.info("유저 포인트 차감 완료: userId={}", userId);
             // 응답 생성
             return new ProductOrderResult(order, payment);
         } catch (Exception e) {

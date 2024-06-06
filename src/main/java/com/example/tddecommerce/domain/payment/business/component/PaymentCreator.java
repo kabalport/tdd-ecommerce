@@ -18,14 +18,9 @@ public class PaymentCreator {
         this.paymentRepository = paymentRepository;
     }
 
-    @Transactional
-    public Payment createPayment(Long userId, BigDecimal amount) {
-        Payment payment = Payment.builder()
-                .userId(userId)
-                .amount(amount)
-                .status("PAID")
-                .build();
 
+    public Payment createPayment(ProductOrder productOrder) {
+        Payment payment = new Payment(productOrder.getTotalPrice(), productOrder);
         return paymentRepository.save(payment);
     }
 }
