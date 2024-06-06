@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 public class ProductOrderCreator {
     private final IProductOrderRepository iProductOrderRepository;
 
-    public void saveOrder(ProductOrder order) {
+    public ProductOrder saveOrder(ProductOrder order) {
         iProductOrderRepository.save(order);
+        return order;
     }
 }

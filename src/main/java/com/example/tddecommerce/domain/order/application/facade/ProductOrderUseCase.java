@@ -2,88 +2,65 @@ package com.example.tddecommerce.domain.order.application.facade;
 
 import com.example.tddecommerce.domain.order.api.ProductOrderDetail;
 import com.example.tddecommerce.domain.order.api.ProductOrderRequest;
-import com.example.tddecommerce.domain.order.api.ProductOrderResponse;
 import com.example.tddecommerce.domain.order.application.service.ProductOrderService;
-
+import com.example.tddecommerce.domain.order.business.component.OrderRollbackHandler;
 import com.example.tddecommerce.domain.order.business.component.ProductOrderValidator;
 import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.payment.business.PaymentService;
+import com.example.tddecommerce.domain.payment.business.model.Payment;
 import com.example.tddecommerce.domain.productstock.application.ProductStockService;
-import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
-import com.example.tddecommerce.domain.user.application.UserService;
-import com.example.tddecommerce.domain.user.business.domain.User;
-import com.example.tddecommerce.domain.userpoint.application.UserPointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ProductOrderUseCase {
-
     private final ProductOrderService productOrderService;
     private final PaymentService paymentService;
-    private final UserService userService;
-    private final UserPointService userPointService;
+
     private final ProductStockService productStockService;
-
     private final ProductOrderValidator productOrderValidator;
+    private final OrderRollbackHandler orderRollbackHandler;
 
-    @Transactional
-    public ProductOrderResponse execute(ProductOrderRequest productOrderRequest) {
+    public ProductOrderResult execute(ProductOrderRequest productOrderRequest) {
         Long userId = productOrderRequest.getUserId();
         List<ProductOrderDetail> productOrderDetails = productOrderRequest.getProductOrderDetails();
-        BigDecimal pointsToUse = productOrderRequest.getPointsToUse();
-
         List<ProductOrderItem> items = null;
-        User user;
-        ProductOrder order;
-        BigDecimal totalAmount;
-
+        ProductOrder order = null;
+        Payment payment = null;
         try {
             // 검증
-            productOrderValidator.validateOrder(productOrderRequest);
-            // 유저 조회
-            user = userService.getUser(userId);
-            log.info("유저 조회 완료: userId={}", userId);
-            // 유저 포인트 차감
-            userPointService.useUserPoint(userId, pointsToUse);
-            log.info("유저 포인트 검증 및 차감 완료: pointsUsed={}", pointsToUse);
-            // 주문항목 생성
-            items = productOrderService.createOrderItem(productOrderDetails);
-            // 주문항목 재고 감소처리
-            productStockService.validateAndDecreaseStock(items);
-
-            // 주문 총금액 계산
-            totalAmount = productOrderService.prepareAmountToBePaid(items);
-            totalAmount = totalAmount.subtract(pointsToUse); // 포인트 사용 후 총 금액 계산
-            log.info("결제 총금액 계산 완료: totalAmount={}", totalAmount);
-            // 주문 생성
-            order = productOrderService.createOrder(userId, items, totalAmount);
+            productOrderValidator.execute(userId, productOrderDetails);
+            log.info("주문 검증 완료: userId={}", userId);
+            // 주문 항목 생성과 감소 처리
+            items = productOrderService.processOrderItem(productOrderDetails);
+            log.info("주문 항목 생성 및 재고 감소 처리 완료: items={}", items);
+            // 재고 검증 및 감소
+            for (ProductOrderItem item : items) {
+                productStockService.validateAndDecreaseStock(item.getProduct(), item.getQuantity());
+            }
+            // 주문 생성 - 주문 항목 재고 감소 처리와 주문 총 금액 계산을 주문에서 처리
+            order = productOrderService.processOrder(userId, items);
             log.info("주문 생성 완료: orderId={}", order.getId());
             // 주문 결제 처리
-            paymentService.processPayment(order);
-            log.info("결제 처리 완료");
-
-            log.info("해당 주문 완료: userId={}", userId);
+            payment = paymentService.executePay(userId, order.getTotalPrice());
+            log.info("주문 결제 처리 완료: paymentId={}", payment.getId());
             // 응답 생성
-            return productOrderResult(order, items, totalAmount);
+            return new ProductOrderResult(order, payment);
         } catch (Exception e) {
             log.error("주문 에러: userId={}", userId, e);
             if (items != null) {
-                log.info("롤백 완료: userId={}, pointsToUse={}", userId, pointsToUse);
+                orderRollbackHandler.execute(order, payment);
+                log.info("롤백 완료: orderId={}, paymentId={}", order != null ? order.getId() : null, payment != null ? payment.getId() : null);
             }
             throw new RuntimeException("주문 실패 보상 트랜잭션 발동", e);
         }
-    }
-
-    private ProductOrderResponse productOrderResult(ProductOrder order, List<ProductOrderItem> items, BigDecimal totalAmount) {
-        return null;
     }
 }

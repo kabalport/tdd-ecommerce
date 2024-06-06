@@ -1,6 +1,8 @@
 package com.example.tddecommerce.domain.order.business.component;
 
+import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
+import com.example.tddecommerce.domain.payment.business.model.Payment;
 import com.example.tddecommerce.domain.productstock.application.ProductStockService;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import com.example.tddecommerce.domain.userpoint.application.UserPointService;
@@ -22,6 +24,10 @@ public class OrderRollbackHandler {
 
 
     public void rollbackStockAndPoints(Long userId, List<ProductOrderItem> items, BigDecimal pointsToUse) {
+
+    }
+
+    public void execute(ProductOrder order, Payment pay) {
 
     }
 }

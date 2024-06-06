@@ -4,6 +4,9 @@ import com.example.tddecommerce.domain.product.business.exception.ProductExcepti
 import com.example.tddecommerce.domain.product.business.component.*;
 import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
 import com.example.tddecommerce.domain.product.business.model.Product;
+import com.example.tddecommerce.domain.productstock.application.ProductStockService;
+import com.example.tddecommerce.domain.productstock.business.component.ProductStockUpdater;
+import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,15 +26,17 @@ public class ProductService {
     private final ProductUpdater productUpdater;
     private final ProductDeleter productDeleter;
 
+    private final ProductStockUpdater productStockUpdater;
     /**
      * 상품 등록 기능
      */
-    public Product createProduct(String name, BigDecimal price, String description, DiscountPolicy discountPolicy) {
+    public Product createProduct(String name, BigDecimal price, String description, DiscountPolicy discountPolicy, int initialProductStock) {
         // 입력 데이터 유효성 검사
         productValidator.createRequestValidate(name, price);
 
         // 상품을 데이터베이스에 저장
         Product result = productCreator.execute(name,price,description,discountPolicy);
+        ProductStock stock = productStockUpdater.setStock(1L,initialProductStock);
 
         // 추가된 상품 정보 반환
         return result;

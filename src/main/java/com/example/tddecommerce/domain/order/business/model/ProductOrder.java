@@ -55,4 +55,11 @@ public class ProductOrder {
     public void setOrderItems(List<ProductOrderItem> orderItems) {
         this.orderItems = orderItems;
     }
+
+
+
+    public void addOrderItem(ProductOrderItem item) {
+        this.orderItems.add(item);
+        item.setProductOrder(this);
+    }
 }

@@ -35,7 +35,7 @@ class ProductControllerTest extends IntegrationTest {
     public void setUp() {
         RestAssured.port = port;
         // 테스트용 상품 생성
-        testProduct = productService.createProduct("Test Product", BigDecimal.valueOf(100), "Description", DiscountPolicy.NONE);
+        testProduct = productService.createProduct("Test Product", BigDecimal.valueOf(100), "Description", DiscountPolicy.NONE,1000);
         System.out.println("Test Product ID: " + testProduct.getId());
     }
 

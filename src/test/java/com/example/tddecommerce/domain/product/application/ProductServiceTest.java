@@ -40,7 +40,7 @@ class ProductServiceTest extends IntegrationTest {
     @Test
     void testAddProduct() {
         // When
-        Product result = productService.createProduct("New Product", BigDecimal.valueOf(200), "New Description", DiscountPolicy.FIX_1000_AMOUNT);
+        Product result = productService.createProduct("New Product", BigDecimal.valueOf(200), "New Description", DiscountPolicy.FIX_1000_AMOUNT,1000);
 
         // Then
         assertThat(result).isNotNull();

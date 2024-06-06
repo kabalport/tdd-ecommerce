@@ -93,7 +93,7 @@ class ProductOrderServiceTest extends IntegrationTest {
         ProductOrderDetail detail2 = new ProductOrderDetail(product2.getId(), 3);
 
         // When
-        List<ProductOrderItem> items = productOrderService.createOrderItem(Arrays.asList(detail1, detail2));
+        List<ProductOrderItem> items = productOrderService.processOrderItem(Arrays.asList(detail1, detail2));
 
         // Then
         assertEquals(2, items.size());
@@ -114,7 +114,7 @@ class ProductOrderServiceTest extends IntegrationTest {
         // Given
         ProductOrderDetail detail1 = new ProductOrderDetail(product1.getId(), 2);
         ProductOrderDetail detail2 = new ProductOrderDetail(product2.getId(), 3);
-        List<ProductOrderItem> items = productOrderService.createOrderItem(Arrays.asList(detail1, detail2));
+        List<ProductOrderItem> items = productOrderService.processOrderItem(Arrays.asList(detail1, detail2));
 
         // When
         BigDecimal totalAmount = productOrderService.prepareAmountToBePaid(items);

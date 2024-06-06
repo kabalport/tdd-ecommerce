@@ -19,4 +19,8 @@ public class ProductReader {
         Optional<Product> product = iProductRepository.findByProductId(productId);
         return product.filter(p -> !p.isDelFlag());
     }
+
+    public Product getProduct(Long productId) {
+        return execute(productId).orElseThrow(() -> new IllegalArgumentException("Product not found or is deleted: " + productId));
+    }
 }

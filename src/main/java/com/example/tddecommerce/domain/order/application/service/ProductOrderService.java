@@ -9,6 +9,7 @@ import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderStatus;
 import com.example.tddecommerce.domain.order.business.component.TotalAmountCalculator;
+import com.example.tddecommerce.domain.productstock.business.component.ProductStockUpdater;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class ProductOrderService {
     private final ProductOrderItemCreator productOrderItemCreator;
     private final TotalAmountCalculator totalAmountCalculator;
 
+    private final ProductStockUpdater productStockUpdater;
+
+
     /**
      * 새 제품 주문을 생성하고 저장합니다.
      *
@@ -39,6 +43,7 @@ public class ProductOrderService {
      * @return 생성된 ProductOrder.
      */
     public ProductOrder createOrder(Long userId, List<ProductOrderItem> items, BigDecimal totalAmount) {
+        //
         // 주문 생성 및 저장
         ProductOrder order;
         try {
@@ -66,8 +71,7 @@ public class ProductOrderService {
      * @return 조회된 ProductOrder.
      */
     public ProductOrder getOrder(Long orderId) {
-        return productOrderReader.getOrderById(orderId)
-                .orElseThrow(() -> new RuntimeException("주문을 찾을 수 없습니다"));
+        return productOrderReader.getOrderById(orderId).orElseThrow(() -> new RuntimeException("주문을 찾을 수 없습니다"));
     }
 
     /**
@@ -76,10 +80,11 @@ public class ProductOrderService {
      * @param productOrderDetails 제품 주문 세부 정보 목록.
      * @return 준비된 ProductOrderItem 목록.
      */
-    public List<ProductOrderItem> createOrderItem(List<ProductOrderDetail> productOrderDetails) {
-        return productOrderItemCreator.prepareOrderItems(productOrderDetails);
-    }
 
+
+    public List<ProductOrderItem> processOrderItem(List<ProductOrderDetail> productOrderDetails) {
+        return productOrderItemCreator.createOrderItems(productOrderDetails);
+    }
     /**
      * 주문 항목에 대해 지불할 총 금액을 계산합니다.
      *
@@ -98,5 +103,23 @@ public class ProductOrderService {
      */
     public void updateOrderStatus(Long orderId, ProductOrderStatus newStatus) {
         productOrderUpdater.updateOrderStatus(orderId, newStatus);
+    }
+
+    public ProductOrder processOrder(Long userId, List<ProductOrderItem> items) {
+        BigDecimal totalAmount = items.stream()
+                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        ProductOrder order = ProductOrder.builder()
+                .userId(userId)
+                .totalPrice(totalAmount)
+                .orderStatus(ProductOrderStatus.PAID)
+                .build();
+
+        for (ProductOrderItem item : items) {
+            order.addOrderItem(item);
+        }
+
+        return productOrderCreator.saveOrder(order);
     }
 }

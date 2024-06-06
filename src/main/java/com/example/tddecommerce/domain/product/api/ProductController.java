@@ -19,7 +19,8 @@ public class ProductController {
                 request.getName(),
                 request.getPrice(),
                 request.getDescription(),
-                request.getDiscountPolicy()
+                request.getDiscountPolicy(),
+                request.getInitialStock()
         );
         ProductResponse response = new ProductResponse(
                 product.getId(),

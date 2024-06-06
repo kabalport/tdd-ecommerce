@@ -4,8 +4,8 @@ import com.example.tddecommerce.domain.order.business.component.ProductOrderCrea
 import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.order.business.model.ProductOrderStatus;
 import com.example.tddecommerce.domain.payment.business.component.PaymentCreator;
+import com.example.tddecommerce.domain.payment.business.model.Payment;
 import com.example.tddecommerce.domain.product.business.exception.ProductException;
-import com.example.tddecommerce.domain.userpoint.business.component.UserPointReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,6 +23,9 @@ public class PaymentService {
     public void processPayment(ProductOrder productOrder) {
         try {
             // 결제 처리
+
+            // 유저 포인트 차감
+//            userPointService.useUserPoint(userId, pointsToUse);
             processPaymentTransaction(productOrder, null);
 
             // 주문 상태 업데이트
@@ -43,4 +46,12 @@ public class PaymentService {
     }
 
 
+    public Payment executePay(ProductOrder order) {
+
+        return null;
+    }
+
+    public Payment executePay(Long userId, BigDecimal totalPrice) {
+        return null;
+    }
 }

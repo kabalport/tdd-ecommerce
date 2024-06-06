@@ -1,6 +1,7 @@
 package com.example.tddecommerce.domain.productstock.application;
 
 import com.example.tddecommerce.domain.order.business.model.ProductOrderItem;
+import com.example.tddecommerce.domain.product.business.component.ProductReader;
 import com.example.tddecommerce.domain.product.business.model.Product;
 import com.example.tddecommerce.domain.productstock.business.component.ProductStockReader;
 import com.example.tddecommerce.domain.productstock.business.component.ProductStockUpdater;
@@ -13,8 +14,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProductStockService {
+    private final ProductReader productReader;
     private final ProductStockReader productStockReader;
     private final ProductStockUpdater productStockUpdater;
+
+    public Product getProduct(Long productId) {
+        return productReader.getProduct(productId);
+    }
 
     /**
      * 주어진 상품에 대한 재고 정보를 조회합니다.
@@ -45,10 +51,13 @@ public class ProductStockService {
         return productStockUpdater.decreaseStock(productStock.getProduct().getId(), quantity);
     }
 
-    public void validateAndDecreaseStock(List<ProductOrderItem> items) {
-        for (ProductOrderItem item : items) {
-            ProductStock productStock = getProductStock(item.getProduct());
-            decreaseProductStock(productStock, item.getQuantity());
+    public void validateAndDecreaseStock(Product product, int quantity) {
+        ProductStock productStock = getProductStock(product);
+        if (productStock.getQuantity() < quantity) {
+            throw new IllegalArgumentException("Insufficient stock for product: " + product.getId());
         }
+        decreaseProductStock(productStock, quantity);
     }
+
+
 }
