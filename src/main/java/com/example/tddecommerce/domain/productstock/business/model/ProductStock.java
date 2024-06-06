@@ -1,7 +1,6 @@
 package com.example.tddecommerce.domain.productstock.business.model;
 
 import com.example.tddecommerce.domain.product.business.exception.ProductException;
-import com.example.tddecommerce.domain.product.business.model.Product;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +18,8 @@ public class ProductStock {
     @Column(name = "product_stock_id")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @Column(name = "product_id", nullable = false)
+    private Long productId;
 
     @Column(name = "product_quantity", nullable = false)
     private int quantity;
@@ -29,11 +27,12 @@ public class ProductStock {
     @Column(name = "last_updated", nullable = false)
     private LocalDateTime lastUpdated;
 
-    public ProductStock(Product product, int quantity) {
-        this.product = product;
+    public ProductStock(Long productId, int quantity) {
+        this.productId = productId;
         this.quantity = quantity;
         this.lastUpdated = LocalDateTime.now();
     }
+
     public static int zeroQuantity() {
         return 0;
     }
@@ -65,8 +64,6 @@ public class ProductStock {
         this.lastUpdated = LocalDateTime.now();
     }
 
-
-
     @PrePersist
     protected void onCreate() {
         this.lastUpdated = LocalDateTime.now();
@@ -76,6 +73,4 @@ public class ProductStock {
     protected void onUpdate() {
         this.lastUpdated = LocalDateTime.now();
     }
-
-
 }

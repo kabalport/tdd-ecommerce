@@ -4,6 +4,7 @@ import com.example.tddecommerce.domain.order.business.model.ProductOrder;
 import com.example.tddecommerce.domain.payment.business.model.Payment;
 import com.example.tddecommerce.domain.payment.business.model.PaymentStatus;
 import com.example.tddecommerce.domain.payment.business.repository.IPaymentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -17,17 +18,14 @@ public class PaymentCreator {
         this.paymentRepository = paymentRepository;
     }
 
-    public boolean createPayment(ProductOrder order, BigDecimal amount, String paymentMethod) {
+    @Transactional
+    public Payment createPayment(Long userId, BigDecimal amount) {
         Payment payment = Payment.builder()
-                .order(order)
+                .userId(userId)
                 .amount(amount)
-                .paymentDateTime(LocalDateTime.now())
-                .paymentMethod(paymentMethod)
-                .status(PaymentStatus.SUCCESS)
+                .status("PAID")
                 .build();
-        paymentRepository.save(payment);
-        return payment.getStatus() == PaymentStatus.SUCCESS;
+
+        return paymentRepository.save(payment);
     }
-
-
 }

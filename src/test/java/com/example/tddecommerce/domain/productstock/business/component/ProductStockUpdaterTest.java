@@ -34,7 +34,7 @@ class ProductStockUpdaterTest {
 
         testProductId = 1L;
         testProduct = new Product("Test Product", BigDecimal.valueOf(100), "Description", DiscountPolicy.NONE);
-        testProductStock = new ProductStock(testProduct,50);
+        testProductStock = new ProductStock(testProduct.getId(),50);
     }
 
     @Test

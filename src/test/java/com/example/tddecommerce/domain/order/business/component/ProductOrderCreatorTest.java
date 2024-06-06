@@ -38,7 +38,7 @@ class ProductOrderCreatorTest {
         Product product = new Product("Test Product", BigDecimal.valueOf(100), "Description", DiscountPolicy.NONE);
 
         // Create a ProductOrderItem instance using constructor
-        ProductOrderItem orderItem = new ProductOrderItem(product, 2, BigDecimal.valueOf(200));
+        ProductOrderItem orderItem = new ProductOrderItem(product.getId(), 2, BigDecimal.valueOf(200));
 
         // Create a ProductOrder instance using constructor
         ProductOrder order = new ProductOrder(user.getUserId(), LocalDate.now(), ProductOrderStatus.PENDING, Collections.singletonList(orderItem));

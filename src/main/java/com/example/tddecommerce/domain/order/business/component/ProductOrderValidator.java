@@ -48,7 +48,7 @@ public class ProductOrderValidator {
         }
 
         // 재고 유효성 검사
-        int availableStock = productStockService.getProductStock(product).getQuantity();
+        int availableStock = productStockService.getProductStock(product.getId()).getQuantity();
         if (availableStock < detail.getQuantity()) {
             throw new IllegalArgumentException("Insufficient stock for product: " + detail.getProductId());
         }

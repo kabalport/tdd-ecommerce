@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,7 +34,8 @@ public class ProductOrder {
     private ProductOrderStatus orderStatus;
 
     @OneToMany(mappedBy = "productOrder", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductOrderItem> orderItems;
+    @Builder.Default
+    private List<ProductOrderItem> orderItems = new ArrayList<>();
 
     @Column(name = "total_price")
     private BigDecimal totalPrice;
@@ -56,10 +58,12 @@ public class ProductOrder {
         this.orderItems = orderItems;
     }
 
-
-
     public void addOrderItem(ProductOrderItem item) {
-        this.orderItems.add(item);
+        if (orderItems == null) {
+            orderItems = new ArrayList<>();
+        }
+        orderItems.add(item);
         item.setProductOrder(this);
     }
 }
+

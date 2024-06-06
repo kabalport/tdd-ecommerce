@@ -6,6 +6,7 @@ import com.example.tddecommerce.domain.order.business.model.ProductOrderStatus;
 import com.example.tddecommerce.domain.payment.business.component.PaymentCreator;
 import com.example.tddecommerce.domain.payment.business.model.Payment;
 import com.example.tddecommerce.domain.product.business.exception.ProductException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,6 @@ public class PaymentService {
 
             // 유저 포인트 차감
 //            userPointService.useUserPoint(userId, pointsToUse);
-            processPaymentTransaction(productOrder, null);
 
             // 주문 상태 업데이트
             productOrder.setOrderStatus(ProductOrderStatus.PAID);
@@ -38,20 +38,10 @@ public class PaymentService {
         }
     }
 
-    private void processPaymentTransaction(ProductOrder productOrder, BigDecimal amountToBePaid) {
-        boolean paymentSuccess = paymentCreator.createPayment(productOrder, amountToBePaid, "신용카드");
-        if (!paymentSuccess) {
-            throw new ProductException("Payment failed for order: " + productOrder.getId());
-        }
+
+    @Transactional
+    public Payment executePay(Long userId, BigDecimal amount) {
+        return paymentCreator.createPayment(userId, amount);
     }
 
-
-    public Payment executePay(ProductOrder order) {
-
-        return null;
-    }
-
-    public Payment executePay(Long userId, BigDecimal totalPrice) {
-        return null;
-    }
 }

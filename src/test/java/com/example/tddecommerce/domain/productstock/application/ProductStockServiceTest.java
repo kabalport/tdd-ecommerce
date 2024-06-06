@@ -36,16 +36,16 @@ class ProductStockServiceTest extends IntegrationTest {
     void setUp() {
         testProduct = new Product("Test Product", BigDecimal.valueOf(100), "Description", DiscountPolicy.NONE);
         testProduct = productRepository.save(testProduct); // Save product to generate ID
-        testProductStock = new ProductStock(testProduct, 50);
+        testProductStock = new ProductStock(testProduct.getId(), 50);
         testProductStock = productStockRepository.save(testProductStock); // Save initial stock
     }
 
     @Test
     void getProductStock_Successful() {
-        ProductStock result = productStockService.getProductStock(testProduct);
+        ProductStock result = productStockService.getProductStock(testProduct.getId());
 
         assertNotNull(result);
-        assertEquals(testProduct.getId(), result.getProduct().getId());
+        assertEquals(testProduct.getId(), result.getProductId());
         assertEquals(testProductStock.getQuantity(), result.getQuantity());
     }
 

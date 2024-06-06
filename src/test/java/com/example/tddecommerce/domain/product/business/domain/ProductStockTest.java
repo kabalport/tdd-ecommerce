@@ -21,7 +21,7 @@ class ProductStockTest {
     void decreaseStock() {
         // given
         Product product = new Product("상품명", BigDecimal.valueOf(1000), "상품 설명", DiscountPolicy.NONE);
-        ProductStock productStock = new ProductStock(product, 10);
+        ProductStock productStock = new ProductStock(product.getId(), 10);
 
         // when
         productStock.decrease(3);
@@ -36,7 +36,7 @@ class ProductStockTest {
     void decreaseStockBelowZero() {
         // given
         Product product = new Product("상품명", BigDecimal.valueOf(1000), "상품 설명", DiscountPolicy.NONE);
-        ProductStock productStock = new ProductStock(product, 5);
+        ProductStock productStock = new ProductStock(product.getId(), 5);
 
         // when, then
         assertThatThrownBy(() -> productStock.decrease(6))
@@ -49,7 +49,7 @@ class ProductStockTest {
     void decreaseStockUpdatesLastUpdated() {
         // given
         Product product = new Product("상품명", BigDecimal.valueOf(1000), "상품 설명", DiscountPolicy.NONE);
-        ProductStock productStock = new ProductStock(product, 10);
+        ProductStock productStock = new ProductStock(product.getId(), 10);
 
         LocalDateTime beforeUpdate = productStock.getLastUpdated();
 
@@ -77,7 +77,7 @@ class ProductStockTest {
         Product product = new Product("상품명", BigDecimal.valueOf(1000), "상품 설명", DiscountPolicy.NONE);
 
         // when
-        ProductStock productStock = new ProductStock(product, 10);
+        ProductStock productStock = new ProductStock(product.getId(), 10);
 
         // then
         assertThat(productStock.getLastUpdated()).isNotNull();

@@ -26,7 +26,7 @@ public class ProductStockController {
         // 상품을 ID를 사용하여 조회
         Product product = productService.getProductById(productId);
 
-        ProductStock productStock = productStockService.getProductStock(product);
+        ProductStock productStock = productStockService.getProductStock(product.getId());
         return ResponseEntity.ok(productStock);
     }
 

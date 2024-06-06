@@ -34,7 +34,7 @@ class ProductStockReaderTest {
     void getProductStock_WhenStockExists() {
         Long productId = 1L;
         Product product = new Product();  // 상품 객체 생성
-        ProductStock expectedStock = new ProductStock(product, 10);
+        ProductStock expectedStock = new ProductStock(product.getId(), 10);
 
         when(productRepository.findByProductId(productId)).thenReturn(Optional.of(product));
         when(productStockRepository.findByProductId(productId)).thenReturn(Optional.of(expectedStock));

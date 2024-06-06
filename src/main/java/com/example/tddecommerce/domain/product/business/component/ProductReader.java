@@ -1,5 +1,6 @@
 package com.example.tddecommerce.domain.product.business.component;
 
+import com.example.tddecommerce.domain.product.business.exception.ProductException;
 import com.example.tddecommerce.domain.product.business.model.Product;
 import com.example.tddecommerce.domain.product.business.repository.IProductRepository;
 import org.springframework.stereotype.Component;
@@ -19,8 +20,12 @@ public class ProductReader {
         Optional<Product> product = iProductRepository.findByProductId(productId);
         return product.filter(p -> !p.isDelFlag());
     }
-
     public Product getProduct(Long productId) {
-        return execute(productId).orElseThrow(() -> new IllegalArgumentException("Product not found or is deleted: " + productId));
+        return iProductRepository.findByProductId(productId)
+                .filter(p -> !p.isDelFlag())
+                .orElseThrow(() -> new ProductException("Product not found or is deleted : "+productId));
     }
+//    public Product getProduct(Long productId) {
+//        return execute(productId).orElseThrow(() -> new IllegalArgumentException("Product not found or is deleted: " + productId));
+//    }
 }

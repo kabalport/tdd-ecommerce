@@ -43,10 +43,8 @@ public class ProductOrderUseCase {
             items = productOrderService.processOrderItem(productOrderDetails);
             log.info("주문 항목 생성 및 재고 감소 처리 완료: items={}", items);
             // 재고 검증 및 감소
-            for (ProductOrderItem item : items) {
-                productStockService.validateAndDecreaseStock(item.getProduct(), item.getQuantity());
-            }
-            // 주문 생성 - 주문 항목 재고 감소 처리와 주문 총 금액 계산을 주문에서 처리
+            productStockService.validateAndDecreaseStock(items);
+            // 주문 생성
             order = productOrderService.processOrder(userId, items);
             log.info("주문 생성 완료: orderId={}", order.getId());
             // 주문 결제 처리

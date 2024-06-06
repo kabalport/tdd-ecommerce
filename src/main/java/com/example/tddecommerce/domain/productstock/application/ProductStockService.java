@@ -24,11 +24,11 @@ public class ProductStockService {
 
     /**
      * 주어진 상품에 대한 재고 정보를 조회합니다.
-     * @param product 조회할 상품 객체
+     * @param productId 조회할 상품의 ID
      * @return 조회된 상품 재고 객체
      */
-    public ProductStock getProductStock(Product product) {
-        return productStockReader.getProductStock(product.getId());
+    public ProductStock getProductStock(Long productId) {
+        return productStockReader.getProductStock(productId);
     }
 
     /**
@@ -38,7 +38,7 @@ public class ProductStockService {
      * @return 업데이트된 상품 재고 객체
      */
     public ProductStock increaseProductStock(ProductStock productStock, int quantity) {
-        return productStockUpdater.increaseStock(productStock.getProduct().getId(), quantity);
+        return productStockUpdater.increaseStock(productStock.getProductId(), quantity);
     }
 
     /**
@@ -48,16 +48,13 @@ public class ProductStockService {
      * @return 업데이트된 상품 재고 객체
      */
     public ProductStock decreaseProductStock(ProductStock productStock, int quantity) {
-        return productStockUpdater.decreaseStock(productStock.getProduct().getId(), quantity);
+        return productStockUpdater.decreaseStock(productStock.getProductId(), quantity);
     }
 
-    public void validateAndDecreaseStock(Product product, int quantity) {
-        ProductStock productStock = getProductStock(product);
-        if (productStock.getQuantity() < quantity) {
-            throw new IllegalArgumentException("Insufficient stock for product: " + product.getId());
+    public void validateAndDecreaseStock(List<ProductOrderItem> items) {
+        for (ProductOrderItem item : items) {
+            ProductStock productStock = getProductStock(item.getProductId());
+            decreaseProductStock(productStock, item.getQuantity());
         }
-        decreaseProductStock(productStock, quantity);
     }
-
-
 }

@@ -19,12 +19,6 @@ public class ProductStockRepository implements IProductStockRepository {
         return productStockJpaRepository.save(productStock);
     }
 
-
-    @Override
-    public Optional<ProductStock> findByProduct(Product product) {
-        return productStockJpaRepository.findByProduct(product);
-    }
-
     @Override
     public Optional<ProductStock> findByProductId(Long productId) {
         return productStockJpaRepository.findByProductId(productId);

@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 public class ProductStockManager {
 
     public Map<Product, ProductStock> manageProductStock(List<ProductOrderItem> items) {
-        return items.stream().collect(Collectors.toMap(
-                ProductOrderItem::getProduct,
-                item -> {
+//        return items.stream().collect(Collectors.toMap(
+//                ProductOrderItem::getProduct,
+//                item -> {
 //                    ProductStock productStock = productStockReader.getProductStock(item.getProduct());
 //                    if (productStock.getQuantity() < item.getQuantity()) {
 //                        throw new ProductException("Insufficient stock for product: " + item.getProduct().getId());
@@ -21,8 +21,8 @@ public class ProductStockManager {
 //                    productStockUpdater.decreaseStock(productStock, item.getQuantity());
 //                    return productStock;
                     return null;
-                }
-        ));
+//                }
+//        ));
     }
 
 }

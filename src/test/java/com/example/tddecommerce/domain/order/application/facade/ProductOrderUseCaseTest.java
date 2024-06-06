@@ -52,8 +52,6 @@ class ProductOrderUseCaseTest extends IntegrationTest {
     private User user;
     private Product product1;
     private Product product2;
-    private ProductStock productStock1;
-    private ProductStock productStock2;
 
     @BeforeEach
     void setUp() {
@@ -63,38 +61,30 @@ class ProductOrderUseCaseTest extends IntegrationTest {
         user = userService.addUser(name,email);
 
         // Product 및 ProductStock 생성
-        Product productRequest1 = new Product("Product 1", BigDecimal.valueOf(100), "Description 1", DiscountPolicy.NONE);
-        Product productRequest2 = new Product("Product 2", BigDecimal.valueOf(200), "Description 2", DiscountPolicy.NONE);
+        final String productName1 = "Product 1";
+        final BigDecimal productPrice1 = BigDecimal.valueOf(100);
+        final String productDescription1 = "Description 1";
+        final DiscountPolicy productDiscountPolicy1 = DiscountPolicy.NONE;
+        final int initialProductStock1 = 1000;
+        final String productName2 = "Product 2";
+        final BigDecimal productPrice2 = BigDecimal.valueOf(200);
+        final String productDescription2 = "Description 2";
+        final DiscountPolicy productDiscountPolicy2 = DiscountPolicy.NONE;
+        final int initialProductStock2 = 1000;
 
-        product1 = productService.createProduct(productRequest1.getName(),productRequest1.getPrice(),productRequest1.getDescription(),productRequest1.getDiscountPolicy(),1000);
-        product2 = productService.createProduct(productRequest2.getName(),productRequest2.getPrice(),productRequest2.getDescription(),productRequest2.getDiscountPolicy(),1000);
-
-
-        productStock1 = new ProductStock(product1, 10);
-        productStock2 = new ProductStock(product2, 10);
-
-//        productStockService.createProductStock(productStock1);
-//        productStockService.createProductStock(productStock2);
-
+        product1 = productService.createProduct(productName1,productPrice1,productDescription1,productDiscountPolicy1,initialProductStock1);
+        product2 = productService.createProduct(productName2,productPrice2,productDescription2,productDiscountPolicy2,initialProductStock2);
     }
 
     @Test
     void testExecute() {
         // Given
         ProductOrderDetail detail1 = new ProductOrderDetail(product1.getId(), 2);
-
-        System.out.println(product1.getId());
-        System.out.println(product2.getId());
-        System.out.println(product1.getId());
-        System.out.println(product2.getId());
-
-
         ProductOrderDetail detail2 = new ProductOrderDetail(product2.getId(), 3);
         List<ProductOrderDetail> productOrderDetails = Arrays.asList(detail1, detail2);
         ProductOrderRequest request = ProductOrderRequest.builder()
                 .userId(user.getUserId())
                 .productOrderDetails(productOrderDetails)
-                .pointsToUse(BigDecimal.valueOf(50))
                 .build();
 
         // When

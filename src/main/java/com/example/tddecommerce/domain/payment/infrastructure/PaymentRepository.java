@@ -16,12 +16,13 @@ public class PaymentRepository implements IPaymentRepository {
     }
 
     @Override
-    public void save(Payment payment) {
+    public Payment save(Payment payment) {
         paymentJpaRepository.save(payment);
+        return payment;
     }
 
-    @Override
-    public Optional<Payment> findByOrder(ProductOrder order) {
-        return paymentJpaRepository.findByOrder(order);
-    }
+//    @Override
+//    public Optional<Payment> findByOrder(ProductOrder order) {
+//        return paymentJpaRepository.findByOrder(order);
+//    }
 }

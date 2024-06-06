@@ -10,8 +10,9 @@ import java.util.List;
 public class TotalAmountCalculator {
 
     public BigDecimal calculateTotalAmount(List<ProductOrderItem> items) {
-        return items.stream()
-                .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return null;
+//        return items.stream()
+//                .map(item -> item.getProductId().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

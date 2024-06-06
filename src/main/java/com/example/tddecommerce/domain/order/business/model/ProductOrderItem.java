@@ -25,9 +25,8 @@ public class ProductOrderItem {
     @JoinColumn(name = "order_id")
     private ProductOrder productOrder;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(name = "product_id")
+    private Long productId;
 
     @Column(name = "quantity")
     private int quantity;
@@ -35,11 +34,12 @@ public class ProductOrderItem {
     @Column(name = "price")
     private BigDecimal price;
 
-    public ProductOrderItem(Product product, int quantity, BigDecimal price) {
-        this.product = product;
+    public ProductOrderItem(Long productId, int quantity, BigDecimal price) {
+        this.productId = productId;
         this.quantity = quantity;
         this.price = price;
     }
+
 
     void setProductOrder(ProductOrder productOrder) {
         this.productOrder = productOrder;

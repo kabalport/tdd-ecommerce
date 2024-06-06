@@ -5,6 +5,7 @@ import com.example.tddecommerce.domain.product.business.component.*;
 import com.example.tddecommerce.domain.product.business.model.DiscountPolicy;
 import com.example.tddecommerce.domain.product.business.model.Product;
 import com.example.tddecommerce.domain.productstock.application.ProductStockService;
+import com.example.tddecommerce.domain.productstock.business.component.ProductStockCreator;
 import com.example.tddecommerce.domain.productstock.business.component.ProductStockUpdater;
 import com.example.tddecommerce.domain.productstock.business.model.ProductStock;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class ProductService {
     private final ProductReader productReader;
     private final ProductUpdater productUpdater;
     private final ProductDeleter productDeleter;
-
+    private final ProductStockCreator productStockCreator;
     private final ProductStockUpdater productStockUpdater;
     /**
      * 상품 등록 기능
@@ -35,12 +36,16 @@ public class ProductService {
         productValidator.createRequestValidate(name, price);
 
         // 상품을 데이터베이스에 저장
-        Product result = productCreator.execute(name,price,description,discountPolicy);
-        ProductStock stock = productStockUpdater.setStock(1L,initialProductStock);
+        Product product = productCreator.execute(name, price, description, discountPolicy);
+
+        // 재고를 생성하여 데이터베이스에 저장
+        ProductStock productStock = new ProductStock(product.getId(), initialProductStock);
+        productStockCreator.save(productStock);
 
         // 추가된 상품 정보 반환
-        return result;
+        return product;
     }
+
 
     /**
      * 상품 조회기능

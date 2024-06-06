@@ -27,6 +27,6 @@ public class ProductStockReader {
 
         // 재고 정보 조회
         Optional<ProductStock> stock = productStockRepository.findByProductId(productId);
-        return stock.orElseGet(() -> new ProductStock(product.get(), 0));  // 상품 정보가 있는 새로운 재고 객체 반환
+        return stock.orElseGet(() -> new ProductStock(productId, 0));  // 상품 정보가 있는 새로운 재고 객체 반환
     }
 }

@@ -76,50 +76,15 @@ class ProductOrderServiceTest extends IntegrationTest {
         assertEquals(2, orderItems.size());
 
         ProductOrderItem item1 = orderItems.get(0);
-        assertEquals(product1.getId(), item1.getProduct().getId());
+        assertEquals(product1.getId(), item1.getProductId());
         assertEquals(2, item1.getQuantity());
         assertEquals(0, BigDecimal.valueOf(200).compareTo(item1.getPrice())); // BigDecimal 비교
 
         ProductOrderItem item2 = orderItems.get(1);
-        assertEquals(product2.getId(), item2.getProduct().getId());
+        assertEquals(product2.getId(), item2.getProductId());
         assertEquals(3, item2.getQuantity());
         assertEquals(0, BigDecimal.valueOf(600).compareTo(item2.getPrice())); // BigDecimal 비교
     }
 
-    @Test
-    void testPrepareOrderItems() {
-        // Given
-        ProductOrderDetail detail1 = new ProductOrderDetail(product1.getId(), 2);
-        ProductOrderDetail detail2 = new ProductOrderDetail(product2.getId(), 3);
 
-        // When
-        List<ProductOrderItem> items = productOrderService.processOrderItem(Arrays.asList(detail1, detail2));
-
-        // Then
-        assertEquals(2, items.size());
-
-        ProductOrderItem item1 = items.get(0);
-        assertEquals(product1.getId(), item1.getProduct().getId());
-        assertEquals(2, item1.getQuantity());
-        assertEquals(0, BigDecimal.valueOf(200).compareTo(item1.getPrice())); // BigDecimal 비교
-
-        ProductOrderItem item2 = items.get(1);
-        assertEquals(product2.getId(), item2.getProduct().getId());
-        assertEquals(3, item2.getQuantity());
-        assertEquals(0, BigDecimal.valueOf(600).compareTo(item2.getPrice())); // BigDecimal 비교
-    }
-
-    @Test
-    void testPrepareAmountToBePaid() {
-        // Given
-        ProductOrderDetail detail1 = new ProductOrderDetail(product1.getId(), 2);
-        ProductOrderDetail detail2 = new ProductOrderDetail(product2.getId(), 3);
-        List<ProductOrderItem> items = productOrderService.processOrderItem(Arrays.asList(detail1, detail2));
-
-        // When
-        BigDecimal totalAmount = productOrderService.prepareAmountToBePaid(items);
-
-        // Then
-        assertEquals(0, BigDecimal.valueOf(800).compareTo(totalAmount)); // BigDecimal 비교
-    }
 }

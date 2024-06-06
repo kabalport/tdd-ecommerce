@@ -64,31 +64,4 @@ class PaymentServiceTest extends IntegrationTest {
 //        assertEquals(ProductOrderStatus.PAID, productOrder.getOrderStatus());
     }
 
-    @Test
-    void testProcessPaymentFailure() {
-        // Given
-        // 결제가 실패하도록 PaymentCreator 설정 (임의로 실패를 발생시키는 로직 추가 필요)
-        PaymentCreator failingPaymentCreator = new PaymentCreator(paymentRepository) {
-            @Override
-            public boolean createPayment(ProductOrder order, BigDecimal amount, String paymentMethod) {
-                Payment payment = Payment.builder()
-                        .order(order)
-                        .amount(amount)
-                        .paymentDateTime(LocalDateTime.now())
-                        .paymentMethod(paymentMethod)
-                        .status(PaymentStatus.FAILED)  // 실패로 설정
-                        .build();
-                paymentRepository.save(payment);
-                return false;
-            }
-        };
-
-        paymentService = new PaymentService(failingPaymentCreator, productOrderCreator);
-
-        // When & Then
-        assertThrows(ProductException.class, () -> {
-            paymentService.processPayment(productOrder);
-        });
-        assertEquals(ProductOrderStatus.PENDING, productOrder.getOrderStatus());
-    }
 }

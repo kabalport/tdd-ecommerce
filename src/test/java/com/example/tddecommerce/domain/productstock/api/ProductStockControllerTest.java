@@ -44,7 +44,7 @@ class ProductStockControllerTest extends IntegrationTest {
         productRepository.save(product);
 
         // 재고 생성 및 저장
-        productStock = new ProductStock(product, 50);
+        productStock = new ProductStock(product.getId(), 50);
         productStockRepository.save(productStock);
     }
 
