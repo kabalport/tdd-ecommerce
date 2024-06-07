@@ -45,7 +45,6 @@ class ProductOrderControllerTest {
         // Given
         ProductOrderRequest request = ProductOrderRequest.builder()
                 .userId(1L)
-                .pointsToUse(BigDecimal.TEN)
                 .productOrderDetails(List.of(
                         ProductOrderDetail.builder().productId(1L).quantity(2).build(),
                         ProductOrderDetail.builder().productId(2L).quantity(1).build()
@@ -98,7 +97,6 @@ class ProductOrderControllerTest {
         // Given
         ProductOrderRequest request = ProductOrderRequest.builder()
                 .userId(1L)
-                .pointsToUse(BigDecimal.TEN)
                 .productOrderDetails(List.of(
                         ProductOrderDetail.builder().productId(1L).quantity(2).build(),
                         ProductOrderDetail.builder().productId(2L).quantity(1).build()

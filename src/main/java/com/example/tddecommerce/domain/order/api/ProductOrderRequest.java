@@ -13,5 +13,4 @@ import java.util.List;
 public class ProductOrderRequest {
     private Long userId;
     private List<ProductOrderDetail> productOrderDetails;
-    private BigDecimal pointsToUse;
 }
